@@ -30,7 +30,7 @@ class Directory extends React.Component {
 				imageUrl: 'https://images.unsplash.com/photo-1595163784636-e712c519a758?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
 				size: 'large',
 				id: 4,
-				linkUrl: 'citybicycle'
+				linkUrl: 'city bicycle'
 			},
 			{
 				title: 'road bicycle',
