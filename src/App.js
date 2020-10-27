@@ -7,7 +7,6 @@ import Header from './components/header/header.component.jsx';
 import SignInAndSignUp from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
-import { auth } from './firebase/firebase.utils';
 
 
 
@@ -16,11 +15,11 @@ class App extends React.Component {
     super();
 
     this.state = {
-      currentUser: null
+      currentUser: null,
+      unsubscribeFromAuth: null
     }
   }
 
-unsubscribeFromAuth = null;
 
 componentDidMount() {
   this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
@@ -42,7 +41,7 @@ componentDidMount() {
 }
 
 componentWillUnmount() {  //to close the subscription
-unsubscribeFromAuth = null;
+this.state.unsubscribeFromAuth = null;
 
 }
 

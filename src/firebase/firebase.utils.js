@@ -49,7 +49,6 @@ const config = {
 
   export const signInWithGoogle = () => auth.signInWithPopup(provider) // signInWithPopup takes the provider class
 
-  export const signInWithGoogle = () => auth.signInWithPopup(provider)
 
 
   export default firebase;
