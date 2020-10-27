@@ -5,11 +5,10 @@ import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component.jsx';
 import Header from './components/header/header.component.jsx';
 import SignInAndSignUp from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
-<<<<<<< HEAD
+
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
-=======
 import { auth } from './firebase/firebase.utils';
->>>>>>> 71ae57568de2eaa083c270ecfd426ab4799acd31
+
 
 
 class App extends React.Component {
@@ -20,7 +19,6 @@ class App extends React.Component {
       currentUser: null
     }
   }
-<<<<<<< HEAD
 
 unsubscribeFromAuth = null;
 
@@ -44,8 +42,9 @@ componentDidMount() {
 }
 
 componentWillUnmount() {  //to close the subscription
-=======
 unsubscribeFromAuth = null;
+
+}
 
 componentDidMount() {
   this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
@@ -54,7 +53,6 @@ componentDidMount() {
 }
 
 componentWillUnmount() {
->>>>>>> 71ae57568de2eaa083c270ecfd426ab4799acd31
   this.unsubscribeFromAuth();
 }
 

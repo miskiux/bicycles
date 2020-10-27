@@ -2,7 +2,6 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
-<<<<<<< HEAD
 const config = {
     apiKey: "AIzaSyAPpbMBEihUbYOuO51R6f-Um88OZXo5I68",
     authDomain: "bici-3be47.firebaseapp.com",
@@ -38,8 +37,6 @@ const config = {
     }
     return userRef;
   }
-=======
->>>>>>> 71ae57568de2eaa083c270ecfd426ab4799acd31
 
   firebase.initializeApp(config);
 
@@ -49,10 +46,10 @@ const config = {
   const provider = new firebase.auth.GoogleAuthProvider();
   provider.setCustomParameters({prompt: 'select_account'});
   
-<<<<<<< HEAD
+
   export const signInWithGoogle = () => auth.signInWithPopup(provider) // signInWithPopup takes the provider class
-=======
+
   export const signInWithGoogle = () => auth.signInWithPopup(provider)
->>>>>>> 71ae57568de2eaa083c270ecfd426ab4799acd31
+
 
   export default firebase;
