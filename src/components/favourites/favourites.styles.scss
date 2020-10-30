@@ -1,0 +1,27 @@
+.favourites-icon {
+  width: 45px;
+  height: 45px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  .icon {
+    opacity: 0.7;
+    height: 40px;
+    width: 40px;
+  }
+
+  .icon:hover {
+    opacity: 1;
+  }
+
+  .item-count {
+    color:black;
+    position: absolute;
+    font-size: 20px;
+    font-weight: bold;
+    bottom: 10px;
+  }
+}

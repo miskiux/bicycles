@@ -13,14 +13,14 @@ const config = {
     measurementId: "G-436ZVS1NPV"
   };
 
-  export const createUserProfileDocument = async(userAuth, additionalData) => {
+  export const createUserProfileDocument = async (userAuth, additionalData) => {
     if(!userAuth) return; // exit from the function of userAuth is null(which it is when user is signout)
 
     const userRef = firestore.doc(`users/${userAuth.uid}`); // getting back user reference at user location and then getting a snapshot
     const snapShot = await userRef.get();                   // and using the snapshot to determine whether or not there is data there(whether user data exists) 
 
     if(!snapShot.exists) {                     // if it does not exist create a piece of data there by using userRef
-      const { displayName, email } = userAuth; // name, email from userAuth 
+      const { displayName, email} = userAuth; // name, email from userAuth 
       const createdAt = new Date();      
 
 
@@ -37,6 +37,34 @@ const config = {
     }
     return userRef;
   }
+// addingBiciData
+
+export const addBiciData = async (userAuth, additionalData) => {
+
+    const biciRef = firestore.doc(`users/${userAuth.uid}`); // getting back user reference at user location and then getting a snapshot
+    const snapShot = await biciRef.get();                   // and using the snapshot to determine whether or not there is data there(whether user data exists) 
+
+                                                // if it does not exist create a piece of data there by using userRef
+      const { bicycleType, description, gender, manufacturer, model, year } = userAuth; // name, email from userAuth 
+      const createdAt = new Date();      
+
+
+      try {             //asynchronous request to store data
+        await biciRef.set({
+          bicycleType, 
+          description, 
+          gender,
+          createdAt, 
+          manufacturer, 
+          model, 
+          year,
+          ...additionalData
+        })
+      } catch (error) {
+          console.log('error creating user', error.message);
+      }
+    return biciRef;
+  }
 
   firebase.initializeApp(config);
 
@@ -48,7 +76,5 @@ const config = {
   
 
   export const signInWithGoogle = () => auth.signInWithPopup(provider) // signInWithPopup takes the provider class
-
-
 
   export default firebase;
