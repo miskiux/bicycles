@@ -20,7 +20,7 @@ const config = {
     const snapShot = await userRef.get();                   // and using the snapshot to determine whether or not there is data there(whether user data exists) 
 
     if(!snapShot.exists) {                     // if it does not exist create a piece of data there by using userRef
-      const { displayName, email} = userAuth; // name, email from userAuth 
+      const { displayName, email } = userAuth; // name, email from userAuth 
       const createdAt = new Date();      
 
 
@@ -39,29 +39,18 @@ const config = {
   }
 // addingBiciData
 
-export const addBiciData = async (userAuth, additionalData) => {
+export const addBiciData = async (uid, additionalData) => {
 
-    const biciRef = firestore.doc(`users/${userAuth.uid}`); // getting back user reference at user location and then getting a snapshot
-    const snapShot = await biciRef.get();                   // and using the snapshot to determine whether or not there is data there(whether user data exists) 
-
-                                                // if it does not exist create a piece of data there by using userRef
-      const { bicycleType, description, gender, manufacturer, model, year } = userAuth; // name, email from userAuth 
-      const createdAt = new Date();      
-
+    const biciRef = firestore.doc(`users/${uid}`).collection("bicycle").doc(); // getting back user reference at user location and then getting a snapshot
+    const snapShot = await biciRef.get();                   // and using the snapshot to determine whether or not there is data there(whether user data exists)      
+    console.log(additionalData);
 
       try {             //asynchronous request to store data
         await biciRef.set({
-          bicycleType, 
-          description, 
-          gender,
-          createdAt, 
-          manufacturer, 
-          model, 
-          year,
           ...additionalData
         })
       } catch (error) {
-          console.log('error creating user', error.message);
+          console.log('error updating user', error.message);
       }
     return biciRef;
   }

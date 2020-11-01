@@ -16,7 +16,8 @@ class SellForm extends React.Component {
       		gender: '',
       		manufacturer: '',
       		model: '',
-      		year: ''
+      		year: '',
+      		image: ''
 		}
 	}
 
@@ -26,29 +27,23 @@ auth.onAuthStateChanged(async (userAuth) => {
 			firestore.collection("users").doc(userAuth.uid)
 			.get()
 			.then(snapshot => {
-				const { uid, bicycleType, description, gender, manufacturer, model, year} = userAuth
+				const { uid } = userAuth
 				this.setState({
 					...snapshot.data(), // snapshotData first so it doesn't override information from authUser object
 					uid,
-					bicycleType,
-      				description,
-      				gender,
-      				manufacturer,
-      				model,
-      				year
 					})
 				}
 			)
 		}
 	})
 }
-
-	addItem = async event => {
+//additem getting reference through addBiciData
+	addItem = async (event) => {
 		event.preventDefault();
-		const { bicycleType, description, gender, manufacturer, model, year} = this.state;
+		const { uid, bicycleType, description, gender, manufacturer, model, year} = this.state;
 		try {
-			const biciRef = await firestore.addBiciData(bicycleType, description, gender, manufacturer, model, year);
-				this.setState({bicycleType: '', description: '', gender: '', manufacturer: '', model: '', year: ''});
+			const biciRef = await addBiciData(uid, {bicycleType, description, gender, manufacturer, model, year});
+				
 		} catch (error) {
 			console.log(error)
 		}
@@ -56,6 +51,7 @@ auth.onAuthStateChanged(async (userAuth) => {
 
 	handleChange = event => {
 		const {name, value} = event.target;
+		console.log({name, value});
 
 		this.setState({ [name]: value} ) //dynamically set [] name value
 	}
@@ -87,7 +83,7 @@ auth.onAuthStateChanged(async (userAuth) => {
 				name='model' 
 				type='text' 
 				value={this.state.model}
-				OnChange={this.handleChange}
+				onChange={this.handleChange}
 				required  
 			/>
 			<label>Bicycle Type</label>
@@ -95,7 +91,7 @@ auth.onAuthStateChanged(async (userAuth) => {
 				name='bicycleType' 
 				type='text' 
 				value={this.state.bicycleType}
-				OnChange={this.handleChange}
+				onChange={this.handleChange}
 				required  
 			/>
 		<label>Gender</label>
@@ -103,7 +99,7 @@ auth.onAuthStateChanged(async (userAuth) => {
 				name='gender' 
 				type='text' 
 				value={this.state.gender}
-				OnChange={this.handleChange}
+				onChange={this.handleChange}
 			/>
 		<label>Description</label>
 			<input
@@ -111,7 +107,7 @@ auth.onAuthStateChanged(async (userAuth) => {
 				name='description' 
 				type='text' 
 				value={this.state.description}
-				OnChange={this.handleChange}
+				onChange={this.handleChange}
 				label='Description'
 				required  
 			/>
