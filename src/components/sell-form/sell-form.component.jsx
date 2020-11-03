@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { auth, firestore, addBiciData } from "../../firebase/firebase.utils";
+import { auth, firestore, storage, addBiciData } from "../../firebase/firebase.utils";
 
 import { connect } from "react-redux";
 
@@ -17,7 +17,8 @@ class SellForm extends React.Component {
       		manufacturer: '',
       		model: '',
       		year: '',
-      		image: ''
+      		url: '',
+      		image: null
 		}
 	}
 
@@ -37,13 +38,41 @@ auth.onAuthStateChanged(async (userAuth) => {
 		}
 	})
 }
+
+	uploadChange = event => {
+		if (event.target.files[0]) {
+			this.setState({image: event.target.files[0]});
+		}
+	}
+
+	uploadImage = event => {
+		const {image} = this.state
+		//storing image
+		const uploadTask = storage.ref(`/images/${image.name}`).put(image)
+	//getting the image url
+		uploadTask.on(
+		"state_changed",
+		(snapShot) => {
+			console.log(snapShot)
+		},
+		error => {
+			console.log(error);
+		},
+		() => {
+			storage.ref("images").child(image.name).getDownloadURL()
+			.then(imgUrl => {
+				this.setState(prevObject => ({...prevObject, url:imgUrl}))
+				})		
+		})
+}
 //additem getting reference through addBiciData
 	addItem = async (event) => {
-		event.preventDefault();
-		const { uid, bicycleType, description, gender, manufacturer, model, year} = this.state;
+		const { uid, bicycleType, description, gender, manufacturer, model, year, url} = this.state;
+		
 		try {
-			const biciRef = await addBiciData(uid, {bicycleType, description, gender, manufacturer, model, year});
-				
+			console.log(this.state.url)
+			const biciRef = await addBiciData(uid, {bicycleType, description, gender, manufacturer, model, year, url });
+
 		} catch (error) {
 			console.log(error)
 		}
@@ -51,17 +80,24 @@ auth.onAuthStateChanged(async (userAuth) => {
 
 	handleChange = event => {
 		const {name, value} = event.target;
-		console.log({name, value});
 
 		this.setState({ [name]: value} ) //dynamically set [] name value
 	}
+
+	handleBind = event => {
+		event.preventDefault();
+		this.uploadImage();
+		this.addItem();
+	}
+
+
 
 	render() {
 		return(
 	<div className='sellform'>
 			<h2> Sell </h2>
 			<span>Sell your bike </span>
-		<form className="sellinfo" onSubmit={this.addItem}>
+		<form className="sellinfo" onSubmit={this.handleBind}>
 			<label>Manufacturer</label>
 			<input 
 				name='manufacturer' 
@@ -110,6 +146,12 @@ auth.onAuthStateChanged(async (userAuth) => {
 				onChange={this.handleChange}
 				label='Description'
 				required  
+			/>
+			<label>Your Bici</label>
+			<input 
+			name='image'
+			type='file'
+			onChange={this.uploadChange}
 			/>
 			<div className='buttons'>
 				<button type='submit'>Submit</button>

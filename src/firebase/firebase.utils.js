@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+import '@firebase/storage';
 
 const config = {
     apiKey: "AIzaSyAPpbMBEihUbYOuO51R6f-Um88OZXo5I68",
@@ -43,7 +44,6 @@ export const addBiciData = async (uid, additionalData) => {
 
     const biciRef = firestore.doc(`users/${uid}`).collection("bicycle").doc(); // getting back user reference at user location and then getting a snapshot
     const snapShot = await biciRef.get();                   // and using the snapshot to determine whether or not there is data there(whether user data exists)      
-    console.log(additionalData);
 
       try {             //asynchronous request to store data
         await biciRef.set({
@@ -55,10 +55,21 @@ export const addBiciData = async (uid, additionalData) => {
     return biciRef;
   }
 
+//first to store the image in cloud storage, 
+//second, to store the path to that image in Firestore to search for it 
+
+
+/*
+export const getBiciData = async (uid, additionalData) => {
+ const biciRef = firestore.doc(`users/${uid}`).collection("bicycle").doc(); 
+} 
+*/
+
   firebase.initializeApp(config);
 
   export const auth = firebase.auth();
   export const firestore = firebase.firestore();
+  export const storage = firebase.storage();
 
   const provider = new firebase.auth.GoogleAuthProvider();
   provider.setCustomParameters({prompt: 'select_account'});
