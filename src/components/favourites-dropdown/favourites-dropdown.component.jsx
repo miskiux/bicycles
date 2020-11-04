@@ -1,6 +1,6 @@
 import React from 'react';
 import FavouriteItem from '../favourite-item/favourite-item.component'
-
+import {selectFavouriteItems} from '../../redux/favourites/favourites.selectors'
 import { connect } from 'react-redux';
 
 import './favourites-dropdown.styles.scss';
@@ -16,8 +16,8 @@ const FavouriteDropdown = ({ favouriteItems }) => (
 </div>
 	)
 
-const mapStateToProps = ({ favourites: {favouriteItems}}) => ({ //destructuring state
-	favouriteItems
+const mapStateToProps = (state) => ({
+	favouriteItems: selectFavouriteItems(state)
 })
 
 export default connect(mapStateToProps)(FavouriteDropdown);

@@ -18,11 +18,12 @@
   }
 
   .item-count {
-    color:black;
+    width: 8px;
+      height: 8px;
+      background-color: #ffe05d;
+      border-radius: 50%;
     position: absolute;
-    font-size: 10px;
-    font-weight: bold;
-    bottom: 3px;
-    right:6px;
+    bottom: 5px;
+    right:5px;
   }
 }
