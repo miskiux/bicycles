@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReactComponent as FavouriteIcon } from '../../assets/wheel(1).svg';
+import { ReactComponent as FavouriteIcon } from '../../assets/Bike.svg';
 import { connect } from 'react-redux';
 import { toggleFavouritesHidden } from '../../redux/favourites/favourites.actions';
 import './favourites.styles.scss';

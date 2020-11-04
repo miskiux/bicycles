@@ -9,8 +9,8 @@
 
   .icon {
     opacity: 0.7;
-    height: 40px;
-    width: 40px;
+    height: 70px;
+    width: 90px;
   }
 
   .icon:hover {
@@ -20,8 +20,9 @@
   .item-count {
     color:black;
     position: absolute;
-    font-size: 20px;
+    font-size: 10px;
     font-weight: bold;
-    bottom: 10px;
+    bottom: 3px;
+    right:6px;
   }
 }
