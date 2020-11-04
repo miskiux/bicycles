@@ -11,6 +11,8 @@ import SignInAndSignUp from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.com
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { setCurrentUser } from "./redux/user/user.actions";
 
+import { selectCurrentUser } from './redux/user/user.selectors';
+
 class App extends React.Component {
   unsubscribeFromAuth = null;
 
@@ -67,8 +69,8 @@ class App extends React.Component {
   }
 }
 //redirecting after sign in. destructuring user reducer
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser,
+const mapStateToProps = (state) => ({
+  currentUser: selectCurrentUser(state)
 });
 
 //app just sets the currentuser value, but does not do anything with it

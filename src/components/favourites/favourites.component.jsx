@@ -1,6 +1,5 @@
 import React from 'react';
 import { ReactComponent as FavouriteIcon } from '../../assets/Bike.svg';
-import {selectCartItemsFlash} from '../../redux/favourites/favourites.selectors'
 
 import { connect } from 'react-redux';
 import { toggleFavouritesHidden } from '../../redux/favourites/favourites.actions';
@@ -24,8 +23,8 @@ const mapDispatchToProps = dispatch => ({
 	toggleFavouritesHidden: () => dispatch(toggleFavouritesHidden())
 })
 
-const mapStateToProps = (state) => ({
-	itemCount: selectCartItemsFlash(state) //passing whole reducer state, which then goes i have to "selectCartItemsFlash"
+const mapStateToProps = ({favourites: {favouriteItems}}) => ({
+	itemCount: favouriteItems.length !== 0
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Favourites);

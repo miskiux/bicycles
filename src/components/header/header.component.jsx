@@ -1,8 +1,15 @@
 import React from "react";
+
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase/firebase.utils";
+
 import Favourites from '../favourites/favourites.component';
 import FavouriteDropdown from '../favourites-dropdown/favourites-dropdown.component';
+
+import { createStructuredSelector } from 'reselect';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+
+import { selectFavouriteHidden } from '../../redux/favourites/favourites.selectors';
 
 import { connect } from "react-redux";
 
@@ -39,11 +46,12 @@ const Header = ({ currentUser, hidden }) => (
   </div>
 );
 
-// parameter (state) is root reducer = (state) =>
-//user(root-reducer).currentUser(userReducer)
-const mapStateToProps = ({user: { currentUser }, favourites:{hidden}}) => ({
-  currentUser,
-  hidden
-});
+// for multiple selectors createStructureSelector
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+  hidden: selectFavouriteHidden
+})
+  
+
 
 export default connect(mapStateToProps)(Header);
