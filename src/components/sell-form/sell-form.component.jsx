@@ -16,6 +16,7 @@ class SellForm extends React.Component {
       		gender: '',
       		manufacturer: '',
       		model: '',
+      		price: '',
       		year: '',
       		url: '',
       		image: null
@@ -45,12 +46,12 @@ auth.onAuthStateChanged(async (userAuth) => {
 		}
 	}
 
-	uploadImage = event => {
+	uploadImage = async event => {
 		const {image} = this.state
 		//storing image
 		const uploadTask = storage.ref(`/images/${image.name}`).put(image)
 	//getting the image url
-		uploadTask.on(
+		await uploadTask.on(
 		"state_changed",
 		(snapShot) => {
 			console.log(snapShot)
@@ -67,11 +68,11 @@ auth.onAuthStateChanged(async (userAuth) => {
 }
 //additem getting reference through addBiciData
 	addItem = async (event) => {
-		const { uid, bicycleType, description, gender, manufacturer, model, year, url} = this.state;
+		const { uid, bicycleType, description, gender, manufacturer, model, year, price, url} = this.state;
 		
 		try {
 			console.log(this.state.url)
-			const biciRef = await addBiciData(uid, {bicycleType, description, gender, manufacturer, model, year, url });
+			const biciRef = await addBiciData(uid, {bicycleType, description, gender, manufacturer, model, year, price, url });
 
 		} catch (error) {
 			console.log(error)
@@ -84,10 +85,10 @@ auth.onAuthStateChanged(async (userAuth) => {
 		this.setState({ [name]: value} ) //dynamically set [] name value
 	}
 
-	handleBind = event => {
+	handleBind = async event => {
 		event.preventDefault();
 		this.uploadImage();
-		this.addItem();
+		await this.addItem();
 	}
 
 
@@ -145,6 +146,14 @@ auth.onAuthStateChanged(async (userAuth) => {
 				value={this.state.description}
 				onChange={this.handleChange}
 				label='Description'
+				required  
+			/>
+		<label>Price</label>
+			<input 
+				name='price' 
+				type='text' 
+				value={this.state.price}
+				onChange={this.handleChange}
 				required  
 			/>
 			<label>Your Bici</label>
