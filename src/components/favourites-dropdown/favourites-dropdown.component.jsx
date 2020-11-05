@@ -9,9 +9,13 @@ const FavouriteDropdown = ({ favouriteItems }) => (
 <div className='favourites-dropdown'>
 	<div className='favourite-items'>
 	{
+		favouriteItems.length ? (
 		favouriteItems.map(favouriteItem => (
 			<FavouriteItem key={favouriteItem.id} item={favouriteItem} />
-			))}
+			))
+	) : (
+		<span className="empty-message">You have no favourites</span>
+	)}
 	</div>
 </div>
 	)

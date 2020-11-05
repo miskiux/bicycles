@@ -1,6 +1,6 @@
 .favourites-dropdown {
   position: absolute;
-  width: 240px;
+  width: 280px;
   height: 340px;
   display: flex;
   flex-direction: column;
@@ -18,4 +18,9 @@
     overflow: scroll;
   }
 
+  .empty-message {
+    font-size: 18px;
+    margin: 108px auto;
+
+  }
 }

@@ -4,7 +4,7 @@ export const addItemToFavourite = (favouriteItems, favouriteItemToAdd) => {
 	if (existingFavouriteItem) {
 		return favouriteItems.map(favouriteItem => //map bacause, have to return new array, new version of the state
 			favouriteItem.id === favouriteItemToAdd.id
-			? {...favouriteItem, quantity: favouriteItem.quantity + 1} //creating new object
+			? {...favouriteItem } //creating new object
 			: favouriteItem
 		) 
 	}
