@@ -40,9 +40,9 @@ const config = {
   }
 // addingBiciData
 
-export const addBiciData = async (uid, additionalData) => {
+export const addBiciData = async (additionalData) => {
 
-    const biciRef = firestore.doc(`users/${uid}`).collection("bicycle").doc(); // getting back user reference at user location and then getting a snapshot
+    const biciRef = firestore.collection("bicycle").doc(); // getting back user reference at user location and then getting a snapshot
     const snapShot = await biciRef.get();                   // and using the snapshot to determine whether or not there is data there(whether user data exists)      
 
       try {             //asynchronous request to store data
@@ -54,16 +54,6 @@ export const addBiciData = async (uid, additionalData) => {
       }
     return biciRef;
   }
-
-//first to store the image in cloud storage, 
-//second, to store the path to that image in Firestore to search for it 
-
-
-/*
-export const getBiciData = async (uid, additionalData) => {
- const biciRef = firestore.doc(`users/${uid}`).collection("bicycle").doc(); 
-} 
-*/
 
   firebase.initializeApp(config);
 

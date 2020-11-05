@@ -11,6 +11,8 @@ class SellForm extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			url: '',
+			userId: '',
 			bicycleType: '',
       		description: '',
       		gender: '',
@@ -18,7 +20,6 @@ class SellForm extends React.Component {
       		model: '',
       		price: '',
       		year: '',
-      		url: '',
       		image: null
 		}
 	}
@@ -32,7 +33,7 @@ auth.onAuthStateChanged(async (userAuth) => {
 				const { uid } = userAuth
 				this.setState({
 					...snapshot.data(), // snapshotData first so it doesn't override information from authUser object
-					uid,
+					id:uid,
 					})
 				}
 			)
@@ -46,12 +47,12 @@ auth.onAuthStateChanged(async (userAuth) => {
 		}
 	}
 
-	uploadImage = async event => {
+	uploadImage = event => {
 		const {image} = this.state
 		//storing image
 		const uploadTask = storage.ref(`/images/${image.name}`).put(image)
 	//getting the image url
-		await uploadTask.on(
+		uploadTask.on(
 		"state_changed",
 		(snapShot) => {
 			console.log(snapShot)
@@ -61,19 +62,21 @@ auth.onAuthStateChanged(async (userAuth) => {
 		},
 		() => {
 			storage.ref("images").child(image.name).getDownloadURL()
-			.then(imgUrl => {
-				this.setState(prevObject => ({...prevObject, url:imgUrl}))
+			.then(async imgUrl => {
+				await this.setState({url:imgUrl})
+				console.log(this.state.url)
 				})		
 		})
 }
+
 //additem getting reference through addBiciData
 	addItem = async (event) => {
-		const { uid, bicycleType, description, gender, manufacturer, model, year, price, url} = this.state;
+		const {bicycleType, description, gender, manufacturer, model, year, price, userId, url} = this.state;
 		
 		try {
 			console.log(this.state.url)
-			const biciRef = await addBiciData(uid, {bicycleType, description, gender, manufacturer, model, year, price, url });
-
+			const biciRef = await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url});
+			this.setState({bicycleType: '', description: '', gender: '', manufacturer: '', model: '', year: '', price: '' })
 		} catch (error) {
 			console.log(error)
 		}
@@ -85,13 +88,12 @@ auth.onAuthStateChanged(async (userAuth) => {
 		this.setState({ [name]: value} ) //dynamically set [] name value
 	}
 
+
 	handleBind = async event => {
 		event.preventDefault();
 		this.uploadImage();
 		await this.addItem();
 	}
-
-
 
 	render() {
 		return(
