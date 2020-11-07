@@ -4,7 +4,10 @@ import { auth, firestore, storage, addBiciData } from "../../firebase/firebase.u
 
 import { connect } from "react-redux";
 
-import './sell-form.styles.scss'
+import './sell-form.styles.css'
+
+import { Grid, Form, Input, Segment, Button } from 'semantic-ui-react';
+import 'semantic-ui-css/semantic.min.css'
 
 
 class SellForm extends React.Component {
@@ -20,6 +23,9 @@ class SellForm extends React.Component {
       		model: '',
       		price: '',
       		year: '',
+      		country: '',
+      		phone: '',
+      		address: '',
       		image: null
 		}
 	}
@@ -33,7 +39,7 @@ auth.onAuthStateChanged(async (userAuth) => {
 				const { uid } = userAuth
 				this.setState({
 					...snapshot.data(), // snapshotData first so it doesn't override information from authUser object
-					id:uid,
+					userId:uid,
 					})
 				}
 			)
@@ -71,12 +77,12 @@ auth.onAuthStateChanged(async (userAuth) => {
 
 //additem getting reference through addBiciData
 	addItem = async (event) => {
-		const {bicycleType, description, gender, manufacturer, model, year, price, userId, url} = this.state;
+		const {bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, country} = this.state;
 		
 		try {
 			console.log(this.state.url)
-			const biciRef = await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url});
-			this.setState({bicycleType: '', description: '', gender: '', manufacturer: '', model: '', year: '', price: '' })
+			const biciRef = await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address});
+			this.setState({bicycleType: '', description: '', gender: '', manufacturer: '', model: '', year: '', price: '', country: '', phone: '', address: ''})
 		} catch (error) {
 			console.log(error)
 		}
@@ -97,78 +103,137 @@ auth.onAuthStateChanged(async (userAuth) => {
 
 	render() {
 		return(
-	<div className='sellform'>
-			<h2> Sell </h2>
-			<span>Sell your bike </span>
-		<form className="sellinfo" onSubmit={this.handleBind}>
-			<label>Manufacturer</label>
-			<input 
-				name='manufacturer' 
-				type='text' 
-				value={this.state.manufacturer} 
-				onChange={this.handleChange}
-				required  
-				/>
-		<label>Year</label>
-			<input 
-				name='year' 
-				type='text' 
-				value={this.state.year}
-				onChange={this.handleChange}
-				required  
-			/>
-		<label>Model</label>
-			<input 
-				name='model' 
-				type='text' 
-				value={this.state.model}
-				onChange={this.handleChange}
-				required  
-			/>
-			<label>Bicycle Type</label>
-			<input 
-				name='bicycleType' 
-				type='text' 
-				value={this.state.bicycleType}
-				onChange={this.handleChange}
-				required  
-			/>
-		<label>Gender</label>
-			<input 
-				name='gender' 
-				type='text' 
-				value={this.state.gender}
-				onChange={this.handleChange}
-			/>
-		<label>Description</label>
-			<input
-				className="description" 
-				name='description' 
-				type='text' 
-				value={this.state.description}
-				onChange={this.handleChange}
-				label='Description'
-				required  
-			/>
-		<label>Price</label>
-			<input 
-				name='price' 
-				type='text' 
-				value={this.state.price}
-				onChange={this.handleChange}
-				required  
-			/>
-			<label>Your Bici</label>
-			<input 
-			name='image'
-			type='file'
-			onChange={this.uploadChange}
-			/>
-			<div className='buttons'>
-				<button type='submit'>Submit</button>
-			</div>
-		</form>
-	</div>
+<Form onSubmit={this.handleBind}>		
+	<Grid columns={2} divided>
+		<Grid.Row>
+			<Grid.Column>
+				<Segment>
+					<Form.Group widths='equal'>
+					<div>
+						<Form.Field>
+							<label>Manufacturer</label>
+							<input 
+								name='manufacturer' 
+								type='text' 
+								value={this.state.manufacturer} 
+								onChange={this.handleChange}
+								required  
+								/>
+								</Form.Field>
+								<Form.Field>
+								<label>Year</label>
+								<input 
+									name='year' 
+									type='text' 
+									value={this.state.year}
+									onChange={this.handleChange}
+									required  
+									/>
+								</Form.Field>
+								<Form.Field>
+								<label>Model</label>
+									<input 
+										name='model' 
+										type='text' 
+										value={this.state.model}
+										onChange={this.handleChange}
+										required  
+									/>
+									</Form.Field>
+									<Form.Field>
+									<label>Bicycle Type</label>
+									<input 
+										name='bicycleType' 
+										type='text' 
+										value={this.state.bicycleType}
+										onChange={this.handleChange}
+										required  
+									/>
+									</Form.Field>
+									<Form.Field>
+									<label>Gender</label>
+										<input 
+											name='gender' 
+											type='text' 
+											value={this.state.gender}
+											onChange={this.handleChange}
+										/>
+									</Form.Field>
+									<Form.Field>
+									<label>Description</label>
+										<input
+											className="description" 
+											name='description' 
+											type='text' 
+											value={this.state.description}
+											onChange={this.handleChange}
+											label='Description'
+											required  
+										/>
+									</Form.Field>
+									<Form.Field>
+									<label>Price</label>
+										<input 
+											name='price' 
+											type='text' 
+											value={this.state.price}
+											onChange={this.handleChange}
+											required  
+										/>
+									</Form.Field>
+									<Form.Field>
+										<label>Your Bici</label>
+										<input 
+										name='image'
+										type='file'
+										onChange={this.uploadChange}
+										/>
+									</Form.Field>
+									</div>
+								</Form.Group>
+							</Segment>
+						</Grid.Column>
+							<Grid.Column>
+								<Segment>
+									<Form.Group widths='equal'>
+									<div>
+									<Form.Field>
+									<label>Country</label>
+										<input 
+											name='country' 
+											type='text' 
+											value={this.state.country}
+											onChange={this.handleChange}
+											required  
+											/>
+									</Form.Field>
+									<Form.Field>
+									<label>Address</label>
+									<input 
+										name='address' 
+										type='text' 
+										value={this.state.address}
+										onChange={this.handleChange}
+										required  
+									/>
+									</Form.Field>
+									<Form.Field>
+									<label>Phone Number</label>
+									<input 
+										name='phone' 
+										type='text' 
+										value={this.state.phone}
+										onChange={this.handleChange} 
+									/>
+									</Form.Field>
+									</div>
+								</Form.Group>
+							</Segment>
+						</Grid.Column>
+					</Grid.Row>
+					<Button type='submit'>Submit</Button>
+				</Grid>
+			</Form>
 		)
 	}
 }

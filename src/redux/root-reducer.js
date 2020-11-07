@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage'
 
 import userReducer from './user/user.reducer';
 import favouritesReducer from './favourites/favourites.reducer';
+import directoryReducer from './directory/directory.reducer'
 
 const persistConfig = {
 	key: 'root',
@@ -13,7 +14,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
 	user: userReducer,  //keys(user) represent individual slices of state  
-	favourites: favouritesReducer
+	favourites: favouritesReducer,
+	directory: directoryReducer
 
 })
 
