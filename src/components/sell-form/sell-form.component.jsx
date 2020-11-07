@@ -53,26 +53,30 @@ auth.onAuthStateChanged(async (userAuth) => {
 		}
 	}
 
-	uploadImage = event => {
-		const {image} = this.state
-		//storing image
-		const uploadTask = storage.ref(`/images/${image.name}`).put(image)
-	//getting the image url
-		uploadTask.on(
-		"state_changed",
-		(snapShot) => {
-			console.log(snapShot)
-		},
-		error => {
-			console.log(error);
-		},
-		() => {
-			storage.ref("images").child(image.name).getDownloadURL()
-			.then(async imgUrl => {
-				await this.setState({url:imgUrl})
-				console.log(this.state.url)
-				})		
-		})
+	uploadImage =  event => {
+		return new Promise ((resolve, reject) => {
+			const {image} = this.state
+				//storing image
+				const uploadTask = storage.ref(`/images/${image.name}`).put(image)
+			//getting the image url
+				uploadTask.on(
+				"state_changed",
+				(snapshot) => {
+					const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					console.log(progress)
+				},
+				error => {
+					console.log(error);
+				},
+				() => {
+					storage.ref("images").child(image.name).getDownloadURL()
+					.then(imgUrl => {
+						this.setState({url:imgUrl})
+						console.log(this.state.url)
+						resolve();
+						})		
+					})
+				})
 }
 
 //additem getting reference through addBiciData
@@ -97,7 +101,7 @@ auth.onAuthStateChanged(async (userAuth) => {
 
 	handleBind = async event => {
 		event.preventDefault();
-		this.uploadImage();
+		await this.uploadImage();
 		await this.addItem();
 	}
 
