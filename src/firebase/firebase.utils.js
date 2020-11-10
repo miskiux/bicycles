@@ -43,16 +43,49 @@ const config = {
 export const addBiciData = async (additionalData) => {
 
     const biciRef = firestore.collection("bicycle").doc(); // getting back user reference at user location and then getting a snapshot
-    const snapShot = await biciRef.get();                   // and using the snapshot to determine whether or not there is data there(whether user data exists)      
 
-      try {             //asynchronous request to store data
-        await biciRef.set({
-          ...additionalData
-        })
+    const batch = firestore.batch();      
+
+const { bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address } = additionalData;
+const createdAt = new Date();
+
+      try {
+        await batch.set(biciRef, {
+          country,
+          address,
+          phone,
+          userId,
+          bicycleType,
+          createdAt,
+          item: {
+            manufacturer,
+            model,
+            year,
+            price,
+            url,
+            gender,
+            description
+        }})
       } catch (error) {
           console.log('error updating user', error.message);
       }
-    return biciRef;
+    return await batch.commit();
+  }
+
+//getting bicycle data
+
+export const getBiciDataForShop = (bicycle) => {
+  const bicycleObj = bicycle.docs.map(doc => {
+    const { bicycleType, item } = doc.data()
+    //returning an object
+    return {
+      routeName: encodeURI(bicycleType.toLowerCase()), //for routing
+      id: doc.id,
+      bicycleType,
+      item
+    }
+  })
+  return bicycleObj
   }
 
   firebase.initializeApp(config);

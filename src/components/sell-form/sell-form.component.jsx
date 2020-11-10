@@ -30,8 +30,10 @@ class SellForm extends React.Component {
 		}
 	}
 
+unsubscribeFromAuth = null;
+
 componentDidMount() {
-auth.onAuthStateChanged(async (userAuth) => {
+this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
 		if(userAuth) {
 			firestore.collection("users").doc(userAuth.uid)
 			.get()
@@ -47,14 +49,14 @@ auth.onAuthStateChanged(async (userAuth) => {
 	})
 }
 
-	uploadChange = event => {
+uploadChange = event => {
 		if (event.target.files[0]) {
 			this.setState({image: event.target.files[0]});
 		}
 	}
 
-	uploadImage =  event => {
-		return new Promise ((resolve, reject) => {
+uploadImage =  event => {
+	return new Promise ((resolve, reject) => {
 			const {image} = this.state
 				//storing image
 				const uploadTask = storage.ref(`/images/${image.name}`).put(image)
@@ -80,12 +82,12 @@ auth.onAuthStateChanged(async (userAuth) => {
 }
 
 //additem getting reference through addBiciData
-	addItem = async (event) => {
+addItem = async (event) => {
 		const {bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, country} = this.state;
 		
 		try {
 			console.log(this.state.url)
-			const biciRef = await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address});
+			await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address});
 			this.setState({bicycleType: '', description: '', gender: '', manufacturer: '', model: '', year: '', price: '', country: '', phone: '', address: ''})
 		} catch (error) {
 			console.log(error)
@@ -105,6 +107,10 @@ auth.onAuthStateChanged(async (userAuth) => {
 		await this.addItem();
 	}
 
+componentWillUnmount() {
+    this.unsubscribeFromAuth();
+  }
+
 	render() {
 		return(
 <Form onSubmit={this.handleBind}>		
@@ -116,7 +122,7 @@ auth.onAuthStateChanged(async (userAuth) => {
 					<div>
 						<Form.Field>
 							<label>Manufacturer</label>
-							<input 
+							<Input 
 								name='manufacturer' 
 								type='text' 
 								value={this.state.manufacturer} 
@@ -126,7 +132,7 @@ auth.onAuthStateChanged(async (userAuth) => {
 								</Form.Field>
 								<Form.Field>
 								<label>Year</label>
-								<input 
+								<Input 
 									name='year' 
 									type='text' 
 									value={this.state.year}

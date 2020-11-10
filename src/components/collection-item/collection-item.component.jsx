@@ -8,17 +8,17 @@ import { addItem } from '../../redux/favourites/favourites.actions'
 import './collection-item.styles.scss';
 
 const CollectionItem = ({item, addItem}) => {
-	const { name, price, imageUrl } = item;
+	const { manufacturer, model, price, url } = item;
 	return (
 	<div className='collection-item'>
 		<div
 			className='image'
 			style={{
-				backgroundImage: `url(${imageUrl})`
+				backgroundImage: `url(${url})`
 			}}
 		/>
 		<div className='collection-footer'>
-			<span className='name'>{name}</span>
+			<span className='name'>{manufacturer}</span>
 			<span className='price'>{price}</span>
 			</div>
 			<CustomButton onClick={() => addItem(item)} inverted> Add To Favourites </CustomButton>
