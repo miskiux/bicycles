@@ -79,7 +79,7 @@ export const getBiciDataForShop = (bicycle) => {
     const { bicycleType, item } = doc.data()
     //returning an object
     return {
-      routeName: encodeURI(bicycleType.toLowerCase()), //for routing
+      routeName: encodeURI(bicycleType.toLowerCase()).replace(/%20/g, " "), //for routing
       id: doc.id,
       bicycleType,
       item

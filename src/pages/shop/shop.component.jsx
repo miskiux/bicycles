@@ -9,6 +9,8 @@ import CollectionsOverview from '../../components/collections-overview/collectio
 
 import { firestore, getBiciDataForShop } from '../../firebase/firebase.utils';
  
+import { selectCollections } from '../../redux/shop/shop.selectors' 
+
 class ShopPage extends React.Component {
 	constructor() {
 		super();
@@ -33,7 +35,12 @@ componentDidMount() {
 				routeName
 			})
 		})
-		updateBicycle(bicycleArr);
+		const groupBicycle = bicycleArr.reduce((r, a) => {
+			r[a.routeName] = r[a.routeName] || [];
+			r[a.routeName].push(a);
+			return r;
+		}, Object.create(null));
+		updateBicycle(groupBicycle)
 	})
 }
 
@@ -43,7 +50,6 @@ componentWillUnmount() {
   }
 
 	render(){
-		console.log(this.state.bicycleArr)
 		const { match } = this.props
 	return (
 		<div className='shop-page'>
@@ -56,5 +62,9 @@ const mapDispatchToProps = dispatch => ({
 	updateBicycle: bicycleArr => dispatch(updateBicycle(bicycleArr))
 })
 
-export default connect(null, mapDispatchToProps)(ShopPage);
+const mapStateToProps = (state) => ({
+	bicycles: selectCollections(state)
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);
 

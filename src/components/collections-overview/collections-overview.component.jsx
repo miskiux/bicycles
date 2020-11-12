@@ -13,13 +13,16 @@ import './collections-overview.styles.scss'
 const CollectionsOverview = ({ bicycles }) => {
 console.log(bicycles);
 	return (
-		<div className='collections-overview'>
+		Object.keys(bicycles).map(routeName =>
+			<div className='collections-overview'>
+				<h1 className='title'>{routeName}</h1>
 		{
-			bicycles.map(({key, ...otherCollectionProps}) =>
+			bicycles[routeName].map(({key, ...otherCollectionProps}) =>
  				<CollectionPreview key={key} {...otherCollectionProps} />
 			)}
 	</div>
 
+			)
 		)
 }
 
