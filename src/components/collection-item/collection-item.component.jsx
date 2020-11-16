@@ -7,7 +7,7 @@ import { addItem } from '../../redux/favourites/favourites.actions'
 
 import './collection-item.styles.scss';
 
-const CollectionItem = ({item, addItem}) => {
+const CollectionItem = ({ item, addItem}) => {
 	const { manufacturer, model, price, url } = item;
 	return (
 	<div className='collection-item'>

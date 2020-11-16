@@ -6,18 +6,16 @@ import { connect } from 'react-redux';
 import { updateBicycle } from '../../redux/shop/shop.actions'
 
 import CollectionsOverview from '../../components/collections-overview/collections-overview.component';
+import CategoryPage from '../category/category.component';
 
 import { firestore, getBiciDataForShop } from '../../firebase/firebase.utils';
  
 import { selectCollections } from '../../redux/shop/shop.selectors' 
 
+import './shop.styles.scss'
+
 class ShopPage extends React.Component {
-	constructor() {
-		super();
-		this.state = {
-			bicycleArr: []
-	}
-}
+	
 unsubscribeFromSnapshot = null;
 
 componentDidMount() {
@@ -30,7 +28,7 @@ componentDidMount() {
 		bicycleMap.forEach((res) => {
 			const {item, routeName} = res	
 			bicycleArr.push({
-				key: res.id,
+				id: res.id,
 				item,
 				routeName
 			})
@@ -54,12 +52,13 @@ componentWillUnmount() {
 	return (
 		<div className='shop-page'>
 			<Route exact path={`${match.path}`} component={CollectionsOverview} />
+			<Route path={`${match.path}/:categoryId`} component={CategoryPage} />
 			</div>
 			)
 		}
 	}
 const mapDispatchToProps = dispatch => ({
-	updateBicycle: bicycleArr => dispatch(updateBicycle(bicycleArr))
+	updateBicycle: groupBicycle => dispatch(updateBicycle(groupBicycle))
 })
 
 const mapStateToProps = (state) => ({

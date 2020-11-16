@@ -1,6 +1,6 @@
 import ShopActionTypes from './shop.types';
 
-export const updateBicycle = (bicycleArr) => ({
+export const updateBicycle = (groupBicycle) => ({
 	type:ShopActionTypes.UPDATE_BICYCLE,
-	payload: bicycleArr
+	payload: groupBicycle
 })

@@ -5,13 +5,13 @@ import {clearItemFromCart} from '../../redux/favourites/favourites.actions'
 import './favourite-item.styles.scss'
 
 const FavouriteItem = ({ item, clearItem }) => {
-	const  { imageUrl, price, name } = item
+	const  { url, price, manufacturer } = item
 	return (
 <div className='favourite-item'>
 	<div className='remove-button' onClick={() => clearItem(item)}>&#10005;</div>
-	<img src={imageUrl} alt='item' />
+	<img src={url} alt='item' />
 	<div className='item-details'>
-		<span className='name'>{name}</span>
+		<span className='name'>{manufacturer}</span>
 		<span className='price'>€{price}</span>
 	</div>
 </div>

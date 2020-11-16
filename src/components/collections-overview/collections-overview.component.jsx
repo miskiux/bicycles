@@ -1,14 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import CollectionPreview from '../collection-preview/collection-preview.component'  
+import CollectionItem from '../collection-item/collection-item.component'  
 
 import { selectCollections } from '../../redux/shop/shop.selectors' 
 
 import './collections-overview.styles.scss'
 
-
-//get the bicycleArr through selector ({id, ...item})
 
 const CollectionsOverview = ({ bicycles }) => {
 console.log(bicycles);
@@ -16,16 +14,17 @@ console.log(bicycles);
 		Object.keys(bicycles).map(routeName =>
 			<div className='collections-overview'>
 				<h1 className='title'>{routeName}</h1>
+				<div className='preview'>
 		{
-			bicycles[routeName].map(({key, ...otherCollectionProps}) =>
- 				<CollectionPreview key={key} {...otherCollectionProps} />
+			bicycles[routeName].map(({id, ...otherCollectionProps}) =>
+ 				<CollectionItem key={id} {...otherCollectionProps}/>
 			)}
+		</div>
 	</div>
 
 			)
 		)
 }
-
 
 const mapStateToProps = (state) => ({
 	bicycles: selectCollections(state)
