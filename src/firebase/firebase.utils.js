@@ -85,8 +85,11 @@ export const getBiciDataForShop = (bicycle) => {
       item
     }
   })
-  return bicycleObj
-  }
+  return bicycleObj.reduce((accumulator, item) => {
+    accumulator[item.id] = item;
+    return accumulator;
+  } , {})
+}
 
   firebase.initializeApp(config);
 

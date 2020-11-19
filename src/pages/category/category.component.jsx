@@ -4,49 +4,47 @@ import {connect} from 'react-redux';
 
 import CollectionItem from '../../components/collection-item/collection-item.component'
 
-import {selectCategory} from '../../redux/shop/shop.selectors'; 
+import { selectCategory } from '../../redux/shop/shop.selectors'; 
 
 import './category.styles.scss';
 
-const CategoryPage = ({ category }) => {
+const CategoryPage = ({ category, match }) => {
 
 const [items, setItems] = useState([]);
 const [title, setTitle] = useState([]);
+
 	
 useEffect(() => {
-	setItems(category)
-	category.map((key) => {
-		if(key) {
-			key.map((item) => {
-				let routeRef = Object.values(item)[2];
-				setTitle(routeRef);
-			})
-		}
-	})
+	console.log(match)
+	const categoryBicycles = category.reduce((r, a) => {
+			r[a.routeName] = r[a.routeName] || [];
+			r[a.routeName].push(a);
+			return r;
+		}, Object.create(null));
+	setItems(categoryBicycles[match.params.categoryId])
+	console.log(categoryBicycles[match.params.categoryId])
+			
 }, [category]);
 
+// to categories bicycles
+
 	return (
-	items.map((key) =>
 		<div className='category'>
-		{console.log(key)}
-				<h2>{title}</h2>
+				<h2></h2>
 				<div>
 				{
-				key ?
-					key.map(({id, ...otherCollectionProps}) => 
-					<CollectionItem key={id} {...otherCollectionProps} />
-					)
-					: "bici loading"
-					}
-
+					items.map(({id, ...otherCollectionProps}) =>
+						<CollectionItem key={id} {...otherCollectionProps} />
+						)
+				}
 				</div>
 		</div>
-		)
 	)
 }
 
 const mapStateToProps = (state, ownProps) => ({
-	category: selectCategory(ownProps.match.params.categoryId)(state)
+	category: selectCategory(ownProps.match.params.categoryId)(state),
 })
+
 
 export default connect(mapStateToProps)(CategoryPage);

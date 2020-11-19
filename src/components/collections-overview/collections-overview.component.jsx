@@ -3,31 +3,37 @@ import { connect } from 'react-redux';
 
 import CollectionItem from '../collection-item/collection-item.component'  
 
-import { selectCollections } from '../../redux/shop/shop.selectors' 
+import { selectBicycles } from '../../redux/shop/shop.selectors' 
+
+import { withRouter } from 'react-router-dom';
 
 import './collections-overview.styles.scss'
 
-
-const CollectionsOverview = ({ bicycles }) => {
-console.log(bicycles);
+//displaying items as a list ? of 5 ?
+const CollectionsOverview = ({ bicycles, match, history }) => {
 	return (
-		Object.keys(bicycles).map(routeName =>
 			<div className='collections-overview'>
-				<h1 className='title'>{routeName}</h1>
+			{console.log(bicycles)} 
+				<h1 className='title'></h1>
 				<div className='preview'>
 		{
-			bicycles[routeName].map(({id, ...otherCollectionProps}) =>
+			bicycles.map(({id, ...otherCollectionProps}) =>
  				<CollectionItem key={id} {...otherCollectionProps}/>
 			)}
 		</div>
+		<span className="seeAll"
+		//onClick={() => history.push(`${match.url}/${routeName}`)}
+		>See All</span>
 	</div>
-
-			)
+			
 		)
 }
 
 const mapStateToProps = (state) => ({
-	bicycles: selectCollections(state)
+	bicycles: selectBicycles(state)
 })
 
-export default connect(mapStateToProps)(CollectionsOverview)
+export default withRouter(connect(mapStateToProps)(CollectionsOverview))
+
+
+

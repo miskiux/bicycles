@@ -1,69 +1,87 @@
 import React from 'react';
 
-import { Route } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 
 import { connect } from 'react-redux';
 import { updateBicycle } from '../../redux/shop/shop.actions'
+
 
 import CollectionsOverview from '../../components/collections-overview/collections-overview.component';
 import CategoryPage from '../category/category.component';
 
 import { firestore, getBiciDataForShop } from '../../firebase/firebase.utils';
  
-import { selectCollections } from '../../redux/shop/shop.selectors' 
+import WithSpinner from '../../components/with-spinner/with-spinner.component'
 
-import './shop.styles.scss'
+import './shop.styles.scss';
+
+const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
+const CategoryPageWithSpinner = WithSpinner(CategoryPage);
 
 class ShopPage extends React.Component {
-	
+	state = {
+		loading: true
+	}
+
 unsubscribeFromSnapshot = null;
 
 componentDidMount() {
 	const { updateBicycle } = this.props;
 	const bicycleRef = firestore.collection("bicycle");
-	this.unsubscribeFromSnapshot = bicycleRef.onSnapshot(async snapshot => {
-		const bicycleMap = getBiciDataForShop(snapshot);
-		
-		const bicycleArr = [];
-		bicycleMap.forEach((res) => {
-			const {item, routeName} = res	
-			bicycleArr.push({
-				id: res.id,
-				item,
-				routeName
-			})
-		})
-		const groupBicycle = bicycleArr.reduce((r, a) => {
-			r[a.routeName] = r[a.routeName] || [];
-			r[a.routeName].push(a);
-			return r;
-		}, Object.create(null));
-		updateBicycle(groupBicycle)
+		this.unsubscribeFromSnapshot = bicycleRef.onSnapshot(async snapshot => {
+		let bicycleMap = getBiciDataForShop(snapshot)
+		updateBicycle(bicycleMap);
+		this.setState({loading: false});
 	})
 }
+
+
 
 componentWillUnmount() {
     //to close the subscription
     this.unsubscribeFromSnapshot();
   }
 
+// props - match
 	render(){
 		const { match } = this.props
+		const { loading } = this.state
 	return (
+		<div>
+		<div className="listbox">
+		<div className="list-wrapper">
+			<ul>
+				<li>
+					<Link to='/shop'>all</Link>
+				</li>
+				<li>
+					<Link to={`${match.path}/city bicycle`}>city bicycle</Link>
+				</li>
+				<li>
+					<Link to={`${match.path}/road`}>road bicycle</Link>
+				</li>
+				<li>
+					<Link to={`${match.path}/vintage`}>vintage</Link>
+				</li>
+				<li>
+					<Link to={`${match.path}/off-road`}>off-road</Link>
+				</li>
+			</ul>
+		</div>
+		</div>
 		<div className='shop-page'>
-			<Route exact path={`${match.path}`} component={CollectionsOverview} />
-			<Route path={`${match.path}/:categoryId`} component={CategoryPage} />
+			<Route exact path={`${match.path}`} render={(props) => <CollectionsOverviewWithSpinner isLoading={loading} {...props} />} />
+			<Route path={`${match.path}/:categoryId`} 
+			render={(props) => <CategoryPageWithSpinner isLoading={loading} {...props} />} />
 			</div>
-			)
+		</div>
+		)
 		}
 	}
 const mapDispatchToProps = dispatch => ({
-	updateBicycle: groupBicycle => dispatch(updateBicycle(groupBicycle))
+	updateBicycle: bicycleMap => dispatch(updateBicycle(bicycleMap)),
 })
 
-const mapStateToProps = (state) => ({
-	bicycles: selectCollections(state)
-})
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);
+export default connect(null, mapDispatchToProps)(ShopPage);
 
