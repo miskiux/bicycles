@@ -18,9 +18,12 @@ const CollectionItem = ({ item, addItem}) => {
 			}}
 		/>
 		<div className='collection-footer'>
-			<span className='name'>{manufacturer}</span>
-			<span className='price'>{price}</span>
+			<div className='model-manufacturer'>
+				<span className='name'>{manufacturer}</span>
+				<span className='name'>{model}</span>
 			</div>
+				<span className='price'>{price}</span>
+		</div>
 			<CustomButton onClick={() => addItem(item)} inverted> Add To Favourites </CustomButton>
 		</div>
 	)}
@@ -30,3 +33,4 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(null, mapDispatchToProps)(CollectionItem);
+

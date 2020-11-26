@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import { auth } from "../../firebase/firebase.utils";
 
 import Favourites from '../favourites/favourites.component';

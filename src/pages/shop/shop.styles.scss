@@ -1,6 +1,4 @@
 .shop-page {
-	display: flex;
-	flex-direction: column;
 }
 
 .listbox {
@@ -17,5 +15,8 @@ ul {
 	max-width: 100%;
 	list-style-type: none;
 	}
+li {
+	font-color: black;
+}	
 }
 }

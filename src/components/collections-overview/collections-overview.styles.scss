@@ -1,6 +1,8 @@
 .collections-overview {
+  display:flex;
 	position: relative;
   margin-bottom: 30px;
+  height:100vh;
 
   .title {
     font-size: 16px;
@@ -9,11 +11,7 @@
 
   .preview {
     display: flex;
-  }
-
-  .seeAll {
-  	position: absolute;
-    bottom: 0;
-    right: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 }

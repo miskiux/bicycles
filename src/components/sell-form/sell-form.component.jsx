@@ -4,9 +4,13 @@ import { auth, firestore, storage, addBiciData } from "../../firebase/firebase.u
 
 import { connect } from "react-redux";
 
+import ImageInput from './image-input.component';
+
 import './sell-form.styles.css'
 
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { Grid, Form, Input, Segment, Button } from 'semantic-ui-react';
+
 import 'semantic-ui-css/semantic.min.css'
 
 
@@ -26,7 +30,9 @@ class SellForm extends React.Component {
       		country: '',
       		phone: '',
       		address: '',
-      		image: null
+      		image: null,
+      		file: null,
+      		seen: false
 		}
 	}
 
@@ -49,11 +55,22 @@ this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
 	})
 }
 
+//image upload
 uploadChange = event => {
 		if (event.target.files[0]) {
-			this.setState({image: event.target.files[0]});
+			this.setState({
+				image: event.target.files[0],
+				file:URL.createObjectURL(event.target.files[0])
+			});
 		}
 	}
+
+//image pop-up
+togglePopUp = event => {
+	this.setState({
+		seen: !this.state.seen
+	})
+}
 
 uploadImage =  event => {
 	return new Promise ((resolve, reject) => {
@@ -82,7 +99,7 @@ uploadImage =  event => {
 }
 
 //additem getting reference through addBiciData
-addItem = async (event) => {
+	addItem = async (event) => {
 		const {bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, country} = this.state;
 		
 		try {
@@ -96,15 +113,20 @@ addItem = async (event) => {
 
 	handleChange = event => {
 		const {name, value} = event.target;
-
 		this.setState({ [name]: value} ) //dynamically set [] name value
 	}
 
-
+	//handle bind for form
 	handleBind = async event => {
 		event.preventDefault();
 		await this.uploadImage();
 		await this.addItem();
+	}
+
+	//handle bind for image
+	imageHandleBind = event => {
+		this.togglePopUp();
+		this.uploadChange();
 	}
 
 componentWillUnmount() {
@@ -192,12 +214,30 @@ componentWillUnmount() {
 										/>
 									</Form.Field>
 									<Form.Field>
-										<label>Your Bici</label>
-										<input 
-										name='image'
-										type='file'
-										onChange={this.uploadChange}
-										/>
+									<div>Your Bici</div>
+									<AddCircleIcon 
+									onClick={() => this.setState({seen: !this.state.seen})}
+									style={{fontSize: 40}} 
+									/>
+									{
+										this.state.seen ?
+										<div className="image-input-popup">
+									{
+											this.state.seen ?
+												<div className="image-input">
+													 <input 
+													name='image'
+													type='file'
+													onChange={this.uploadChange}
+													/>
+
+												</div>
+													: null
+									}
+										<img src={this.state.file} />
+										</div>
+										: null
+									}
 									</Form.Field>
 									</div>
 								</Form.Group>

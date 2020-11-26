@@ -25,8 +25,7 @@ useEffect(() => {
 	console.log(categoryBicycles[match.params.categoryId])
 			
 }, [category]);
-
-// to categories bicycles
+ 
 
 	return (
 		<div className='category'>
