@@ -2,15 +2,17 @@ import React from 'react';
 
 import { Route, Link } from "react-router-dom";
 
+import { createStructuredSelector } from 'reselect';
+import { selectIsBicyclesFetching, selectIsBicyclesLoaded } from '../../redux/shop/shop.selectors'
+
 import { connect } from 'react-redux';
-import { updateBicycle } from '../../redux/shop/shop.actions'
+import { fetchBicyclesStartAsync } from '../../redux/shop/shop.actions'
 
 
 import CollectionsOverview from '../../components/collections-overview/collections-overview.component';
 import CategoryPage from '../category/category.component';
 import Filter from '../../components/filter/filter.component';
 
-import { firestore, getBiciDataForShop } from '../../firebase/firebase.utils';
  
 import WithSpinner from '../../components/with-spinner/with-spinner.component'
 
@@ -20,29 +22,17 @@ const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
 const CategoryPageWithSpinner = WithSpinner(CategoryPage);
 
 class ShopPage extends React.Component {
-	state = {
-		loading: true
-	}
-
-unsubscribeFromSnapshot = null;
+	
 
 componentDidMount() {
-	const { updateBicycle } = this.props;
-	const bicycleRef = firestore.collection("bicycle");
-		
-		bicycleRef.get()
-		.then(snapshot => {
-			const bicycleMap = getBiciDataForShop(snapshot)
-		updateBicycle(bicycleMap);
-		this.setState({loading: false});
-		})
+	const { fetchBicyclesStartAsync } = this.props;
+	fetchBicyclesStartAsync();
 }
 
 
 // props - match
 	render(){
-		const { match } = this.props
-		const { loading } = this.state
+		const { match, isFetching, isBicyclesLoaded } = this.props
 	return (
 	<div>
 		<div className="listbox">
@@ -70,18 +60,23 @@ componentDidMount() {
 			<Filter />
 		</div>
 		<div className='shop-page'>
-			<Route exact path={`${match.path}`} render={(props) => <CollectionsOverviewWithSpinner isLoading={loading} {...props} />} />
+			<Route exact path={`${match.path}`} render={(props) => <CollectionsOverviewWithSpinner isLoading={isFetching} {...props} />} />
 			<Route path={`${match.path}/:categoryId`} 
-			render={(props) => <CategoryPageWithSpinner isLoading={loading} {...props} />} />
+			render={(props) => <CategoryPageWithSpinner isLoading={!isBicyclesLoaded} {...props} />} />
 			</div>
 		</div>
 		)
 		}
 	}
+const mapStateToProps = createStructuredSelector ({
+	isFetching: selectIsBicyclesFetching,
+	isBicyclesLoaded: selectIsBicyclesLoaded
+})
+
 const mapDispatchToProps = dispatch => ({
-	updateBicycle: bicycleMap => dispatch(updateBicycle(bicycleMap)),
+	fetchBicyclesStartAsync: () => dispatch(fetchBicyclesStartAsync())
 })
 
 
-export default connect(null, mapDispatchToProps)(ShopPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);
 

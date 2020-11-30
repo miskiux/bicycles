@@ -11,6 +11,16 @@ const regionSelector = state => state.shop.region
 
 const selectShop = state => state.shop;
 
+export const selectIsBicyclesFetching = createSelector(
+[selectShop],
+shop => shop.isFetching
+	)
+
+export const selectIsBicyclesLoaded = createSelector(
+[selectShop],
+shop => !!shop.bicycles
+	)
+
 export const select = createSelector(
 [selectShop],
 shop => shop.bicycles

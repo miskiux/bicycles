@@ -1,10 +1,36 @@
 import ShopActionTypes from './shop.types';
 
-export const updateBicycle = (bicycleMap) => ({
-	type:ShopActionTypes.UPDATE_BICYCLE,
+import { firestore, getBiciDataForShop } from '../../firebase/firebase.utils';
+
+//fetch actions
+export const fetchBicyclesStart = () => ({
+	type:ShopActionTypes.FETCH_BICYCLES_START,
+})
+
+export const fetchBicyclesSuccess = bicycleMap => ({
+	type: ShopActionTypes.FETCH_BICYCLES_SUCCESS,
 	payload: bicycleMap
 })
 
+export const fetchBicyclesFailure = (errorMessage) => ({
+	type: ShopActionTypes.FETCH_BICYCLES_FAILURE,
+	payload: errorMessage
+})
+
+export const fetchBicyclesStartAsync = () => {
+	return dispatch => {
+		const bicycleRef = firestore.collection("bicycle");
+		dispatch(fetchBicyclesStart());
+
+		bicycleRef.get()
+		.then(snapshot => {
+			const bicycleMap = getBiciDataForShop(snapshot)
+			dispatch(fetchBicyclesSuccess(bicycleMap));
+		}).catch(error => dispatch(fetchBicyclesFailure(error.message)) )
+	}
+}
+
+//filter actions
 export const filterByPrice = payload => ({
 	type:ShopActionTypes.FILTER_BY_PRICE,
 	payload

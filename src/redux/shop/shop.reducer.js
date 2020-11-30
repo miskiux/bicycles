@@ -3,7 +3,9 @@
  import ShopActionTypes from './shop.types'
 
 const INITIAL_STATE = {
-	bicycles: null
+	bicycles: null,
+	isFetching: false,
+	errorMessage: undefined
 }
 
 const shopReducer = (state = INITIAL_STATE, action) => {
@@ -11,10 +13,23 @@ const shopReducer = (state = INITIAL_STATE, action) => {
 		console.log(action.payload)
 	}
 	switch (action.type) {
-		case ShopActionTypes.UPDATE_BICYCLE:
+		case ShopActionTypes.FETCH_BICYCLES_START:
 		return {
 			...state,
+			isFetching: true
+		}
+		case ShopActionTypes.FETCH_BICYCLES_SUCCESS:
+		return {
+			...state,
+			isFetching: false,
 			bicycles: action.payload
+		}
+		case ShopActionTypes.FETCH_BICYCLES_FAILURE:
+		return {
+			...state,
+			isFetching: false,
+			errorMessage: action.payload
+
 		}
 		case ShopActionTypes.FILTER_BY_PRICE:
 		return {
