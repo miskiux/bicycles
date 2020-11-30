@@ -1,40 +1,68 @@
 import React, {useState} from 'react';
+
 import PriceDropdown from './price/price-dropdown.component'
+import ManufacturerCheckBox from './manufacturer/manufacturer-filter.component'
+import LocationItem from './location/location-item.component';
 
-import { Dropdown } from 'semantic-ui-react'
-
+import { Dropdown } from 'semantic-ui-react';
+import { Accordion, Icon } from 'semantic-ui-react'
 
 import './filter.styles.css';
 
 const Filter = () => {
 
-const [open, setOpen] = useState(false)
+const [open, setOpen] = useState(false);
+const [activeIndex, setActiveIndex] = useState(null);
 
-//onClick with action
+const handleClick = (e, titleProps) => {
+	const { index } = titleProps
+	const newIndex = activeIndex === index ? -1 : index
+	setActiveIndex(newIndex);
+}
+
 	return (
 		<div className="filter-container">
 			<div className="filter-options">
-				<div className='filter-options-item'
-					onClick={() => setOpen(!open)}
-					> 
-					Price
+
+					<Accordion styled>
+						<Accordion.Title
+							active={activeIndex === 0}
+				          	index={0}
+				          	onClick={handleClick}
+				          	>
+								<Icon name='dropdown' />
+									Price
+						</Accordion.Title>
+						<Accordion.Content active={activeIndex === 0}>
+							<PriceDropdown />
+						</Accordion.Content>
+
+						<Accordion.Title
+							active={activeIndex === 1}
+				          	index={1}
+				          	onClick={handleClick}
+				          	>
+								<Icon name='dropdown' />
+									Manufacturer
+					</Accordion.Title>
+						<Accordion.Content active={activeIndex === 1}>
+							<ManufacturerCheckBox />
+						</Accordion.Content>
+
+						<Accordion.Title
+							active={activeIndex === 2}
+				          	index={2}
+				          	onClick={handleClick}
+				          	>
+								<Icon name='dropdown' />
+									Location
+							</Accordion.Title>
+						<Accordion.Content active={activeIndex === 2}>
+							<LocationItem />
+						</Accordion.Content>
+					</Accordion>
 				</div>
-					<div className="filter-options-content">
-						{ open ?
-							<div className="filter-options-area">
-						<PriceDropdown />
-							</div>
-						: null
-						}
-					</div>
-				<div className='filter-options-item'>
-					Manufacturer
-				</div> 
-				<div className='filter-options-item'>
-					Location
-				</div>  
 			</div>
-		</div>
 
 		)
 }

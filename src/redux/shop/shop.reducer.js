@@ -21,6 +21,21 @@ const shopReducer = (state = INITIAL_STATE, action) => {
 			...state,
 			priceRange: action.payload
 		}
+		case ShopActionTypes.FILTER_BY_MANUFACTURER:
+		return {
+			...state,
+			manufacturers: action.payload
+		}
+		case ShopActionTypes.FILTER_BY_COUNTRY:
+		return {
+			...state,
+			country: action.payload
+		}
+		case ShopActionTypes.FILTER_BY_REGION:
+		return {
+			...state,
+			region: action.payload
+		}
 		default:
 			return state;
 	}

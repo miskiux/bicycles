@@ -3,6 +3,10 @@ import { createSelector } from 'reselect';
 
 //values for filtering;
 const priceRangeSelector = state => state.shop.priceRange
+const manufacturerSelector = state => state.shop.manufacturers
+const countrySelector = state => state.shop.country
+const regionSelector = state => state.shop.region
+//memoized selector for checkboxes of manufacturer options
 
 
 const selectShop = state => state.shop;
@@ -28,12 +32,21 @@ export const selectPriceFilter = createSelector(
 (priceRange) => priceRange
 )
 
+export const selectManufacturerFilter = createSelector(
+[manufacturerSelector],
+(manufacturers) => manufacturers
+	)
 
-// (state, props) => (state.bicycles ?	Object.keys(state.bicycles)
-// 							.map(key => state.bicycles[key]) 
-// 							.filter(bicycle => bicycle.item.price
-// 										>= state.priceRange[0] && bicycle.item.price <= state.priceRange[1])
-// 							: null)
-// 	)
+export const selectCountryFilter = createSelector(
+[countrySelector],
+(country) => country
+	)
+
+export const selectRegionFilter = createSelector(
+[regionSelector],
+(region) => region
+
+	)
+
 
 

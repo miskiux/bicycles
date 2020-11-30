@@ -11,6 +11,8 @@ import './sell-form.styles.css'
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { Grid, Form, Input, Segment, Button } from 'semantic-ui-react';
 
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
+
 import 'semantic-ui-css/semantic.min.css'
 
 
@@ -30,6 +32,7 @@ class SellForm extends React.Component {
       		country: '',
       		phone: '',
       		address: '',
+      		region: '',
       		image: null,
       		file: null,
       		seen: false
@@ -100,12 +103,12 @@ uploadImage =  event => {
 
 //additem getting reference through addBiciData
 	addItem = async (event) => {
-		const {bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, country} = this.state;
+		const {bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, country, region} = this.state;
 		
 		try {
 			console.log(this.state.url)
-			await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address});
-			this.setState({bicycleType: '', description: '', gender: '', manufacturer: '', model: '', year: '', price: '', country: '', phone: '', address: ''})
+			await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address, region});
+			this.setState({bicycleType: '', description: '', gender: '', manufacturer: '', model: '', year: '', price: '', country: country, phone: '', address: '', region: region})
 		} catch (error) {
 			console.log(error)
 		}
@@ -115,6 +118,16 @@ uploadImage =  event => {
 		const {name, value} = event.target;
 		this.setState({ [name]: value} ) //dynamically set [] name value
 	}
+
+	// for country, region
+	selectCountry = (value) => {
+		this.setState({country: value})
+	}
+
+	selectRegion = (value) => {
+		this.setState({region: value})
+	}
+
 
 	//handle bind for form
 	handleBind = async event => {
@@ -249,11 +262,18 @@ componentWillUnmount() {
 									<div>
 									<Form.Field>
 									<label>Country</label>
-										<input 
-											name='country' 
-											type='text' 
+										<CountryDropdown 
 											value={this.state.country}
-											onChange={this.handleChange}
+											onChange={(value) => this.selectCountry(value)}
+											required  
+											/>
+									</Form.Field>
+									<Form.Field>
+									<label>Region</label>
+										<RegionDropdown
+          									country={this.state.country} 
+											value={this.state.region}
+											onChange={(value) => this.selectRegion(value)}
 											required  
 											/>
 									</Form.Field>

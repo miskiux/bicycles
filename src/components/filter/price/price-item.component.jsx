@@ -35,7 +35,6 @@ const [range, setRange] = useState(false);
 						<div className="from-to-label"></div>
 							<div className={classes.root}>
 						      <Typography id="range-slider" gutterBottom>
-						        choose price range
 						      </Typography>
 						      <Slider
 						        value={value}

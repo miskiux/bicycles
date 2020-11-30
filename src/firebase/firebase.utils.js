@@ -46,12 +46,13 @@ export const addBiciData = async (additionalData) => {
 
     const batch = firestore.batch();      
 
-const { bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address } = additionalData;
+const { bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address, region } = additionalData;
 const createdAt = new Date();
 
       try {
         await batch.set(biciRef, {
           country,
+          region,
           address,
           phone,
           userId,
@@ -76,13 +77,18 @@ const createdAt = new Date();
 
 export const getBiciDataForShop = (bicycle) => {
   const bicycleObj = bicycle.docs.map(doc => {
-    const { bicycleType, item } = doc.data()
+    const { bicycleType, item, country, region, address, phone, userId } = doc.data()
     //returning an object
     return {
       routeName: encodeURI(bicycleType.toLowerCase()).replace(/%20/g, " "), //for routing
       id: doc.id,
       bicycleType,
-      item
+      item,
+      country,
+      region,
+      address,
+      phone,
+      userId
     }
   })
   return bicycleObj.reduce((accumulator, item) => {
