@@ -50,7 +50,6 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
 	return (
 			<div className='collections-overview'>
 				<div className='preview'>
-			}
 
 		{
 			filteredBicycles.map(({id, ...otherCollectionProps}) =>

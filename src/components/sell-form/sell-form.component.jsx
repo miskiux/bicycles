@@ -6,6 +6,12 @@ import { connect } from "react-redux";
 
 import ImageInput from './image-input.component';
 
+import { selectFiles } from '../../redux/sell/sell.selectors'
+import { selectCurrentUser }  from '../../redux/user/user.selectors'
+import { selectImagePopUp } from '../../redux/sell/sell.selectors'
+
+import { toggleImagePopUp } from '../../redux/sell/sell.actions'
+
 import './sell-form.styles.css'
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -13,7 +19,8 @@ import { Grid, Form, Input, Segment, Button } from 'semantic-ui-react';
 
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 
-import 'semantic-ui-css/semantic.min.css'
+import 'semantic-ui-css/semantic.min.css';
+
 
 
 class SellForm extends React.Component {
@@ -33,39 +40,23 @@ class SellForm extends React.Component {
       		phone: '',
       		address: '',
       		region: '',
-      		image: null,
-      		file: null,
+      		image: [],
       		seen: false
 		}
 	}
 
-unsubscribeFromAuth = null;
 
 componentDidMount() {
-this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-		if(userAuth) {
-			firestore.collection("users").doc(userAuth.uid)
-			.get()
-			.then(snapshot => {
-				const { uid } = userAuth
-				this.setState({
-					...snapshot.data(), // snapshotData first so it doesn't override information from authUser object
-					userId:uid,
-					})
-				}
-			)
-		}
-	})
+	const {currentUser} = this.props;
+	this.setState({userId: currentUser.id})
 }
 
 //image upload
 uploadChange = event => {
-		if (event.target.files[0]) {
 			this.setState({
-				image: event.target.files[0],
-				file:URL.createObjectURL(event.target.files[0])
+				image: [...this.state.image, ...event.target.files],
+				//file: URL.createObjectURL([...event.target.files])
 			});
-		}
 	}
 
 //image pop-up
@@ -77,9 +68,9 @@ togglePopUp = event => {
 
 uploadImage =  event => {
 	return new Promise ((resolve, reject) => {
-			const {image} = this.state
+			const {image, userId } = this.state
 				//storing image
-				const uploadTask = storage.ref(`/images/${image.name}`).put(image)
+				const uploadTask = storage.ref(`/images/${userId}/${image.name}`).put(image)
 			//getting the image url
 				uploadTask.on(
 				"state_changed",
@@ -91,7 +82,7 @@ uploadImage =  event => {
 					console.log(error);
 				},
 				() => {
-					storage.ref("images").child(image.name).getDownloadURL()
+					storage.ref(`/images/${userId}`).child(image.name).getDownloadURL()
 					.then(imgUrl => {
 						this.setState({url:imgUrl})
 						console.log(this.state.url)
@@ -142,11 +133,9 @@ uploadImage =  event => {
 		this.uploadChange();
 	}
 
-componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
 
 	render() {
+		const { toggleImagePopUp, imagePopUp } = this.props
 		return(
 <Form onSubmit={this.handleBind}>		
 	<Grid columns={2} divided>
@@ -162,7 +151,7 @@ componentWillUnmount() {
 								type='text' 
 								value={this.state.manufacturer} 
 								onChange={this.handleChange}
-								required  
+								
 								/>
 								</Form.Field>
 								<Form.Field>
@@ -172,7 +161,7 @@ componentWillUnmount() {
 									type='text' 
 									value={this.state.year}
 									onChange={this.handleChange}
-									required  
+									
 									/>
 								</Form.Field>
 								<Form.Field>
@@ -182,7 +171,7 @@ componentWillUnmount() {
 										type='text' 
 										value={this.state.model}
 										onChange={this.handleChange}
-										required  
+										  
 									/>
 									</Form.Field>
 									<Form.Field>
@@ -192,7 +181,7 @@ componentWillUnmount() {
 										type='text' 
 										value={this.state.bicycleType}
 										onChange={this.handleChange}
-										required  
+										  
 									/>
 									</Form.Field>
 									<Form.Field>
@@ -213,7 +202,7 @@ componentWillUnmount() {
 											value={this.state.description}
 											onChange={this.handleChange}
 											label='Description'
-											required  
+											 
 										/>
 									</Form.Field>
 									<Form.Field>
@@ -223,31 +212,25 @@ componentWillUnmount() {
 											type='text' 
 											value={this.state.price}
 											onChange={this.handleChange}
-											required  
+											  
 										/>
 									</Form.Field>
 									<Form.Field>
 									<div>Your Bici</div>
 									<AddCircleIcon 
-									onClick={() => this.setState({seen: !this.state.seen})}
-									style={{fontSize: 40}} 
+										onClick={toggleImagePopUp}
+										style={{fontSize: 40}} 
 									/>
 									{
-										this.state.seen ?
+										!imagePopUp ?
 										<div className="image-input-popup">
 									{
-											this.state.seen ?
-												<div className="image-input">
-													 <input 
-													name='image'
-													type='file'
-													onChange={this.uploadChange}
+		
+													 <ImageInput
 													/>
 
-												</div>
-													: null
 									}
-										<img src={this.state.file} />
+										{/*<img src={this.state.file} /> */ }
 										</div>
 										: null
 									}
@@ -265,7 +248,7 @@ componentWillUnmount() {
 										<CountryDropdown 
 											value={this.state.country}
 											onChange={(value) => this.selectCountry(value)}
-											required  
+											  
 											/>
 									</Form.Field>
 									<Form.Field>
@@ -274,7 +257,7 @@ componentWillUnmount() {
           									country={this.state.country} 
 											value={this.state.region}
 											onChange={(value) => this.selectRegion(value)}
-											required  
+											  
 											/>
 									</Form.Field>
 									<Form.Field>
@@ -284,7 +267,7 @@ componentWillUnmount() {
 										type='text' 
 										value={this.state.address}
 										onChange={this.handleChange}
-										required  
+										  
 									/>
 									</Form.Field>
 									<Form.Field>
@@ -308,11 +291,17 @@ componentWillUnmount() {
 	}
 }
 
-const mapStateToProps = ({user: { currentUser }}) => ({
-  currentUser
+const mapStateToProps = (state) => ({
+  currentUser: selectCurrentUser(state),
+  files: selectFiles(state),
+  imagePopUp: selectImagePopUp(state)
 });
 
+const mapDispatchToProps = dispatch => ({
+	toggleImagePopUp: () => dispatch(toggleImagePopUp())
+})
 
 
-export default connect(mapStateToProps)(SellForm);
+
+export default connect(mapStateToProps, mapDispatchToProps)(SellForm);
 

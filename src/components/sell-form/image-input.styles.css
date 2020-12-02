@@ -1,5 +1,25 @@
-.image-input-group {
-	height:500px;
-	width: 700px;
+.container {
+	height:96vh;
+	width:110vh;
+	border: solid 1px;
+	position: absolute;
+	z-index:1;
+	top: 0%;
+	left: 20%;
+	background-color:white;
+}
+
+.dropzone {
+	height:100px;
+	width: 100%;
+	background-color: rgb(128,128,128, 0.1);
+}
+
+.image-confirm {
+	position: absolute;
+	right:    50%;
+	bottom:   0;
+	height: 40px;
+	width: 60px;
 	border: solid 1px;
 }
