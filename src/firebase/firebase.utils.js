@@ -63,9 +63,9 @@ const createdAt = new Date();
             model,
             year,
             price,
-            url,
             gender,
-            description
+            description,
+            url
         }})
       } catch (error) {
           console.log('error updating user', error.message);

@@ -40,7 +40,7 @@ const img = {
   height: '100%'
 };
 
-const ImageInput = ({fileUpload, toggleImagePopUp}) => {
+const ImageInput = ({fileUpload, toggleImagePopUp, callBack}) => {
 
 const [files, setFiles] = useState([]);
 
@@ -82,7 +82,6 @@ const thumbs = files.map(file => (
 //put the seen state to the reducer  
   return (
     <section className="container">
-    {console.log(files)}
       <div {...getRootProps({className: 'dropzone'})}>
         <input {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click to select files</p>
@@ -91,8 +90,9 @@ const thumbs = files.map(file => (
       {thumbs}
       </aside>
       <div
-      onClick={() => {
-		fileUpload(files)
+      onClick={(event) => {
+		event.preventDefault();
+		callBack(files)
 		toggleImagePopUp()
 	}}
       className="image-confirm">Confirm Selection

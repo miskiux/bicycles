@@ -1,7 +1,7 @@
 import SellActionTypes from './sell.types';
 
 const INITIAL_STATE = {
-	files: [],
+	files: null,
 	hidden: true
 };
 

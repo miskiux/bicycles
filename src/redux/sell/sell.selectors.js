@@ -4,7 +4,7 @@ const selectSell = state => state.sell
 
 export const selectFiles = createSelector(
 [selectSell],
-sell => sell.files
+(sell) => sell.files
 	)
 
 export const selectImagePopUp = createSelector(

@@ -21,13 +21,11 @@ import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 
 import 'semantic-ui-css/semantic.min.css';
 
-
-
 class SellForm extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			url: '',
+			url: [], 
 			userId: '',
 			bicycleType: '',
       		description: '',
@@ -41,36 +39,35 @@ class SellForm extends React.Component {
       		address: '',
       		region: '',
       		image: [],
-      		seen: false
 		}
 	}
-
 
 componentDidMount() {
 	const {currentUser} = this.props;
 	this.setState({userId: currentUser.id})
 }
 
-//image upload
-uploadChange = event => {
+//receiving imgFiles from callback
+uploadChange = (imgFiles) => {
 			this.setState({
-				image: [...this.state.image, ...event.target.files],
-				//file: URL.createObjectURL([...event.target.files])
+				image: imgFiles
 			});
 	}
 
-//image pop-up
-togglePopUp = event => {
-	this.setState({
-		seen: !this.state.seen
-	})
-}
 
-uploadImage =  event => {
-	return new Promise ((resolve, reject) => {
-			const {image, userId } = this.state
-				//storing image
-				const uploadTask = storage.ref(`/images/${userId}/${image.name}`).put(image)
+//image upload
+//* Promise.all expects an array of promises | return Promise inside the map callback
+// if there is no return value, will return an array with undefined values
+uploadImage = async (event) => {
+
+		const {image, userId, url } = this.state
+		const urlarray = []
+
+	let result = await Promise.all(
+		image.map((image) => {
+			return new Promise ((resolve, reject) => {
+			//storing image
+			const uploadTask = storage.ref(`/images/${userId}/${image.name}`).put(image)
 			//getting the image url
 				uploadTask.on(
 				"state_changed",
@@ -81,17 +78,19 @@ uploadImage =  event => {
 				error => {
 					console.log(error);
 				},
-				() => {
+				 () => {
 					storage.ref(`/images/${userId}`).child(image.name).getDownloadURL()
-					.then(imgUrl => {
-						this.setState({url:imgUrl})
-						console.log(this.state.url)
-						resolve();
-						})		
+							.then(imgUrl => {
+								urlarray.push(imgUrl)
+								console.log(urlarray)
+								this.setState({url:urlarray})
+								resolve(urlarray)
+									})
+								})
 					})
 				})
+			)	
 }
-
 //additem getting reference through addBiciData
 	addItem = async (event) => {
 		const {bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, country, region} = this.state;
@@ -136,6 +135,7 @@ uploadImage =  event => {
 
 	render() {
 		const { toggleImagePopUp, imagePopUp } = this.props
+		const { image } = this.state
 		return(
 <Form onSubmit={this.handleBind}>		
 	<Grid columns={2} divided>
@@ -227,10 +227,10 @@ uploadImage =  event => {
 									{
 		
 													 <ImageInput
+													 callBack={this.uploadChange}
 													/>
 
 									}
-										{/*<img src={this.state.file} /> */ }
 										</div>
 										: null
 									}
