@@ -66,8 +66,9 @@ componentDidMount() {
 			</div>
 		</div>
 		)
-		}
 	}
+}
+
 const mapStateToProps = createStructuredSelector ({
 	isFetching: selectIsBicyclesFetching,
 	isBicyclesLoaded: selectIsBicyclesLoaded

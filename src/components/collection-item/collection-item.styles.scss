@@ -1,8 +1,8 @@
 .collection-item {
-  width: 48vh;
+  width: 57vh;
   display: flex;
   flex-direction: column;
-  height: 250px;
+  height: 300px;
   align-items: center;
   position: relative;
   padding:12px;
@@ -10,32 +10,80 @@
 
   .image {
     width: 100%;
-    height: 90%;
+    height: 100%;
     background-size: cover;
     background-position: center;
     margin-bottom: 5px;
   }
 
-  .custom-button {
-    width: 40%;
-    opacity: 0.7;
+  .image-arrow-right {
     position:absolute;
-    top:155px;
-    font-size:12px;
-    padding: 0;
+    top:125px;
+    right:10px;
     display:none;
   }
 
+  .image-arrow-left {
+    position:absolute;
+    top:125px;
+    left:10px;
+    display:none;
+  }
+
+
+.selection-menu {
+  position: absolute;
+  top: 219px;
+  right:12px;
+  height:50px;
+  width:23px;
+  background-color: rgb(220, 220, 220);
+  opacity: 0.5;
+  display: none;
+}
+
+.addcircle {
+position: absolute;
+width:5%;
+top: 219px;
+right:13px;
+display: none;
+}
+
+.view-show {
+position: absolute;
+opacity:1;
+width:4%;
+top: 243px;
+right:15px;
+display: none;
+
+}
+
   &:hover {
     .image {
-      opacity:0.8;
+      opacity:0.9;
+    }
+    .image-arrow-left {
+      display: flex;
+    }
+    .image-arrow-right {
+      display: flex;
     }
 
-    .custom-button {
-      opacity: 0.85;
-      display:flex;
+    .selection-menu {
+
+}
+     .addcircle {
+      display: flex;
     }
+    .view-show {
+      opacity: 1;
+      display: flex;
+    }
+
   }
+
   .model-manufacturer {
     display: flex;
     flex-direction: column;
@@ -55,7 +103,7 @@
     }
 
     .price {
-      width: 10%;
+      width: 15%;
     }
   }
 }

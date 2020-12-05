@@ -81,6 +81,7 @@ uploadImage = async (event) => {
 				 () => {
 					storage.ref(`/images/${userId}`).child(image.name).getDownloadURL()
 							.then(imgUrl => {
+								imgUrl.split(',');
 								urlarray.push(imgUrl)
 								console.log(urlarray)
 								this.setState({url:urlarray})
