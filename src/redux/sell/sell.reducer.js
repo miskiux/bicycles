@@ -17,6 +17,11 @@ const sellReducer = (state = INITIAL_STATE, action) => {
 				...state,
 				hidden: !state.hidden
 			}
+		case SellActionTypes.ADD_SPEC:
+			return {
+				...state,
+				bicycleSpec: action.payload
+			}
 			default:
 				return state;
 	}

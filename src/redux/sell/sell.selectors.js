@@ -11,3 +11,8 @@ export const selectImagePopUp = createSelector(
 [selectSell],
 (sell) => sell.hidden
 	)
+
+export const selectBicycleSpec = createSelector(
+[selectSell],
+sell => sell.bicycleSpec
+	)

@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { fetchBicyclesStartAsync } from '../../redux/shop/shop.actions'
 
 
-import CollectionsOverview from '../../components/collections-overview/collections-overview.component';
+import CollectionsOverviewContainer from '../../components/collections-overview/collections-overview.container';
 import CategoryPage from '../category/category.component';
 import Filter from '../../components/filter/filter.component';
 
@@ -18,7 +18,6 @@ import WithSpinner from '../../components/with-spinner/with-spinner.component'
 
 import './shop.styles.scss';
 
-const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
 const CategoryPageWithSpinner = WithSpinner(CategoryPage);
 
 class ShopPage extends React.Component {
@@ -32,7 +31,7 @@ componentDidMount() {
 
 // props - match
 	render(){
-		const { match, isFetching, isBicyclesLoaded } = this.props
+		const { match, isBicyclesLoaded } = this.props
 	return (
 	<div>
 		<div className="listbox">
@@ -60,9 +59,15 @@ componentDidMount() {
 			<Filter />
 		</div>
 		<div className='shop-page'>
-			<Route exact path={`${match.path}`} render={(props) => <CollectionsOverviewWithSpinner isLoading={isFetching} {...props} />} />
-			<Route path={`${match.path}/:categoryId`} 
-			render={(props) => <CategoryPageWithSpinner isLoading={!isBicyclesLoaded} {...props} />} />
+			<Route 
+				exact 
+				path={`${match.path}`} 
+				component={CollectionsOverviewContainer}
+				/>
+			<Route 
+			path={`${match.path}/:categoryId`} 
+			render={(props) => 
+				<CategoryPageWithSpinner isLoading={!isBicyclesLoaded} {...props} />} />
 			</div>
 		</div>
 		)
@@ -70,7 +75,6 @@ componentDidMount() {
 }
 
 const mapStateToProps = createStructuredSelector ({
-	isFetching: selectIsBicyclesFetching,
 	isBicyclesLoaded: selectIsBicyclesLoaded
 })
 

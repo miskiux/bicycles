@@ -53,6 +53,11 @@ uploadChange = (imgFiles) => {
 				image: imgFiles
 			});
 	}
+uploadSpecs = (specs) => {
+	this.setState({
+		description: specs
+	})
+}
 
 
 //image upload
@@ -99,7 +104,7 @@ uploadImage = async (event) => {
 		try {
 			console.log(this.state.url)
 			await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address, region});
-			this.setState({bicycleType: '', description: '', gender: '', manufacturer: '', model: '', year: '', price: '', country: country, phone: '', address: '', region: region})
+			this.setState({bicycleType: '', gender: '', manufacturer: '', model: '', year: '', price: '', country: country, phone: '', address: '', region: region})
 		} catch (error) {
 			console.log(error)
 		}
@@ -131,6 +136,12 @@ uploadImage = async (event) => {
 	imageHandleBind = event => {
 		this.togglePopUp();
 		this.uploadChange();
+	}
+
+	//handle bind for callback of images and specifications
+	uploadFilesNSpec = event => {
+		this.uploadChange();
+		this.uploadSpecs();
 	}
 
 
@@ -226,10 +237,10 @@ uploadImage = async (event) => {
 										!imagePopUp ?
 										<div className="image-input-popup">
 									{
-		
 													 <ImageInput
 													 callBack={this.uploadChange}
 													/>
+													
 
 									}
 										</div>

@@ -8,3 +8,8 @@ export const fileUpload = payload => ({
 export const toggleImagePopUp = () => ({
 	type: SellActionTypes.TOGGLE_IMAGE_POPUP
 });
+
+export const AddSpec = payload => ({
+	type: SellActionTypes.ADD_SPEC,
+	payload
+})

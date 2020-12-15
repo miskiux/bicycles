@@ -4,6 +4,8 @@ import {connect} from 'react-redux'
 
 import { fileUpload } from '../../redux/sell/sell.actions'
 import { toggleImagePopUp } from '../../redux/sell/sell.actions'
+
+import SpecForm from './spec-info/spec-form.component'
  
 import {useDropzone} from 'react-dropzone';
 
@@ -44,6 +46,8 @@ const ImageInput = ({fileUpload, toggleImagePopUp, callBack}) => {
 
 const [files, setFiles] = useState([]);
 
+const [open, setOpen] = useState(false);
+
 const { getRootProps, getInputProps } = useDropzone({
 	accept: 'image/*',
 	onDrop: acceptedFiles => {
@@ -67,19 +71,7 @@ const thumbs = files.map(file => (
   useEffect(() => () => {
     files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
-  
-// const onDrop = useCallback((acceptedFiles) => {
-// 	acceptedFiles.forEach((file) => {
-// 		const reader = new FileReader()
-// 		reader.onload = (event) => {
-// 			const dataURL = event.target.result;
-// 			console.log(dataURL)
-// 		}
-// 		reader.readAsArrayBuffer(file)
-// 	})
-// }, [])
-
-//put the seen state to the reducer  
+ 
   return (
     <section className="container">
       <div {...getRootProps({className: 'dropzone'})}>
@@ -89,25 +81,34 @@ const thumbs = files.map(file => (
       <aside style={thumbsContainer}>
       {thumbs}
       </aside>
+
+    
       <div
       onClick={(event) => {
-		event.preventDefault();
-		callBack(files)
-		toggleImagePopUp()
+    		event.preventDefault();
+    		callBack(files)
+        setOpen(!open)
+    		//toggleImagePopUp()
 	}}
-      className="image-confirm">Confirm Selection
+      className="image-confirm">Next
       </div>
+      <div className="bicycle-dropdown">
+            { open ?
+              <div>
+            <SpecForm />
+            
+              </div>
+            : null
+            }
+        </div>
     </section>
   );
 }
 
-const mapStateToProps = state => ({
-
-})
 
 const mapDispatchToProps = dispatch => ({
 	fileUpload: (files) => dispatch(fileUpload(files)),
 	toggleImagePopUp: () => dispatch(toggleImagePopUp())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ImageInput)
+export default connect(null, mapDispatchToProps)(ImageInput)
