@@ -5,17 +5,16 @@ import TextField from '@material-ui/core/TextField';
 
 import { connect } from 'react-redux';
 
-import { selectBicycleSpec } from "../../../redux/sell/sell.selectors";
+import { selectBicycleSpec } from "../../../../redux/sell/sell.selectors";
 
-import Spec from './spec.component';
-import SpecInput from './spec-input.component'
+import Spec from '../spec/spec.component';
+import SpecInput from '../spec-input/spec-input.component'
 
 import './spec-form.styles.css'
 
 // parent component for image input and spec form
 
 //combining data
-
 
 
 const SpecForm = ({Specification}) => {

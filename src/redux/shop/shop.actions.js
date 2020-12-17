@@ -50,3 +50,13 @@ export const filterByRegion = payload => ({
 	type: ShopActionTypes.FILTER_BY_REGION,
 	payload
 })
+
+//item-view toggle
+export const toggleCarousel = () => ({
+	type: ShopActionTypes.TOGGLE_CAROUSEL,
+})
+
+
+
+
+

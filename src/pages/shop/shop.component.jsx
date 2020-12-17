@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Route, Link } from "react-router-dom";
+import { Route, Link, Switch } from "react-router-dom";
 
 import { createStructuredSelector } from 'reselect';
 import { selectIsBicyclesFetching, selectIsBicyclesLoaded } from '../../redux/shop/shop.selectors'
@@ -17,6 +17,7 @@ import Filter from '../../components/filter/filter.component';
 import WithSpinner from '../../components/with-spinner/with-spinner.component'
 
 import './shop.styles.scss';
+
 
 const CategoryPageWithSpinner = WithSpinner(CategoryPage);
 
@@ -59,6 +60,7 @@ componentDidMount() {
 			<Filter />
 		</div>
 		<div className='shop-page'>
+			<Switch>
 			<Route 
 				exact 
 				path={`${match.path}`} 
@@ -67,7 +69,12 @@ componentDidMount() {
 			<Route 
 			path={`${match.path}/:categoryId`} 
 			render={(props) => 
-				<CategoryPageWithSpinner isLoading={!isBicyclesLoaded} {...props} />} />
+				<CategoryPageWithSpinner 
+				isLoading={!isBicyclesLoaded} 
+				{...props} />} 
+				/>
+			
+			</Switch>
 			</div>
 		</div>
 		)

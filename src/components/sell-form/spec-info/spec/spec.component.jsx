@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { connect } from "react-redux";
 
-import { AddSpec } from "../../../redux/sell/sell.actions";
+import { AddSpec } from "../../../../redux/sell/sell.actions";
 
 import Select from "react-select";
 

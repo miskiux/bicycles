@@ -5,7 +5,8 @@
 const INITIAL_STATE = {
 	bicycles: null,
 	isFetching: false,
-	errorMessage: undefined
+	errorMessage: undefined,
+	toggleCarousel: true
 }
 
 const shopReducer = (state = INITIAL_STATE, action) => {
@@ -51,6 +52,11 @@ const shopReducer = (state = INITIAL_STATE, action) => {
 			...state,
 			region: action.payload
 		}
+		case ShopActionTypes.TOGGLE_CAROUSEL:
+			return {
+				...state,
+				toggleCarousel: !state.toggleCarousel 
+			}
 		default:
 			return state;
 	}

@@ -2,10 +2,10 @@ import React, {useState, useCallback, useEffect} from 'react';
 
 import {connect} from 'react-redux'
 
-import { fileUpload } from '../../redux/sell/sell.actions'
-import { toggleImagePopUp } from '../../redux/sell/sell.actions'
+import { fileUpload } from '../../../redux/sell/sell.actions'
+import { toggleImagePopUp } from '../../../redux/sell/sell.actions'
 
-import SpecForm from './spec-info/spec-form.component'
+import SpecForm from '../spec-info/spec-form/spec-form.component'
  
 import {useDropzone} from 'react-dropzone';
 
@@ -88,7 +88,7 @@ const thumbs = files.map(file => (
     		event.preventDefault();
     		callBack(files)
         setOpen(!open)
-    		//toggleImagePopUp()
+    		toggleImagePopUp()
 	}}
       className="image-confirm">Next
       </div>

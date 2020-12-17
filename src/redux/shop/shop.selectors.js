@@ -58,5 +58,9 @@ export const selectRegionFilter = createSelector(
 
 	)
 
+export const selectToggleCarousel = createSelector(
+[selectShop],
+(shop) => shop.toggleCarousel
+)
 
 

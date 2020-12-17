@@ -1,12 +1,17 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+
 import "./App.css";
+
 import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component.jsx";
 import SellPage from "./pages/sell/sellpage.component.jsx";
 import Header from "./components/header/header.component.jsx";
 import SignInAndSignUp from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
+import ItemPage from "./pages/item-view-page/item-view-page.component";
+
+import ItemView from "./components/item-view/item-view.component.jsx";
 
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { setCurrentUser } from "./redux/user/user.actions";
@@ -43,13 +48,14 @@ class App extends React.Component {
   }
 
   render() {
+    const { match } = this.props
     return (
       <div>
         <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
-          <Route exact path="/sell" render={() => 
+          <Route path="/sell" render={() => 
           this.props.currentUser ? 
           (<SellPage />)
           : (
@@ -63,6 +69,11 @@ class App extends React.Component {
               <SignInAndSignUp /> 
               )
            }/>
+           <Route
+              
+              path={"/:itemId"}
+              component={ItemView}
+              />
         </Switch>
       </div>
     );

@@ -13,6 +13,7 @@ const BiciInfo = ({currentUser, bicycles}) => {
 
 const [biciInfo, setBiciInfo] = useState([]);
 
+//receiving bicycles based on userID
 useEffect(() => {
 	console.log(currentUser.id)
 	let userBicycles = bicycles.filter(bicycle => bicycle.userId === currentUser.id)

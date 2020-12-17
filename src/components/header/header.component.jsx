@@ -10,13 +10,16 @@ import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 import { selectFavouriteHidden } from '../../redux/favourites/favourites.selectors';
+import { selectToggleCarousel } from '../../redux/shop/shop.selectors';
 
 import { connect } from "react-redux";
 
 import "../../assets/bici.png";
 import "./header.styles.scss";
 
-const Header = ({ currentUser, hidden }) => (
+const Header = ({ currentUser, hidden, toggleCarousel }) => (
+  <div>
+{ toggleCarousel ?
   <div class="header">
     <Link className="logo-container" to="/">
       <img className="logo" alt="logo" src={require("../../assets/bici.png")} />
@@ -42,14 +45,20 @@ const Header = ({ currentUser, hidden }) => (
     {
       hidden ? null :
         <FavouriteDropdown />
-      }
+    }
+
+    </div>
+    : null
+}
+  
   </div>
 );
 
 // for multiple selectors createStructureSelector
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
-  hidden: selectFavouriteHidden
+  hidden: selectFavouriteHidden,
+  toggleCarousel: selectToggleCarousel
 })
   
 

@@ -53,7 +53,7 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
 
 		{
 			filteredBicycles.map(({id, ...otherCollectionProps}) =>
- 				<CollectionItem key={id} {...otherCollectionProps}/>
+ 				<CollectionItem id={id} key={id} {...otherCollectionProps}/>
 			)}
 		</div>
 	</div>	

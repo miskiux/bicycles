@@ -4,7 +4,7 @@ import { auth, firestore, storage, addBiciData } from "../../firebase/firebase.u
 
 import { connect } from "react-redux";
 
-import ImageInput from './image-input.component';
+import ImageInput from './image-input/image-input.component';
 
 import { selectFiles } from '../../redux/sell/sell.selectors'
 import { selectCurrentUser }  from '../../redux/user/user.selectors'
