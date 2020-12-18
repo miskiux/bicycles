@@ -2,20 +2,27 @@ import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 
-import { toggleCarousel } from '../../redux/shop/shop.actions'
+import { toggleCarousel } from '../../redux/shop/shop.actions';
+
+import ViewCarousel from './carousel/carousel.component'
 
 import './item.styles.css';
 import classNames from "classnames";
 
 
-// redux => turn off the header and logo
+// redux => turn off the header(on back, header is off!)
+// 1. changing inner html background to white
+// 2. shop page: if(toggleCarousel === true) {dispatch action   
 
 const Item = ({item, toggleCarousel}) => {
 
 //cursor
 const [position, setPosition] = useState({x: 0, y: 0});
-const [isHover, setIsHover] = useState(false);
+const [isHover, setIsHover] = useState(true);
 const [hidden, setHidden] = useState(false);
+
+//carousel
+const [open, setOpen] = useState(true)
  
 //cursor
 useEffect(() => {
@@ -24,15 +31,15 @@ useEffect(() => {
    }, []);
 
 const addEventListeners = () => {
-       window.addEventListener("mousemove", onMouseMove);
-       window.addEventListener("mouseenter", onMouseEnter);
-      window.addEventListener("mouseleave", onMouseLeave);
+       document.addEventListener("mousemove", onMouseMove);
+       document.addEventListener("mouseenter", onMouseEnter);
+       document.addEventListener("mouseleave", onMouseLeave);
    };
 
    const removeEventListeners = () => {
-       window.removeEventListener("mousemove", onMouseMove);
-       window.removeEventListener("mouseenter", onMouseEnter);
-       window.removeEventListener("mouseleave", onMouseLeave);
+       document.removeEventListener("mousemove", onMouseMove);
+       document.removeEventListener("mouseenter", onMouseEnter);
+       document.removeEventListener("mouseleave", onMouseLeave);
    };
 
    const onMouseLeave = () => {
@@ -52,6 +59,11 @@ const addEventListeners = () => {
    	setIsHover(!isHover)
    }
 
+   //carousel pop handler for child
+   const handleCarousel = () => {
+    setOpen(!open)
+   }
+
    const cursorClasses = classNames(
        'cursor',
       {
@@ -59,38 +71,41 @@ const addEventListeners = () => {
        }
    );    
 
-
-
-
 const { url } = item
 	return (
-	
-		<div className='item-wrapper'>
-			<div
-				onMouseOver={toggleHoverState}
-				onMouseLeave={toggleHoverState}
-				onClick={toggleCarousel}
-				className='asset-image'
-				style={{
-					backgroundImage: `url(${url[1]})`
-				}}
-				>
-			</div>
-		{/* POINTER */}
-			{ isHover ?
-				<div 
-	   					className={cursorClasses}
-	   					style={{
-	   				        left: `${position.x}px`,
-	   				        top: `${position.y}px`
-   			          }}></div> 
-   			         	: ""
-			}
-		{/* POP UP */}
-		</div>
-	
+	<div>
+        {
+          open ?
+          <div className='item-wrapper'>
+            <div
+              onMouseOver={toggleHoverState}
+              onMouseLeave={toggleHoverState}
+              onClick={() => {
+                toggleCarousel();
+                setOpen(!open)
+              }}
+              className='asset-image'
+              style={{
+                backgroundImage: `url(${url[1]})`
+              }}
+              >
+              </div>
+                { isHover ?
+              <div 
+              className={cursorClasses}
+              style={{
+                    left: `${position.x}px`,
+                    top: `${position.y}px`
+                  }}></div> 
+                  : ""
+               }
+            </div>
+            : <ViewCarousel item={item} handleCarousel={handleCarousel} />
+        }
+        
+		
+	</div>
 		)
-
 }
 
 const mapDispatchToProps = (dispatch) => ({

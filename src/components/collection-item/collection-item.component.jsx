@@ -62,7 +62,6 @@ const onClickBackwards = () => {
 		 >
 
 		 </ViewShow>
-		<div className="selection-menu"></div>
 			<ChevronRightIcon onClick={onClickForward} className="image-arrow-right" />
 			<ChevronLeftIcon onClick={onClickBackwards} className="image-arrow-left" />
 		</div>

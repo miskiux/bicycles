@@ -8,14 +8,16 @@ import {selectPriceFilter} from '../../redux/shop/shop.selectors'
 import {selectManufacturerFilter} from '../../redux/shop/shop.selectors'
 import { selectRegionFilter } from '../../redux/shop/shop.selectors'
 import { selectCountryFilter } from '../../redux/shop/shop.selectors'
+import { selectToggleCarousel } from '../../redux/shop/shop.selectors'
+
+import { toggleCarousel } from '../../redux/shop/shop.actions';
 
 import { withRouter } from 'react-router-dom';
 
 import './collections-overview.styles.scss'
 
-//displaying items as a list ? of 5 ?
 
-const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufacturerFilter, countryFilter, regionFilter }) => {
+const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufacturerFilter, countryFilter, regionFilter, toggleHeader, toggleCarousel }) => {
 
 	const [filteredBicycles, setFilteredBicycles] = useState([]);
 
@@ -47,6 +49,14 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
 
 	}, [bicycles, priceFilter, manufacturerFilter, countryFilter, regionFilter])
 
+	useEffect(() => {
+		console.log(toggleHeader)
+		if (toggleHeader == false) {
+			toggleCarousel()
+		}
+	}, [toggleHeader])
+
+
 	return (
 			<div className='collections-overview'>
 				<div className='preview'>
@@ -65,10 +75,15 @@ const mapStateToProps = (state) => ({
 	priceFilter: selectPriceFilter(state),
 	manufacturerFilter: selectManufacturerFilter(state),
 	countryFilter: selectCountryFilter(state),
-	regionFilter: selectRegionFilter(state)
+	regionFilter: selectRegionFilter(state),
+	toggleHeader: selectToggleCarousel(state)
 })
 
-export default withRouter(connect(mapStateToProps)(CollectionsOverview))
+const mapDispatchToProps = dispatch => ({
+	toggleCarousel: () => dispatch(toggleCarousel())
+})
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CollectionsOverview))
 
 
 
