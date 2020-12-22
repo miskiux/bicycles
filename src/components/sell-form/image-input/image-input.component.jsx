@@ -42,19 +42,21 @@ const img = {
   height: '100%'
 };
 
-const ImageInput = ({fileUpload, toggleImagePopUp, callBack}) => {
+const ImageInput = (props) => {
 
 const [files, setFiles] = useState([]);
 
-const [open, setOpen] = useState(false);
 
+//useCallback
 const { getRootProps, getInputProps } = useDropzone({
 	accept: 'image/*',
-	onDrop: acceptedFiles => {
+	onDrop: useCallback(async acceptedFiles => {
+    console.log(acceptedFiles)
       setFiles(acceptedFiles.map(file => Object.assign(file, {
         preview: URL.createObjectURL(file)
       })));
-    }
+      props.callBack(acceptedFiles)
+    })
 });
 
 const thumbs = files.map(file => (
@@ -73,42 +75,25 @@ const thumbs = files.map(file => (
   }, [files]);
  
   return (
-    <section className="container">
-      <div {...getRootProps({className: 'dropzone'})}>
-        <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
-      </div>
-      <aside style={thumbsContainer}>
-      {thumbs}
-      </aside>
-
-    
-      <div
-      onClick={(event) => {
-    		event.preventDefault();
-    		callBack(files)
-        setOpen(!open)
-    		toggleImagePopUp()
-	}}
-      className="image-confirm">Next
-      </div>
-      <div className="bicycle-dropdown">
-            { open ?
-              <div>
-            <SpecForm />
-            
-              </div>
-            : null
-            }
-        </div>
-    </section>
+    <div>
+    {
+      props.currentStep == 3 ?
+        <section className="container">
+          <div {...getRootProps({className: 'dropzone'})}>
+            <input {...getInputProps()} />
+            <p>Drag 'n' drop some files here, or click to select files</p>
+          </div>
+          <aside style={thumbsContainer}>
+          {thumbs}
+          </aside>
+        </section>
+        : ""
+    }
+    </div>
   );
 }
 
 
-const mapDispatchToProps = dispatch => ({
-	fileUpload: (files) => dispatch(fileUpload(files)),
-	toggleImagePopUp: () => dispatch(toggleImagePopUp())
-})
 
-export default connect(null, mapDispatchToProps)(ImageInput)
+
+export default ImageInput

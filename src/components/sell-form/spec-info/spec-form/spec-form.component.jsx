@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
@@ -12,12 +12,11 @@ import SpecInput from '../spec-input/spec-input.component'
 
 import './spec-form.styles.css'
 
-// parent component for image input and spec form
 
 //combining data
 
 
-const SpecForm = ({Specification}) => {
+const SpecForm = (props) => {
 
 	//spec dropdown
 	const [options, setOptions] = useState([]);
@@ -25,8 +24,6 @@ const SpecForm = ({Specification}) => {
 
 	//spec inputs
 	const [specs, setSpecs] = useState([]);
-
-	//toggle
 
 	const addSpec = () => {
 		const values = [...dropdowns];
@@ -36,7 +33,9 @@ const SpecForm = ({Specification}) => {
 
 	//callback to receive data by id
 	const callOption = (id, option) => {
+
 	    setOptions({...options, [id]: option});
+	    props.uploadOptions(option, id)
   };
 
   //combining input values
@@ -44,23 +43,36 @@ const SpecForm = ({Specification}) => {
     const values = [...specs];
     	values.push([]);
     		setSpecs(values);
+
   };
   //input handle change
   const handleChange = (e, index) => {
     const values = [...specs];
     	values[index] = e.target.value;
     		setSpecs(values);
+    		props.uploadSpecs(values)
   };
+
+
+  //combining options and specs
+  // {options}
+  // Object.assign the specs array to options
+
+  
 	
 	return (
+	<div>
+	{ 
+	props.currentStep == 4 ?
 		<div className='addspecs'>
+		{console.log(options)}
 				<AddIcon onClick={() => {
 					addSpec();
 					combineValues();
 				}} />
 				<p>Add specs</p>
 			<div>
-					      {
+				{
 					specs.map((spec, index) => (
 					<div className="description">
 						<Spec 
@@ -71,13 +83,15 @@ const SpecForm = ({Specification}) => {
 							      key={index} 
 							      onChange={(e) => handleChange(e, index)} 
 							       />
-					</div>      
-					      ))
-						  }
-				   
-				</div>
+						</div>      
+					))
+				}			   
 			</div>
-		)
+		</div>
+		: ""
+		}
+	</div>
+	)
 }
 
 const mapStateToProps = state => ({

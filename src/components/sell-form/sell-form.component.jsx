@@ -12,6 +12,10 @@ import { selectImagePopUp } from '../../redux/sell/sell.selectors'
 
 import { toggleImagePopUp } from '../../redux/sell/sell.actions'
 
+import GeneralInfo from './general-info/general-info.component'
+import ContactInformation from './contact-information/contact-information.component'
+import SpecForm from './spec-info/spec-form/spec-form.component';
+
 import './sell-form.styles.css'
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -21,14 +25,22 @@ import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 
 import 'semantic-ui-css/semantic.min.css';
 
+//parent -> 
+// General Bicycle Information: bicycleType, manufacturer, model, gender, year, model, price 
+// Contact Information: country, region, address, phone
+// Your Bicycle: url, image
+// Description 
+
 class SellForm extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			currentStep: 1,
 			url: [], 
 			userId: '',
 			bicycleType: '',
-      		description: '',
+			options:[],
+      		description: [],
       		gender: '',
       		manufacturer: '',
       		model: '',
@@ -49,14 +61,23 @@ componentDidMount() {
 
 //receiving imgFiles from callback
 uploadChange = (imgFiles) => {
+	console.log(imgFiles)
 			this.setState({
 				image: imgFiles
 			});
 	}
+
+//specs through callback
 uploadSpecs = (specs) => {
 	this.setState({
 		description: specs
 	})
+}
+
+uploadOptions = (option, id) => {
+	this.setState({
+		options: [...this.state.options, [id]: option]})
+
 }
 
 
@@ -132,176 +153,122 @@ uploadImage = async (event) => {
 		await this.addItem();
 	}
 
-	//handle bind for image
-	imageHandleBind = event => {
-		this.togglePopUp();
-		this.uploadChange();
-	}
 
-	//handle bind for callback of images and specifications
-	uploadFilesNSpec = event => {
-		this.uploadChange();
-		this.uploadSpecs();
+//callback from description + change(combine two sets of data)
+
+
+
+
+
+//NAVIGATING: CURRENT STEP
+
+next = (event) => {
+	let currentStep = this.state.currentStep
+	currentStep = currentStep >= 3 ? 
+	4: currentStep + 1
+	this.setState({
+		currentStep: currentStep
+	})
+}
+
+prev = (event) => {
+	let currentStep = this.state.currentStep
+	currentStep = currentStep <= 1 ? 
+	1: currentStep - 1
+    this.setState({
+      currentStep: currentStep
+    })
+}
+
+		//NAVIGATING: NAVIGATION BUTTONS
+
+  previousButton = () => {
+ 	let currentStep = this.state.currentStep
+
+ 	if(currentStep !==1) {
+ 		return (
+ 			<Button 
+ 			type="button"
+ 			onClick={this.prev}>Back</Button>
+ 			)
+ 	}
+ 	return null;
+ }
+
+
+ // next button onClick to 
+
+  nextButton = () => {
+ 	let currentStep = this.state.currentStep
+ 	if(currentStep < 4){
+    return (
+      <Button onClick={this.next}
+      type="button"
+      >
+      Next
+      </Button>   
+      )
 	}
+	return null
+ } 
 
 
 	render() {
 		const { toggleImagePopUp, imagePopUp } = this.props
 		const { image } = this.state
 		return(
-<Form onSubmit={this.handleBind}>		
-	<Grid columns={2} divided>
-		<Grid.Row>
-			<Grid.Column>
-				<Segment>
-					<Form.Group widths='equal'>
-					<div>
-						<Form.Field>
-							<label>Manufacturer</label>
-							<Input 
-								name='manufacturer' 
-								type='text' 
-								value={this.state.manufacturer} 
-								onChange={this.handleChange}
-								
-								/>
-								</Form.Field>
-								<Form.Field>
-								<label>Year</label>
-								<Input 
-									name='year' 
-									type='text' 
-									value={this.state.year}
-									onChange={this.handleChange}
-									
-									/>
-								</Form.Field>
-								<Form.Field>
-								<label>Model</label>
-									<input 
-										name='model' 
-										type='text' 
-										value={this.state.model}
-										onChange={this.handleChange}
-										  
-									/>
-									</Form.Field>
-									<Form.Field>
-									<label>Bicycle Type</label>
-									<input 
-										name='bicycleType' 
-										type='text' 
-										value={this.state.bicycleType}
-										onChange={this.handleChange}
-										  
-									/>
-									</Form.Field>
-									<Form.Field>
-									<label>Gender</label>
-										<input 
-											name='gender' 
-											type='text' 
-											value={this.state.gender}
-											onChange={this.handleChange}
-										/>
-									</Form.Field>
-									<Form.Field>
-									<label>Description</label>
-										<input
-											className="description" 
-											name='description' 
-											type='text' 
-											value={this.state.description}
-											onChange={this.handleChange}
-											label='Description'
-											 
-										/>
-									</Form.Field>
-									<Form.Field>
-									<label>Price</label>
-										<input 
-											name='price' 
-											type='text' 
-											value={this.state.price}
-											onChange={this.handleChange}
-											  
-										/>
-									</Form.Field>
-									<Form.Field>
-									<div>Your Bici</div>
-									<AddCircleIcon 
-										onClick={toggleImagePopUp}
-										style={{fontSize: 40}} 
-									/>
-									{
-										!imagePopUp ?
-										<div className="image-input-popup">
-									{
-													 <ImageInput
-													 callBack={this.uploadChange}
-													/>
-													
+			<div>	
+				<Form onSubmit={this.handleBind}>
+					<GeneralInfo
+						currentStep={this.state.currentStep} 
+						handleChange={this.handleChange}
+						manufacturer={this.state.manufacturer}
+						year={this.state.year}
+						model={this.state.model}
+						bicycleType={this.state.bicycleType}
+						gender={this.state.gender}
+						price={this.state.price}
+						/>
 
-									}
-										</div>
-										: null
-									}
-									</Form.Field>
-									</div>
-								</Form.Group>
-							</Segment>
-						</Grid.Column>
-							<Grid.Column>
-								<Segment>
-									<Form.Group widths='equal'>
-									<div>
-									<Form.Field>
-									<label>Country</label>
-										<CountryDropdown 
-											value={this.state.country}
-											onChange={(value) => this.selectCountry(value)}
-											  
-											/>
-									</Form.Field>
-									<Form.Field>
-									<label>Region</label>
-										<RegionDropdown
-          									country={this.state.country} 
-											value={this.state.region}
-											onChange={(value) => this.selectRegion(value)}
-											  
-											/>
-									</Form.Field>
-									<Form.Field>
-									<label>Address</label>
-									<input 
-										name='address' 
-										type='text' 
-										value={this.state.address}
-										onChange={this.handleChange}
-										  
-									/>
-									</Form.Field>
-									<Form.Field>
-									<label>Phone Number</label>
-									<input 
-										name='phone' 
-										type='text' 
-										value={this.state.phone}
-										onChange={this.handleChange} 
-									/>
-									</Form.Field>
-									</div>
-								</Form.Group>
-							</Segment>
-						</Grid.Column>
-					</Grid.Row>
-					<Button type='submit'>Submit</Button>
-				</Grid>
-			</Form>
-		)
-	}
-}
+					<ContactInformation
+						currentStep={this.state.currentStep}
+						handleChange={this.handleChange}
+						selectCountry={this.selectCountry}
+						selectRegion={this.selectRegion}
+						country={this.state.country}
+						region={this.state.region}
+						phone={this.state.phone}
+						address={this.state.address}
+					/>
+
+					<ImageInput
+						currentStep={this.state.currentStep}
+						callBack={this.uploadChange}
+					/>
+
+					<SpecForm
+						uploadSpecs={this.uploadSpecs}
+						uploadOptions={this.uploadOptions}
+						currentStep={this.state.currentStep} 
+						description={this.description}
+					/>
+					<div>
+					{console.log(this.state.description)}
+					{console.log(this.state.options)}	
+					 {this.previousButton()}
+      				 {this.nextButton()}
+      				</div>
+      				 
+      				 {
+      				 	this.state.currentStep === 4 ?
+      				 		<Button type='submit'>Submit</Button>
+      				 			: ""
+      				 }
+				</Form>
+			</div>
+						)
+					}
+				}
 
 const mapStateToProps = (state) => ({
   currentUser: selectCurrentUser(state),
@@ -309,11 +276,6 @@ const mapStateToProps = (state) => ({
   imagePopUp: selectImagePopUp(state)
 });
 
-const mapDispatchToProps = dispatch => ({
-	toggleImagePopUp: () => dispatch(toggleImagePopUp())
-})
 
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(SellForm);
+export default connect(mapStateToProps)(SellForm);
 
