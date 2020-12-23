@@ -18,12 +18,13 @@ const Item = ({item, toggleCarousel}) => {
 
 //cursor
 const [position, setPosition] = useState({x: 0, y: 0});
-const [isHover, setIsHover] = useState(true);
+const [isHover, setIsHover] = useState(false);
 const [hidden, setHidden] = useState(false);
+
 
 //carousel
 const [open, setOpen] = useState(true)
- 
+
 //cursor
 useEffect(() => {
       addEventListeners();
@@ -52,24 +53,19 @@ const addEventListeners = () => {
 
    const onMouseMove = (e) => {
        setPosition({x: e.clientX, y: e.clientY});
-   };          
-
-   //toggling Hover on image
-   const toggleHoverState = () => {
-   	setIsHover(!isHover)
-   }
-
-   //carousel pop handler for child
-   const handleCarousel = () => {
-    setOpen(!open)
-   }
+   };
 
    const cursorClasses = classNames(
        'cursor',
       {
            'cursor--hidden': hidden
        }
-   );    
+   );              
+
+   //carousel pop handler for child
+   const handleCarousel = () => {
+    setOpen(!open)
+   }
 
 const { url } = item
 	return (
@@ -78,8 +74,8 @@ const { url } = item
           open ?
           <div className='item-wrapper'>
             <div
-              onMouseOver={toggleHoverState}
-              onMouseLeave={toggleHoverState}
+              onMouseOver={() => setIsHover(true)}
+              onMouseLeave={() => setIsHover(false)}
               onClick={() => {
                 toggleCarousel();
                 setOpen(!open)
@@ -96,7 +92,9 @@ const { url } = item
               style={{
                     left: `${position.x}px`,
                     top: `${position.y}px`
-                  }}></div> 
+                  }}>
+                  <span className="image-count">1 / {item.url.length}</span>
+              </div> 
                   : ""
                }
             </div>

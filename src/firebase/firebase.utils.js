@@ -103,10 +103,18 @@ export const getBiciDataForShop = (bicycle) => {
   export const firestore = firebase.firestore();
   export const storage = firebase.storage();
 
-  const provider = new firebase.auth.GoogleAuthProvider();
-  provider.setCustomParameters({prompt: 'select_account'});
-  
 
-  export const signInWithGoogle = () => auth.signInWithPopup(provider) // signInWithPopup takes the provider class
+  export const googleProvider = new firebase.auth.GoogleAuthProvider();
+  googleProvider.setCustomParameters({prompt: 'select_account'});
+  export const signInWithGoogle = () => auth.signInWithPopup(googleProvider)
 
   export default firebase;
+
+
+
+
+
+
+
+
+

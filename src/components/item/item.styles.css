@@ -15,7 +15,6 @@
     background-size: cover;
     background-position: center center;
     z-index: 1;
-    cursor: pointer;
   }
 
   .cursor {
@@ -32,3 +31,11 @@
   .cursor--hidden {
     opacity: 0;
  }
+
+.image-count{
+   margin-left: 3px;
+   position: absolute;
+   top: 28%;
+   font-size: 20px;
+}
+

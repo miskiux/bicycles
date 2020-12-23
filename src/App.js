@@ -24,21 +24,21 @@ class App extends React.Component {
   // to check if our database has updated at that reference with any new data. If not, it still sends a snapshot object representing the data that is currently store in database.
   //You can listen to a document with the onSnapshot() method. Checking if snapshot(data) has changed
   componentDidMount() {
-    const { setCurrentUser } = this.props;
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
+    // const { setCurrentUser } = this.props;
+    // this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+    //   if (userAuth) {
+    //     const userRef = await createUserProfileDocument(userAuth);
 
-        userRef.onSnapshot(snapShot => {
-          setCurrentUser({
-            id: snapShot.id,  // this id to merge with all this data (...snapShot.data();)
-            ...snapShot.data() //We can get the actual properties of the object created in firebase by calling the .data() method
-          });
-        });
-      } else {
-        setCurrentUser(userAuth);
-      }
-    });
+    //     userRef.onSnapshot(snapShot => {
+    //       setCurrentUser({
+    //         id: snapShot.id,  // this id to merge with all this data (...snapShot.data();)
+    //         ...snapShot.data() //We can get the actual properties of the object created in firebase by calling the .data() method
+    //       });
+    //     });
+    //   } else {
+    //     setCurrentUser(userAuth);
+    //   }
+    // });
   }
 
   componentWillUnmount() {

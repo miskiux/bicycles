@@ -24,7 +24,7 @@ const history = useHistory();
 
 console.log(match) 
 
-let [currentPosition, setCurrentPosition] = useState(0);
+const [currentPosition, setCurrentPosition] = useState(0);
 
 let currentUrl = item.url[currentPosition]
 

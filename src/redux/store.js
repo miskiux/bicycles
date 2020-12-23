@@ -6,7 +6,7 @@ import createSagaMiddleware from 'redux-saga';
 
 import rootReducer from './root-reducer';
 
-import { fetchBicyclesStart } from './shop/shop.sagas'
+import rootSaga from './root-saga';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -14,7 +14,7 @@ const middlewares = [logger, sagaMiddleware]; //expects an array.logger accepts 
 
 export const store = createStore(rootReducer, applyMiddleware(...middlewares)) //spreads out all the values in the [] array into this function call as individual arguments
 
-sagaMiddleware.run(fetchBicyclesStart) //to run each individual saga
+sagaMiddleware.run(rootSaga) //to run each individual saga
  
 export const persistor = persistStore(store)
 

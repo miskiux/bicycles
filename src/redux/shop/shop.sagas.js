@@ -2,12 +2,12 @@
 
 //saga middleware to run sagas concurrently - to run them all together
 // takeEvery () => listens for every action of a specific type we pass to it. creates a non blocking code. to continue running other sagas
-// takeLatest () =>
+// takeLatest () => issuing API call one time
 
 // call => invokes the method
 //put => dispatches an action 
 
-import { takeEvery, call, put } from 'redux-saga/effects';
+import { takeLatest, call, put } from 'redux-saga/effects';
 
 import {firestore, getBiciDataForShop} from '../../firebase/firebase.utils';
 
@@ -35,7 +35,7 @@ export function* fetchBicyclesStartAsync() {
 }
 
 export function* fetchBicyclesStart() {
-	yield takeEvery(
+	yield takeLatest(
 		ShopActionTypes.FETCH_BICYCLES_START, 
 		fetchBicyclesStartAsync
 	) //2nd param -> another generator function that will run in response to takeEvery listener
