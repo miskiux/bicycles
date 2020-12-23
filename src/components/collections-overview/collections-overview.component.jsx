@@ -50,7 +50,6 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
 	}, [bicycles, priceFilter, manufacturerFilter, countryFilter, regionFilter])
 
 	useEffect(() => {
-		console.log(toggleHeader)
 		if (toggleHeader == false) {
 			toggleCarousel()
 		}

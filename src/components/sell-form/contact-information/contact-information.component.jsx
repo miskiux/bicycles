@@ -5,11 +5,6 @@ import { Grid, Form, Input, Segment, Button } from 'semantic-ui-react';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 
 const ContactInformation = (props) => {
-
-useEffect(() => {
-	if (props.currentStep !== 2) 
-      return null
-    }, [])
  
 	return (
 		<div>

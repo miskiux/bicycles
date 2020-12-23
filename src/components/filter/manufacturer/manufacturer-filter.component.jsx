@@ -31,16 +31,15 @@ const [checkBoxValues, setCheckBoxValues] = useState([])
 
 	return (
 		<div>
-		{console.log(checkBoxValues)}
 		{
 			manufacturersCheckBoxOptions.map((id, key) => {
-				return (<Checkbox 
+				return (
+					<Checkbox 
 							key={key}
 							label={id}
 							onChange={() => handleToggle(id)}
-							/>)
-			}
-			)
+							/>
+							)})
 		}
 		<div className="confirm-selection">
 		{

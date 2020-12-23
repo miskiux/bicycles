@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-
+ 
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
 
@@ -33,9 +33,10 @@ const SpecForm = (props) => {
 
 	//callback to receive data by id
 	const callOption = (id, option) => {
-
-	    setOptions({...options, [id]: option});
-	    props.uploadOptions(option, id)
+		const values = [...options];
+			values[id] = option;
+	    	setOptions(values);
+	    	props.uploadOptions(values)
   };
 
   //combining input values
@@ -65,7 +66,6 @@ const SpecForm = (props) => {
 	{ 
 	props.currentStep == 4 ?
 		<div className='addspecs'>
-		{console.log(options)}
 				<AddIcon onClick={() => {
 					addSpec();
 					combineValues();

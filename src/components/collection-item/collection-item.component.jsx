@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import { withRouter, useLocation } from 'react-router-dom'
+import { withRouter, useLocation, useHistory } from 'react-router-dom'
 
 import CustomButton from '../custom-button/custom-button.component';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -15,11 +15,15 @@ import { addItem } from '../../redux/favourites/favourites.actions'
 
 import './collection-item.styles.scss';
 
-const CollectionItem = ({ item, addItem, id, match, history}) => {
+
+//cannot receive match params from itemId
+const CollectionItem = ({ item, addItem, id, match}) => {
 
 //routing
+const history = useHistory();
 
- 
+console.log(match) 
+
 let [currentPosition, setCurrentPosition] = useState(0);
 
 let currentUrl = item.url[currentPosition]
@@ -34,6 +38,10 @@ const onClickBackwards = () => {
 	currentPosition !== 0 ?
 	setCurrentPosition(currentPosition - 1) : setCurrentPosition(currentPosition = item.url.length - 1);
 	currentUrl = item.url[currentPosition]
+}
+
+const NavigateToView = () => {
+	history.push(`/${id}`)
 }
 
 	const { manufacturer, model, price } = item;
@@ -53,12 +61,13 @@ const onClickBackwards = () => {
 			</div>
 				<span className='price'>${price}</span>
 		</div>
-		<AddCircle onClick={() => addItem(item)} 
+		<AddCircle onClick={NavigateToView} 
 			className="addcircle"
 			/>
 		<ViewShow 
 			className="view-show"
 			onClick={() => history.push(`/${id}`)}
+			
 		 >
 
 		 </ViewShow>

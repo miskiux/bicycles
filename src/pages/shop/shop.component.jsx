@@ -2,16 +2,16 @@ import React from 'react';
 
 import { Route, Link, Switch } from "react-router-dom";
 
-import { createStructuredSelector } from 'reselect';
-import { selectIsBicyclesFetching, selectIsBicyclesLoaded } from '../../redux/shop/shop.selectors'
+import { selectIsBicyclesFetching } from '../../redux/shop/shop.selectors'
 
 import { connect } from 'react-redux';
-import { fetchBicyclesStartAsync } from '../../redux/shop/shop.actions'
-
+import { fetchBicyclesStart } from '../../redux/shop/shop.actions'
 
 import CollectionsOverviewContainer from '../../components/collections-overview/collections-overview.container';
-import CategoryPage from '../category/category.component';
+import CategoryPageContainer from '../category/category.container';
 import Filter from '../../components/filter/filter.component';
+
+import ItemView from "../../components/item-view/item-view.component.jsx";
 
  
 import WithSpinner from '../../components/with-spinner/with-spinner.component'
@@ -19,20 +19,19 @@ import WithSpinner from '../../components/with-spinner/with-spinner.component'
 import './shop.styles.scss';
 
 
-const CategoryPageWithSpinner = WithSpinner(CategoryPage);
 
 class ShopPage extends React.Component {
 	
 
 componentDidMount() {
-	const { fetchBicyclesStartAsync } = this.props;
-	fetchBicyclesStartAsync();
+	const { fetchBicyclesStart } = this.props;
+	fetchBicyclesStart();
 }
 
 
 // props - match
 	render(){
-		const { match, isBicyclesLoaded } = this.props
+		const { match } = this.props
 	return (
 	<div>
 		<div className="listbox">
@@ -68,12 +67,8 @@ componentDidMount() {
 				/>
 			<Route 
 			path={`${match.path}/:categoryId`} 
-			render={(props) => 
-				<CategoryPageWithSpinner 
-				isLoading={!isBicyclesLoaded} 
-				{...props} />} 
-				/>
-			
+			component={CategoryPageContainer}
+				/>	
 			</Switch>
 			</div>
 		</div>
@@ -81,14 +76,11 @@ componentDidMount() {
 	}
 }
 
-const mapStateToProps = createStructuredSelector ({
-	isBicyclesLoaded: selectIsBicyclesLoaded
-})
 
 const mapDispatchToProps = dispatch => ({
-	fetchBicyclesStartAsync: () => dispatch(fetchBicyclesStartAsync())
+	fetchBicyclesStart: () => dispatch(fetchBicyclesStart())
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);
+export default connect(null, mapDispatchToProps)(ShopPage);
 

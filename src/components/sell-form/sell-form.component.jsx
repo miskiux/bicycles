@@ -74,10 +74,11 @@ uploadSpecs = (specs) => {
 	})
 }
 
-uploadOptions = (option, id) => {
+//callback from description
+uploadOptions = (option) => {
 	this.setState({
-		options: [...this.state.options, [id]: option]})
-
+		options: option
+	})
 }
 
 
@@ -153,13 +154,6 @@ uploadImage = async (event) => {
 		await this.addItem();
 	}
 
-
-//callback from description + change(combine two sets of data)
-
-
-
-
-
 //NAVIGATING: CURRENT STEP
 
 next = (event) => {
@@ -214,8 +208,6 @@ prev = (event) => {
 
 
 	render() {
-		const { toggleImagePopUp, imagePopUp } = this.props
-		const { image } = this.state
 		return(
 			<div>	
 				<Form onSubmit={this.handleBind}>

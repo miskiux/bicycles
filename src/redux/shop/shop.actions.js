@@ -26,7 +26,9 @@ export const fetchBicyclesStartAsync = () => {
 		.then(snapshot => {
 			const bicycleMap = getBiciDataForShop(snapshot)
 			dispatch(fetchBicyclesSuccess(bicycleMap));
-		}).catch(error => dispatch(fetchBicyclesFailure(error.message)) )
+		})
+		.catch(error => 
+			dispatch(fetchBicyclesFailure(error.message)) )
 	}
 }
 

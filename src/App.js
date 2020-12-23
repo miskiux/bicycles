@@ -9,7 +9,6 @@ import ShopPage from "./pages/shop/shop.component.jsx";
 import SellPage from "./pages/sell/sellpage.component.jsx";
 import Header from "./components/header/header.component.jsx";
 import SignInAndSignUp from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
-import ItemPage from "./pages/item-view-page/item-view-page.component";
 
 import ItemView from "./components/item-view/item-view.component.jsx";
 
@@ -68,10 +67,10 @@ class App extends React.Component {
              : (
               <SignInAndSignUp /> 
               )
-           }/>
+           }
+           />
            <Route
-              
-              path={"/:itemId"}
+              path="/:itemId"
               component={ItemView}
               />
         </Switch>

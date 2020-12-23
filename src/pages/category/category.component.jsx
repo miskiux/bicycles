@@ -14,14 +14,16 @@ import { selectCountryFilter } from '../../redux/shop/shop.selectors'
 
 import './category.styles.scss';
 
-const CategoryPage = ({ category, match, priceFilter, manufacturerFilter,  countryFilter, regionFilter  }) => {
+//IS CATEGORY PAGE NEEDED ?
+
+const CategoryPage = ({ category, match, priceFilter, manufacturerFilter, countryFilter, regionFilter, history }) => {
 
 const [items, setItems] = useState([]);
 const [bicycleCategory, setBicycleCategory] = useState([]);
 
 	
 useEffect(() => {
-	console.log(match)
+	console.log(match.params.categoryId)
 	const categoryBicycles = category.reduce((r, a) => {
 			r[a.routeName] = r[a.routeName] || [];
 			r[a.routeName].push(a);
@@ -68,7 +70,7 @@ useEffect(() => {
 				<div>
 				{
 					bicycleCategory.map(({id, ...otherCollectionProps}) =>
-						<CollectionItem key={id} {...otherCollectionProps} />
+						<CollectionItem key={id} {...otherCollectionProps} match={match.params} />
 						)
 				}
 				</div>
