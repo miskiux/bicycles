@@ -17,12 +17,10 @@ import './collection-item.styles.scss';
 
 
 //cannot receive match params from itemId
-const CollectionItem = ({ item, addItem, id, match}) => {
+const CollectionItem = ({ item, addItem, id, match, history }) => {
 
 //routing
-const history = useHistory();
 
-console.log(match) 
 
 const [currentPosition, setCurrentPosition] = useState(0);
 
@@ -41,7 +39,8 @@ const onClickBackwards = () => {
 }
 
 const NavigateToView = () => {
-	history.push(`/${id}`)
+	console.log(history.push({
+		pathname: `/item/${id}`}))
 }
 
 	const { manufacturer, model, price } = item;
@@ -66,8 +65,7 @@ const NavigateToView = () => {
 			/>
 		<ViewShow 
 			className="view-show"
-			onClick={() => history.push(`/${id}`)}
-			
+			onClick={NavigateToView}	
 		 >
 
 		 </ViewShow>

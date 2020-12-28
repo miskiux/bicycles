@@ -18,9 +18,7 @@ import {
 
 import ShopActionTypes from './shop.types';
 
-
 export function* fetchBicyclesStartAsync() {
-	yield console.log('I am fired')
 	try {
 		const bicycleRef = firestore.collection("bicycle");
 		const snapshot = yield bicycleRef.get();

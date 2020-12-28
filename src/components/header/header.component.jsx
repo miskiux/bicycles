@@ -19,7 +19,9 @@ import "./header.styles.scss";
 
 const Header = ({ currentUser, hidden, toggleCarousel }) => (
   <div>
-{ toggleCarousel ?
+
+    { toggleCarousel ?
+
   <div class="header">
     <Link className="logo-container" to="/">
       <img className="logo" alt="logo" src={require("../../assets/bici.png")} />
@@ -31,7 +33,10 @@ const Header = ({ currentUser, hidden, toggleCarousel }) => (
       <Link className="option" to="/sell">
         sell
       </Link>
-      {currentUser ? (
+
+      {
+        currentUser ? 
+        (
         <div className="option" onClick={() => auth.signOut()}>
           sign out
         </div>

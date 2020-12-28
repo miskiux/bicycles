@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import { Route, Link, Switch } from "react-router-dom";
 
@@ -18,20 +18,12 @@ import WithSpinner from '../../components/with-spinner/with-spinner.component'
 
 import './shop.styles.scss';
 
-
-
-class ShopPage extends React.Component {
+function ShopPage({fetchBicyclesStart, match}) {
 	
+	useEffect(() => {
+		fetchBicyclesStart();
+	}, [])
 
-componentDidMount() {
-	const { fetchBicyclesStart } = this.props;
-	fetchBicyclesStart();
-}
-
-
-// props - match
-	render(){
-		const { match } = this.props
 	return (
 	<div>
 		<div className="listbox">
@@ -66,14 +58,13 @@ componentDidMount() {
 				component={CollectionsOverviewContainer}
 				/>
 			<Route 
-			path={`${match.path}/:categoryId`} 
-			component={CategoryPageContainer}
+				path={`${match.path}/:categoryId`} 
+				component={CategoryPageContainer}
 				/>	
 			</Switch>
 			</div>
 		</div>
 		)
-	}
 }
 
 

@@ -45,7 +45,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default compose(
-	withRouter,
-	connect(mapStateToProps, null)
-	)(ItemView);
+export default connect(mapStateToProps, null)(ItemView);
