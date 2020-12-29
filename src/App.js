@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -11,19 +11,23 @@ import Header from "./components/header/header.component.jsx";
 import SignInAndSignUp from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
 
 import ItemView from "./components/item-view/item-view.component.jsx";
+import CategoryPageContainer from './pages/category/category.container';
 
-import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
+import { checkUserSession } from "./redux/user/user.actions";
 
 import { selectCurrentUser } from './redux/user/user.selectors';
 
-function App({currentUser}) {
+function App({ currentUser, checkUserSession }) {
+
+  useEffect(() => {
+    checkUserSession()
+  }, [])
 
     return (
       <div>
         <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route path="/shop" component={ShopPage} />
           <Route path="/sell" render={() => 
           currentUser ? 
           (
@@ -40,10 +44,19 @@ function App({currentUser}) {
               )
            }
            />
-           <Route
-              path="/item/:itemId"
+            <Route 
+              exact 
+              path="/shop" 
+              component={ShopPage} />
+            <Route 
+              path="/shop/:categoryId"
+              component={CategoryPageContainer}
+            />
+            <Route
+              exact
+              path='/item/:itemId'
               component={ItemView}
-              />
+              />  
         </Switch>
       </div>
     );
@@ -54,4 +67,8 @@ const mapStateToProps = (state) => ({
   currentUser: selectCurrentUser(state)
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => ({
+  checkUserSession: () => dispatch(checkUserSession())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -12,16 +12,15 @@ import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { selectFavouriteHidden } from '../../redux/favourites/favourites.selectors';
 import { selectToggleCarousel } from '../../redux/shop/shop.selectors';
 
+import { signOutStart } from '../../redux/user/user.actions';
 import { connect } from "react-redux";
 
 import "../../assets/bici.png";
 import "./header.styles.scss";
 
-const Header = ({ currentUser, hidden, toggleCarousel }) => (
+const Header = ({ currentUser, hidden, toggleCarousel, signOutStart }) => (
   <div>
-
     { toggleCarousel ?
-
   <div class="header">
     <Link className="logo-container" to="/">
       <img className="logo" alt="logo" src={require("../../assets/bici.png")} />
@@ -33,11 +32,10 @@ const Header = ({ currentUser, hidden, toggleCarousel }) => (
       <Link className="option" to="/sell">
         sell
       </Link>
-
       {
         currentUser ? 
         (
-        <div className="option" onClick={() => auth.signOut()}>
+        <div className="option" onClick={signOutStart}>
           sign out
         </div>
       ) : (
@@ -65,7 +63,11 @@ const mapStateToProps = createStructuredSelector({
   hidden: selectFavouriteHidden,
   toggleCarousel: selectToggleCarousel
 })
+
+const mapDispatchToProps = dispatch => ({
+  signOutStart: () => dispatch(signOutStart())
+})
   
 
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

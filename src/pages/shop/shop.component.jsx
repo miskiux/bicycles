@@ -51,17 +51,7 @@ function ShopPage({fetchBicyclesStart, match}) {
 			<Filter />
 		</div>
 		<div className='shop-page'>
-			<Switch>
-			<Route 
-				exact 
-				path={`${match.path}`} 
-				component={CollectionsOverviewContainer}
-				/>
-			<Route 
-				path={`${match.path}/:categoryId`} 
-				component={CategoryPageContainer}
-				/>	
-			</Switch>
+			<CollectionsOverviewContainer />
 			</div>
 		</div>
 		)

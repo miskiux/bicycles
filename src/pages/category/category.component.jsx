@@ -23,14 +23,13 @@ const [bicycleCategory, setBicycleCategory] = useState([]);
 
 	
 useEffect(() => {
-	console.log(match.params.categoryId)
 	const categoryBicycles = category.reduce((r, a) => {
 			r[a.routeName] = r[a.routeName] || [];
 			r[a.routeName].push(a);
 			return r;
 		}, Object.create(null));
 	setItems(categoryBicycles[match.params.categoryId])
-	console.log(categoryBicycles[match.params.categoryId])
+	console.log(categoryBicycles)
 			
 }, [category]);
 

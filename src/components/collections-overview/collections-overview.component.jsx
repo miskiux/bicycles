@@ -12,8 +12,6 @@ import { selectToggleCarousel } from '../../redux/shop/shop.selectors'
 
 import { toggleCarousel } from '../../redux/shop/shop.actions';
 
-import { withRouter } from 'react-router-dom';
-
 import './collections-overview.styles.scss'
 
 
@@ -23,6 +21,7 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
 
 	//filtering section
 	useEffect(() => {
+
 		let result = [...bicycles];
 
 			if (priceFilter) {
@@ -53,7 +52,7 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
 		if (toggleHeader == false) {
 			toggleCarousel()
 		}
-	}, [toggleHeader])
+	}, [])
 
 
 	return (
@@ -82,7 +81,4 @@ const mapDispatchToProps = dispatch => ({
 	toggleCarousel: () => dispatch(toggleCarousel())
 })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CollectionsOverview))
-
-
-
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionsOverview)

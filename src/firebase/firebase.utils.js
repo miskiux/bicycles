@@ -97,6 +97,17 @@ export const getBiciDataForShop = (bicycle) => {
   } , {})
 }
 
+//sagas like async/await work of the promises
+export const getCurrentUserSession = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = auth.onAuthStateChanged(userAuth => {
+      unsubscribe();
+      resolve(userAuth)
+    }, reject)
+  })
+}
+
+
   firebase.initializeApp(config);
 
   export const auth = firebase.auth();
