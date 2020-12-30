@@ -13,3 +13,7 @@ export const clearItemFromCart = item => ({
 	type: FavouritesActionTypes.CLEAR_ITEM_FROM_FAVOURITES,
 	payload: item
 })
+
+export const clearFavourites = () => ({
+	type: FavouritesActionTypes.CLEAR_FAVOURITES
+})

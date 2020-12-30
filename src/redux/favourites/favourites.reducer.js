@@ -13,17 +13,21 @@ const favouritesReducer = (state = INITIAL_STATE, action) => {
 				...state,
 				hidden: !state.hidden 
 			}
-			case FavouritesActionTypes.ADD_ITEM:
-				return {
-					...state,
-					favouriteItems: addItemToFavourite(state.favouriteItems, action.payload)
-				}
-				case FavouritesActionTypes.CLEAR_ITEM_FROM_FAVOURITES:
-					return {
-						...state,
-						favouriteItems: state.favouriteItems.filter(favouriteItem => favouriteItem.url !== action.payload.url) //actionpayload the item we want to remove
-					}	// if true keeps it, if favItem.id does match the item id that we try to remove from payload then filter it out. then gives new array
-
+		case FavouritesActionTypes.ADD_ITEM:
+			return {
+				...state,
+				favouriteItems: addItemToFavourite(state.favouriteItems, action.payload)
+			}
+		case FavouritesActionTypes.CLEAR_ITEM_FROM_FAVOURITES:
+			return {
+				...state,
+				favouriteItems: state.favouriteItems.filter(favouriteItem => favouriteItem.url !== action.payload.url) //actionpayload the item we want to remove
+			}	// if true keeps it, if favItem.id does match the item id that we try to remove from payload then filter it out. then gives new array
+		case FavouritesActionTypes.CLEAR_FAVOURITES:
+			return {
+				...state,
+				favouriteItems: []
+			}
 			default:
 				return state;
 	}
