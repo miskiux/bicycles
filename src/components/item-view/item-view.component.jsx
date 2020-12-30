@@ -3,29 +3,28 @@ import React, {useState, useEffect} from 'react'
 import {connect} from 'react-redux';
 import { compose } from 'redux';
 
-import { useParams, withRouter } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import Item from '../item/item.component'
 
-
 import { selectBicycles } from '../../redux/shop/shop.selectors';
 
- 
+ //different data types of category and shop
 //persist
 //action(itemId) => selector
 
 const ItemView = ({bicycles, match, location}) => {
 
-
-	let { itemId } = useParams();
-
 	const [item, setItem] = useState([])
 
+	const { bicycleId } = useParams();
+
 	useEffect(() => {
-		let itemview = bicycles.filter(bicycle => bicycle.id === itemId)
+		let itemview = bicycles.filter(bicycle => bicycle.id === bicycleId)
 		setItem(itemview)
 
-	}, [itemId, bicycles])
+	}, [bicycleId, bicycles])
+
 
 	return(
 		<div>
@@ -34,7 +33,7 @@ const ItemView = ({bicycles, match, location}) => {
 					<Item key={id} {...otherProps} />
 				 )
 			}
-			<h2>{itemId}</h2>
+			<h2></h2>
 			
 		</div>
 		)

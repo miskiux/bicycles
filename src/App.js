@@ -28,6 +28,10 @@ function App({ currentUser, checkUserSession }) {
         <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
+          <Route  
+              path="/shop" 
+              component={ShopPage} 
+              />
           <Route path="/sell" render={() => 
           currentUser ? 
           (
@@ -44,17 +48,9 @@ function App({ currentUser, checkUserSession }) {
               )
            }
            />
-            <Route 
-              exact 
-              path="/shop" 
-              component={ShopPage} />
-            <Route 
-              path="/shop/:categoryId"
-              component={CategoryPageContainer}
-            />
             <Route
               exact
-              path='/item/:itemId'
+              path='/item/:bicycleId'
               component={ItemView}
               />  
         </Switch>

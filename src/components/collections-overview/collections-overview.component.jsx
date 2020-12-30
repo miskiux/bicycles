@@ -2,10 +2,10 @@ import React, {useState, useEffect} from 'react';
 import { connect } from 'react-redux';
 
 import CollectionItem from '../collection-item/collection-item.component'  
-
+ 
 import { selectBicycles } from '../../redux/shop/shop.selectors' 
-import {selectPriceFilter} from '../../redux/shop/shop.selectors'
-import {selectManufacturerFilter} from '../../redux/shop/shop.selectors'
+import { selectPriceFilter } from '../../redux/shop/shop.selectors'
+import { selectManufacturerFilter } from '../../redux/shop/shop.selectors'
 import { selectRegionFilter } from '../../redux/shop/shop.selectors'
 import { selectCountryFilter } from '../../redux/shop/shop.selectors'
 import { selectToggleCarousel } from '../../redux/shop/shop.selectors'

@@ -40,7 +40,9 @@ const onClickBackwards = () => {
 
 const NavigateToView = () => {
 	history.push({
-		pathname: `/item/${id}`})
+		pathname: `/item/${id}`,
+		
+	})
 }
 
 	const { manufacturer, model, price } = item;

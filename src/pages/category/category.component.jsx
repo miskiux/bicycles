@@ -61,7 +61,6 @@ useEffect(() => {
 		setBicycleCategory(result)
 
 }, [items, priceFilter, manufacturerFilter, countryFilter, regionFilter])
- 
 
 	return (
 		<div className='category'>
@@ -69,7 +68,7 @@ useEffect(() => {
 				<div>
 				{
 					bicycleCategory.map(({id, ...otherCollectionProps}) =>
-						<CollectionItem key={id} {...otherCollectionProps} match={match.params} />
+						<CollectionItem id={id} key={id} {...otherCollectionProps} match={match.params} />
 						)
 				}
 				</div>
