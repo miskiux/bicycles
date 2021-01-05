@@ -14,8 +14,6 @@ import { selectCountryFilter } from '../../redux/shop/shop.selectors'
 
 import './category.styles.scss';
 
-//IS CATEGORY PAGE NEEDED ?
-
 const CategoryPage = ({ category, match, priceFilter, manufacturerFilter, countryFilter, regionFilter, history }) => {
 
 const [items, setItems] = useState([]);
@@ -32,6 +30,7 @@ useEffect(() => {
 	console.log(categoryBicycles)
 			
 }, [category]);
+
 
 useEffect(() => {
 

@@ -39,13 +39,14 @@ class SellForm extends React.Component {
 			url: [], 
 			userId: '',
 			bicycleType: '',
+			subCategory: '',
 			options:[],
       		description: [],
       		gender: '',
       		manufacturer: '',
       		model: '',
       		price: '',
-      		year: '',
+      		year: null,
       		country: '',
       		phone: '',
       		address: '',
@@ -80,8 +81,6 @@ uploadOptions = (option) => {
 		options: option
 	})
 }
-
-
 //image upload
 //* Promise.all expects an array of promises | return Promise inside the map callback
 // if there is no return value, will return an array with undefined values
@@ -121,12 +120,12 @@ uploadImage = async (event) => {
 }
 //additem getting reference through addBiciData
 	addItem = async (event) => {
-		const {bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, country, region} = this.state;
+		const {bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, country, region, subCategory} = this.state;
 		
 		try {
 			console.log(this.state.url)
-			await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address, region});
-			this.setState({bicycleType: '', gender: '', manufacturer: '', model: '', year: '', price: '', country: country, phone: '', address: '', region: region})
+			await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address, region, subCategory});
+			this.setState({manufacturer: '', model: '', year: '', price: '', phone: '', address: ''})
 		} catch (error) {
 			console.log(error)
 		}
@@ -134,9 +133,12 @@ uploadImage = async (event) => {
 
 	handleChange = event => {
 		const {name, value} = event.target;
-		this.setState({ [name]: value} ) //dynamically set [] name value
+		this.setState({ [name]: value }) //dynamically set [] name value
 	}
 
+	handleYear = year => {
+		this.setState({year: year})
+	}
 	// for country, region
 	selectCountry = (value) => {
 		this.setState({country: value})
@@ -211,6 +213,7 @@ prev = (event) => {
 		return(
 			<div>	
 				<Form onSubmit={this.handleBind}>
+				{console.log(this.state.year)}
 					<GeneralInfo
 						currentStep={this.state.currentStep} 
 						handleChange={this.handleChange}
@@ -220,6 +223,7 @@ prev = (event) => {
 						bicycleType={this.state.bicycleType}
 						gender={this.state.gender}
 						price={this.state.price}
+						handleYear={this.handleYear}
 						/>
 
 					<ContactInformation
@@ -245,8 +249,6 @@ prev = (event) => {
 						description={this.description}
 					/>
 					<div>
-					{console.log(this.state.description)}
-					{console.log(this.state.options)}	
 					 {this.previousButton()}
       				 {this.nextButton()}
       				</div>

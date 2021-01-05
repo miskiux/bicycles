@@ -34,7 +34,7 @@ const SpecForm = (props) => {
 	//callback to receive data by id
 	const callOption = (id, option) => {
 		const values = [...options];
-			values[id] = option;
+			values[id] = Object.values(option)[0];
 	    	setOptions(values);
 	    	props.uploadOptions(values)
   };
@@ -53,13 +53,6 @@ const SpecForm = (props) => {
     		setSpecs(values);
     		props.uploadSpecs(values)
   };
-
-
-  //combining options and specs
-  // {options}
-  // Object.assign the specs array to options
-
-  
 	
 	return (
 	<div>

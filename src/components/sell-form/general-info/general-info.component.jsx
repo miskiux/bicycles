@@ -1,9 +1,85 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
+
+import { YearPicker } from 'react-dropdown-date';
+
+import axios from 'axios'
+import { Hint } from 'react-autocomplete-hint';
 
 import { Grid, Form, Input, Segment, Button } from 'semantic-ui-react';
+import Select from "react-select";
+
+import bicycleList from '../../../assets/general-info.data/bicycle-list.js'
+import genderList from '../../../assets/general-info.data/gender-list'
+
+
+const offroadSubList = ["Cross Country", "Dirtjump", "Downhill", "Enduro", "Fat Bike", "Trail"];
+const roadSubList = ["Cyclocross", "Hybrid/Commuter", "Touring", "Track", "Triathlon"]
+const otherSubList = ["BMX", "Childrens", "Electric", "Folding", "Tandem", "Unicycle"] 
 
 const GeneralInfo = (props) => {
- 
+
+	//categories
+	const [selectedType, setSelectedType] = useState([])
+	const [selectedGender, setSelectedGender] = useState([])
+
+	const [hintData, setHintData] = useState([])
+
+	const getManufacturerData = () => {
+		let page = 1;
+		let hintArray = [];
+		let maxItter = 15
+
+		do {
+			try {
+				axios.get(`https://bikeindex.org/api/v3/manufacturers?page=${page}&per_page=100`)
+					.then(response => {
+						let manufacturerNames = Object.values(response.data)
+							.map(res => res
+								.map(manufacturer => manufacturer.name))
+						let unnestedNames = manufacturerNames.flat()
+						hintArray.push(...unnestedNames)
+						})
+							page++
+							maxItter--
+					} catch (err) {
+				console.error(`Oeps, something is wrong ${err}`)
+			}
+		} 
+		while (maxItter > 0);
+		setHintData(hintArray)
+	}
+
+	useEffect(() => {
+		getManufacturerData()
+	}, [])
+
+	//no callbacks to parents
+const typeChange = (selectedType) => {
+    setSelectedType(selectedType);
+    //callOption(selectedType);
+  }
+
+const genderChange = (selectedGender) => {
+  	setSelectedGender(selectedGender)
+  }
+
+//subcategory
+//selecting sub-category based on selectedType
+let type = null
+let options = null
+
+if (selectedType.key === "Off-Road") {
+	type = offroadSubList;
+} else if (selectedType.key === "Road Bicycle") { 
+    type = roadSubList; 
+  } else if (selectedType.key === "Other") { 
+   	type = otherSubList; 
+  } 
+
+  if(type) {
+	options = type.map((el) => <option key={el}>{el}</option>
+  	)
+  }
 	return (
 		<div>
 		{
@@ -17,29 +93,34 @@ const GeneralInfo = (props) => {
 								<div>
 									<Form.Field>
 										<label>Manufacturer</label>
-										<Input 
-											name='manufacturer' 
-											type='text' 
-											value={props.manufacturer} 
-											onChange={props.handleChange}
-											
-											/>
+											<Hint options={hintData}>
+												<input 
+													name='manufacturer' 
+													type='text'
+													autocomplete="off" 
+													value={props.manufacturer} 
+													onChange={props.handleChange}
+													/>
+											</Hint>
 											</Form.Field>
 											<Form.Field>
 											<label>Year</label>
-											<Input 
+											<YearPicker
 												name='year' 
-												type='text' 
+												start={1960}
+												end={2021}
+												reverse 
 												value={props.year}
-												onChange={props.handleChange}
+												onChange={(year) => props.handleYear(year)}
 												
 												/>
 											</Form.Field>
 											<Form.Field>
 											<label>Model</label>
-												<Input 
+												<input 
 													name='model' 
-													type='text' 
+													type='text'
+													autocomplete="off" 
 													value={props.model}
 													onChange={props.handleChange}
 													  
@@ -47,23 +128,36 @@ const GeneralInfo = (props) => {
 												</Form.Field>
 												<Form.Field>
 												<label>Bicycle Type</label>
-												<Input 
-													name='bicycleType' 
-													type='text' 
-													value={props.bicycleType}
-													onChange={props.handleChange}
-													  
-												/>
+												<Select
+											          value={selectedType}
+											          onChange={(value) => typeChange(value)}
+											          options={bicycleList}
+											          placeholder=""
+											          />
 												</Form.Field>
+												{ 
+													selectedType.key !== undefined 
+													&& 
+													["Off-Road", "Road Bicycle", "Other"].includes(selectedType.key) ? 
+													<Form.Field>
+															<label>Sub Category</label>
+															<select> 
+												            { 
+												              options 
+												            } 
+												          </select> 
+												         </Form.Field>
+												         : null
+														}
 												<Form.Field>
 												<label>Gender</label>
-													<Input 
-														name='gender' 
-														type='text' 
-														value={props.gender}
-														onChange={props.handleChange}
-													/>
-												</Form.Field>
+													<Select
+											          value={selectedGender}
+											          onChange={(value) => genderChange(value)}
+											          options={genderList}
+											          placeholder=""
+											          />
+													</Form.Field>
 												<Form.Field>
 												<label>Price</label>
 											<Input 

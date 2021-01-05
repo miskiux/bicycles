@@ -26,9 +26,8 @@ function SignUp({signUpStart}) {
 		if(password !== confirmPassword ) {
 			alert("passwords don't match");
 			return
-		} else {
+		} 
 			signUpStart({displayName, email, password})
-		}
 	}
 
 	const handleChange = event => {

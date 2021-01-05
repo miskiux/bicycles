@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { connect } from "react-redux";
-
-import { AddSpec } from "../../../../redux/sell/sell.actions";
-
 import Select from "react-select";
-
-import { v4 as uuidv4 } from "uuid";
-
 
 import "./spec.styles.css";
 
@@ -98,19 +91,13 @@ const specOptions = [
   },
 ];
 
-//selected ?
-const Spec = ({id, callOption, AddSpec}) => {
+const Spec = ({id, callOption}) => {
 
 const [selectedOption, setSelectedOption] = useState({});
 
 const optionChange = (selectedOption) => {
-
     setSelectedOption(selectedOption);
-
-    //calback to parent
-
     callOption(id, selectedOption);
-    AddSpec(selectedOption)
   }
 
   return (
@@ -124,9 +111,4 @@ const optionChange = (selectedOption) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  AddSpec: (selectedOption) => dispatch(AddSpec(selectedOption))
-})
-
-
-export default connect(null, mapDispatchToProps)(Spec);
+export default Spec;

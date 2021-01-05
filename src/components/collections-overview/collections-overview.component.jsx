@@ -16,7 +16,7 @@ import './collections-overview.styles.scss'
 
 
 const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufacturerFilter, countryFilter, regionFilter, toggleHeader, toggleCarousel }) => {
-
+ 
 	const [filteredBicycles, setFilteredBicycles] = useState([]);
 
 	//filtering section
