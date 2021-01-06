@@ -1,62 +1,76 @@
-import React, {useEffect} from 'react';
+import "mapbox-gl/dist/mapbox-gl.css";
+import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 
-import { Grid, Form, Input, Segment, Button } from 'semantic-ui-react';
+import ReactMapGL from 'react-map-gl';
+import Geocoder from "react-map-gl-geocoder";
 
-import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
+import './contact-information.css'
+
+
+//get current location on Click
+// search input to close
+const mapStyle = {
+    width: '70%',
+    height: 600
+} 
 
 const ContactInformation = (props) => {
+
+	const [viewport, setViewport] = useState({
+    latitude: -1.9444,
+    longitude: 30.0616,
+    zoom: 7.8,
+    bearing: 0,
+    pitch: 0,
+  });
+
+	const mapRef = useRef();
+	
+  	const handleViewportChange = useCallback(
+    (newViewport) => setViewport(newViewport),
+    []
+  );
+
+  const handleGeocoderViewportChange = useCallback(
+    (newViewport) => {
+      const geocoderDefaultOverrides = { transitionDuration: 1000 };
+
+      return handleViewportChange({
+        ...newViewport,
+        ...geocoderDefaultOverrides
+      });
+    },
+    [handleViewportChange]
+  );
+
+  
  
 	return (
 		<div>
 		{
 			props.currentStep == 2 ?
-			<Form>		
-				<Grid columns={1} >
-					<Grid.Row>
-						<Grid.Column>
-							<Segment>
-								<Form.Group widths='equal'>
-								<div>
-									<Form.Field>
-										<label>Country</label>
-										<CountryDropdown 
-											value={props.country}
-											onChange={(value) => props.selectCountry(value)}								  
-											/>
-											</Form.Field>
-											<Form.Field>
-											<label>Region</label>
-												<RegionDropdown
-		          									country={props.country} 
-													value={props.region}
-													onChange={(value) => props.selectRegion(value)}							  
-													/>
-												</Form.Field>
-												<Form.Field>
-												<label>Address</label>
-													<input 
-														name='address' 
-														type='text' 
-														value={props.address}
-														onChange={props.handleChange}							  
-													/>
-												</Form.Field>
-												<Form.Field>
-												<label>Phone Number</label>
-													<input 
-														name='phone' 
-														type='text' 
-														value={props.phone}
-														onChange={props.handleChange} 
-													/>
-												</Form.Field>				
-										</div>
-								</Form.Group>
-							</Segment>
-						</Grid.Column>
-					</Grid.Row>
-				</Grid>
-			</Form>
+			<div>
+				<h2 className="bici-location">bicycle location</h2>
+				<div className="map">
+					<ReactMapGL
+						ref={mapRef}
+				        {...viewport}
+				        {...mapStyle}
+				        onViewportChange={handleViewportChange}
+				        mapboxApiAccessToken={process.env.REACT_APP_API_KEY}
+				      >
+				      <Geocoder
+				      	  className="react-geocoder"
+				          mapRef={mapRef}
+				          onViewportChange={handleGeocoderViewportChange}
+				     
+				          mapboxApiAccessToken={process.env.REACT_APP_API_KEY}
+				          position="top-left"
+				        />
+				    </ReactMapGL>
+				</div>
+			</div>
 			: ""
 		}
 			

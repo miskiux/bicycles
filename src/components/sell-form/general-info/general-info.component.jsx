@@ -12,15 +12,17 @@ import bicycleList from '../../../assets/general-info.data/bicycle-list.js'
 import genderList from '../../../assets/general-info.data/gender-list'
 
 
-const offroadSubList = ["Cross Country", "Dirtjump", "Downhill", "Enduro", "Fat Bike", "Trail"];
-const roadSubList = ["Cyclocross", "Hybrid/Commuter", "Touring", "Track", "Triathlon"]
-const otherSubList = ["BMX", "Childrens", "Electric", "Folding", "Tandem", "Unicycle"] 
+const offroadSubList = ["-","Cross Country", "Dirtjump", "Downhill", "Enduro", "Fat Bike", "Trail"];
+const roadSubList = ["-","Cyclocross", "Hybrid/Commuter", "Touring", "Track", "Triathlon"]
+const otherSubList = ["-","BMX", "Childrens", "Electric", "Folding", "Tandem", "Unicycle"] 
+
 
 const GeneralInfo = (props) => {
 
 	//categories
 	const [selectedType, setSelectedType] = useState([])
 	const [selectedGender, setSelectedGender] = useState([])
+	const [selectSubType, setSubType] = useState("")
 
 	const [hintData, setHintData] = useState([])
 
@@ -53,18 +55,17 @@ const GeneralInfo = (props) => {
 		getManufacturerData()
 	}, [])
 
-	//no callbacks to parents
 const typeChange = (selectedType) => {
     setSelectedType(selectedType);
-    //callOption(selectedType);
+    props.uploadType(selectedType)
   }
 
 const genderChange = (selectedGender) => {
   	setSelectedGender(selectedGender)
+  	props.uploadGender(selectedGender)
   }
 
 //subcategory
-//selecting sub-category based on selectedType
 let type = null
 let options = null
 
@@ -77,9 +78,15 @@ if (selectedType.key === "Off-Road") {
   } 
 
   if(type) {
-	options = type.map((el) => <option key={el}>{el}</option>
+	options = type.map((el) => <option key={el} value={el}>{el}</option>
   	)
   }
+
+  const handleChange = event => {
+  	setSubType(event.target.value)
+  	props.uploadSubType(event.target.value)
+  } 
+
 	return (
 		<div>
 		{
@@ -141,7 +148,11 @@ if (selectedType.key === "Off-Road") {
 													["Off-Road", "Road Bicycle", "Other"].includes(selectedType.key) ? 
 													<Form.Field>
 															<label>Sub Category</label>
-															<select> 
+															<select
+																value={selectSubType}
+																onChange={handleChange}
+																defaultValue=""
+															> 
 												            { 
 												              options 
 												            } 

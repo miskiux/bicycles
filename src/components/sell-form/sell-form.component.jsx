@@ -81,6 +81,18 @@ uploadOptions = (option) => {
 		options: option
 	})
 }
+uploadGender = (gender) => {
+	this.setState({gender: gender})
+}
+
+uploadType = (type) => {
+	this.setState({bicycleType:type})
+}
+
+uploadSubType = (sub) => {
+	this.setState({subCategory: sub})
+}
+
 //image upload
 //* Promise.all expects an array of promises | return Promise inside the map callback
 // if there is no return value, will return an array with undefined values
@@ -125,7 +137,7 @@ uploadImage = async (event) => {
 		try {
 			console.log(this.state.url)
 			await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address, region, subCategory});
-			this.setState({manufacturer: '', model: '', year: '', price: '', phone: '', address: ''})
+			this.setState({manufacturer: '', model: '', price: '', phone: '', address: ''})
 		} catch (error) {
 			console.log(error)
 		}
@@ -213,7 +225,7 @@ prev = (event) => {
 		return(
 			<div>	
 				<Form onSubmit={this.handleBind}>
-				{console.log(this.state.year)}
+				
 					<GeneralInfo
 						currentStep={this.state.currentStep} 
 						handleChange={this.handleChange}
@@ -224,6 +236,9 @@ prev = (event) => {
 						gender={this.state.gender}
 						price={this.state.price}
 						handleYear={this.handleYear}
+						uploadGender={this.uploadGender}
+						uploadType={this.uploadType}
+						uploadSubType={this.uploadSubType}
 						/>
 
 					<ContactInformation
