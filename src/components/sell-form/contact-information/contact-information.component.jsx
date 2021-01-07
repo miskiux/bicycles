@@ -8,7 +8,7 @@ import Geocoder from "react-map-gl-geocoder";
 import './contact-information.css'
 
 
-//get current location on Click
+//()get current location on Click - https://blog.logrocket.com/how-to-use-mapbox-gl/
 
 //toggle contribution triggering the form upload
 
@@ -23,14 +23,14 @@ const geocodingClient = mbxGeocoding({ accessToken: process.env.REACT_APP_API_KE
 const ContactInformation = (props) => {
 
 	const [viewport, setViewport] = useState({
-    latitude: -1.9444,
-    longitude: 30.0616,
-    zoom: 7.8,
+    latitude: 0,
+    longitude: 0,
+    zoom: 2,
     bearing: 0,
     pitch: 0,
   });
 
-	const [address, setAddress] = useState([])
+	const [address, setAddress] = useState('')
 
 	const mapRef = useRef();
 	
@@ -43,6 +43,16 @@ const ContactInformation = (props) => {
     (newViewport) => {
       const geocoderDefaultOverrides = { transitionDuration: 1000 };
 
+      //reversing the coordinates
+      geocodingClient.reverseGeocode({
+  	  query: [newViewport.longitude, newViewport.latitude]
+	})
+	  .send()
+	  .then(response => {
+	    const match = response.body;
+	    props.uploadAddress(match.features[1].place_name);
+	  });
+
       return handleViewportChange({
         ...newViewport,
         ...geocoderDefaultOverrides
@@ -50,24 +60,12 @@ const ContactInformation = (props) => {
     },
     [handleViewportChange]
   );
-
-  const reverseCoordinates = () => {
-  	geocodingClient.reverseGeocode({
-  	query: [viewport.longitude, viewport.latitude]
-})
-  .send()
-  .then(response => {
-    const match = response.body;
-    console.log(match);
-  });
-  }
    
 	return (
 		<div>
 		{
 			props.currentStep == 2 ?
 			<div>
-			{console.log(viewport)}
 				<h2 className="bici-location">bicycle location</h2>
 				<div className="map">
 					<ReactMapGL
@@ -81,8 +79,6 @@ const ContactInformation = (props) => {
 				      	  className="react-geocoder"
 				          mapRef={mapRef}
 				          onViewportChange={handleGeocoderViewportChange} 
-				          reverseGeocode={true}
-				          localGeocoder={reverseCoordinates}    
 				          mapboxApiAccessToken={process.env.REACT_APP_API_KEY}
 				          position="top-left"
 				        />

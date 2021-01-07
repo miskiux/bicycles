@@ -11,7 +11,6 @@ import Header from "./components/header/header.component.jsx";
 import SignInAndSignUp from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
 
 import ItemView from "./components/item-view/item-view.component.jsx";
-import CategoryPageContainer from './pages/category/category.container';
 
 import { checkUserSession } from "./redux/user/user.actions";
 

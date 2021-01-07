@@ -25,11 +25,7 @@ import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 
 import 'semantic-ui-css/semantic.min.css';
 
-//parent -> 
-// General Bicycle Information: bicycleType, manufacturer, model, gender, year, model, price 
-// Contact Information: country, region, address, phone
-// Your Bicycle: url, image
-// Description 
+//how to avoid tons of callbacks
 
 class SellForm extends React.Component {
 	constructor(props) {
@@ -91,6 +87,10 @@ uploadType = (type) => {
 
 uploadSubType = (sub) => {
 	this.setState({subCategory: sub})
+}
+
+uploadAddress = (location) => {
+	this.setState({address: location})
 }
 
 //image upload
@@ -225,7 +225,7 @@ prev = (event) => {
 		return(
 			<div>	
 				<Form onSubmit={this.handleBind}>
-				
+				{console.log(this.state.address)}
 					<GeneralInfo
 						currentStep={this.state.currentStep} 
 						handleChange={this.handleChange}
@@ -244,12 +244,8 @@ prev = (event) => {
 					<ContactInformation
 						currentStep={this.state.currentStep}
 						handleChange={this.handleChange}
-						selectCountry={this.selectCountry}
-						selectRegion={this.selectRegion}
-						country={this.state.country}
-						region={this.state.region}
 						phone={this.state.phone}
-						address={this.state.address}
+						uploadAddress={this.uploadAddress}
 					/>
 
 					<ImageInput
