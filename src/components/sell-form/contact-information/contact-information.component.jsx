@@ -1,16 +1,20 @@
-import "mapbox-gl/dist/mapbox-gl.css";
-import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 
 import ReactMapGL from 'react-map-gl';
 import Geocoder from "react-map-gl-geocoder";
 
+import "mapbox-gl/dist/mapbox-gl.css";
+import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import './contact-information.css'
 
 
-//()get current location on Click - https://blog.logrocket.com/how-to-use-mapbox-gl/
+//get current location on Click(useEffect) - https://blog.logrocket.com/how-to-use-mapbox-gl/
 
 //toggle contribution triggering the form upload
+
+// map and find(property.[place_type])
+
+//input value (weird)
 
 const mapStyle = {
     width: '70%',
@@ -50,6 +54,8 @@ const ContactInformation = (props) => {
 	  .send()
 	  .then(response => {
 	    const match = response.body;
+	    console.log(match)
+	    setAddress(match.features[1].place_name)
 	    props.uploadAddress(match.features[1].place_name);
 	  });
 
@@ -76,9 +82,8 @@ const ContactInformation = (props) => {
 				        mapboxApiAccessToken={process.env.REACT_APP_API_KEY}
 				      >
 				      <Geocoder
-				      	  className="react-geocoder"
 				          mapRef={mapRef}
-				          onViewportChange={handleGeocoderViewportChange} 
+				          onViewportChange={handleGeocoderViewportChange}
 				          mapboxApiAccessToken={process.env.REACT_APP_API_KEY}
 				          position="top-left"
 				        />

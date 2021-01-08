@@ -223,7 +223,7 @@ prev = (event) => {
 
 	render() {
 		return(
-			<div>	
+			<div className="sell-form">	
 				<Form onSubmit={this.handleBind}>
 				{console.log(this.state.address)}
 					<GeneralInfo
