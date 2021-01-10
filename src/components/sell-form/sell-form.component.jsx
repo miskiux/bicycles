@@ -38,6 +38,8 @@ class SellForm extends React.Component {
 			subCategory: '',
 			options:[],
       		description: [],
+      		size: "",
+      		condition: "",
       		gender: '',
       		manufacturer: '',
       		model: '',
@@ -56,11 +58,11 @@ componentDidMount() {
 	this.setState({userId: currentUser.id})
 }
 
-//receiving imgFiles from callback
-uploadChange = (imgFiles) => {
-	console.log(imgFiles)
+//receiving imageFiles from callback
+uploadImages = (imageFiles) => {
+	console.log(imageFiles)
 			this.setState({
-				image: imgFiles
+				image: imageFiles
 			});
 	}
 
@@ -132,11 +134,11 @@ uploadImage = async (event) => {
 }
 //additem getting reference through addBiciData
 	addItem = async (event) => {
-		const {bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, country, region, subCategory} = this.state;
+		const {bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, country, region, subCategory, size, condition} = this.state;
 		
 		try {
 			console.log(this.state.url)
-			await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address, region, subCategory});
+			await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address, region, subCategory, size, condition});
 			this.setState({manufacturer: '', model: '', price: '', phone: '', address: ''})
 		} catch (error) {
 			console.log(error)
@@ -145,21 +147,12 @@ uploadImage = async (event) => {
 
 	handleChange = event => {
 		const {name, value} = event.target;
-		this.setState({ [name]: value }) //dynamically set [] name value
+		this.setState({ [name]: value })
 	}
 
 	handleYear = year => {
 		this.setState({year: year})
 	}
-	// for country, region
-	selectCountry = (value) => {
-		this.setState({country: value})
-	}
-
-	selectRegion = (value) => {
-		this.setState({region: value})
-	}
-
 
 	//handle bind for form
 	handleBind = async event => {
@@ -225,7 +218,8 @@ prev = (event) => {
 		return(
 			<div className="sell-form">	
 				<Form onSubmit={this.handleBind}>
-				{console.log(this.state.address)}
+				{console.log(this.state.description)}
+				{console.log(this.state.options)}
 					<GeneralInfo
 						currentStep={this.state.currentStep} 
 						handleChange={this.handleChange}
@@ -250,7 +244,7 @@ prev = (event) => {
 
 					<ImageInput
 						currentStep={this.state.currentStep}
-						callBack={this.uploadChange}
+						uploadImages={this.uploadImages}
 					/>
 
 					<SpecForm
@@ -258,6 +252,9 @@ prev = (event) => {
 						uploadOptions={this.uploadOptions}
 						currentStep={this.state.currentStep} 
 						description={this.description}
+						size={this.state.size}
+						condition={this.state.condition}
+						handleChange={this.handleChange}
 					/>
 					<div>
 					 {this.previousButton()}

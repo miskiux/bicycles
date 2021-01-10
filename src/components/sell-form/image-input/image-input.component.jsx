@@ -6,9 +6,8 @@ import {useDropzone} from 'react-dropzone';
 import './image-input.styles.css';
 
 // setting primary photo
-// be able to push files into dropzone individually
 // draggable
-//remove
+
 
 const thumbsContainer = {
   display: 'flex',
@@ -23,8 +22,8 @@ const thumb = {
   border: '1px solid #eaeaea',
   marginBottom: 8,
   marginRight: 8,
-  width: 150,
-  height: 150,
+  width: 200,
+  height: 200,
   padding: 4,
   boxSizing: 'border-box'
 };
@@ -45,16 +44,16 @@ const ImageInput = (props) => {
 
 const [imageFiles, setFiles] = useState([])
 
-
   //callback to parent
   const onDrop = useCallback(acceptedFiles => {
     setFiles([...imageFiles,
-      acceptedFiles.map(file => Object.assign(file, {
-        preview: URL.createObjectURL(file)}))
-        ])
+          ...acceptedFiles.map(file => Object.assign(file, {
+            preview: URL.createObjectURL(file)}))
+            ])
   }, [imageFiles])
 
   const { getRootProps, getInputProps } = useDropzone({
+    accept: 'image/*',
     onDrop,
   })
 
@@ -64,20 +63,25 @@ const [imageFiles, setFiles] = useState([])
     setFiles(newFiles)
   }
 
-  const removeAll = () => {
-    setFiles([])
-  }
-
   const images = imageFiles.map(file => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes{" "}
-      <button onClick={removeFile(file)}>Remove File</button>
-    </li>
+    <div style={thumb} key={file.name}>
+      <div style={thumbInner}>
+        <img
+          src={file.preview}
+          style={img}
+          onClick={removeFile(file)}
+        />
+      </div>
+    </div>
   ))
 
-  //  useEffect(() => () => {
-  //   files.forEach(file => URL.revokeObjectURL(file.preview));
-  // }, [files]);
+  useEffect(() => () => {
+    imageFiles.forEach(file => URL.revokeObjectURL(file.preview));
+   }, [imageFiles]);
+
+  useEffect(() => {
+    props.uploadImages(imageFiles)
+  }, [imageFiles])
 
 
   return (
@@ -85,19 +89,16 @@ const [imageFiles, setFiles] = useState([])
     {
       props.currentStep == 3 ?
         <section className="container">
-        {console.log(imageFiles)}
           <div 
           {...getRootProps({ className: "dropzone" })}
           style={{height: imageFiles.length == 0 ? '530px' : '130px' }}
           >
             <input {...getInputProps()} />
-            <p>Drag 'n' drop some files here, or click to select files</p>
+            <p>Drop bicycle photos here, or click to select it</p>
           </div>
           <aside>
-            <h4>Files</h4>
             <ul>{images}</ul>
           </aside>
-          {imageFiles.length > 0 && <button onClick={removeAll}>Remove All</button>}
         </section>
         : ""
     }   

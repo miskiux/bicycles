@@ -90,9 +90,8 @@ if (selectedType.key === "Off-Road") {
 	return (
 		<div>
 		{
-			props.currentStep == 1 ?
-		<Form>		
-				<Grid columns={2} divided>
+			props.currentStep == 1 ?	
+				<Grid columns={1}>
 					<Grid.Row>
 						<Grid.Column>
 							<Segment>
@@ -118,8 +117,7 @@ if (selectedType.key === "Off-Road") {
 												end={2021}
 												reverse 
 												value={props.year}
-												onChange={(year) => props.handleYear(year)}
-												
+												onChange={(year) => props.handleYear(year)}		
 												/>
 											</Form.Field>
 											<Form.Field>
@@ -129,8 +127,7 @@ if (selectedType.key === "Off-Road") {
 													type='text'
 													autocomplete="off" 
 													value={props.model}
-													onChange={props.handleChange}
-													  
+													onChange={props.handleChange}								  
 												/>
 												</Form.Field>
 												<Form.Field>
@@ -183,13 +180,9 @@ if (selectedType.key === "Off-Road") {
 							</Segment>
 						</Grid.Column>
 					</Grid.Row>
-
 					</Grid>
-			</Form>
 			: ""
 		}
-			
-
 		</div>
 
 		)

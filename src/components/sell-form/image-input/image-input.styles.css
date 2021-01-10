@@ -6,3 +6,7 @@
 .dropzone:hover {
 	cursor:pointer;
 }
+
+.remove-file {
+	position: absolute;
+}
