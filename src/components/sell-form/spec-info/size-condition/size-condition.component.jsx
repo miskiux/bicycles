@@ -20,20 +20,18 @@ function AdditionalInfo (props) {
 			</div>
 			<div>
 				<label> Condition </label>
-					<div class="field">
+					<div class="field" onChange={props.onRadioChange}>
 				      <div class="ui radio checkbox">
-				        <input type="radio" name="frequency" checked="checked" />
+				        <input type="radio" name="frequency" value="New" />
 				        <label>New</label>
 				      </div>
-				    </div>
-				    <div class="field">
 				      <div class="ui radio checkbox">
-				        <input type="radio" name="frequency" />
-				        <label>Used</label>
+				        <input type="radio" name="frequency" value="Used" />
+				       <label>Used</label>
 				      </div>
+					</div>
 			</div>
 		</div>
-	</div>
 		)
 }
 

@@ -2,17 +2,14 @@ import React, {useState, useCallback, useEffect} from 'react';
  
 import {useDropzone} from 'react-dropzone';
 
+import { v4 as uuidv4 } from 'uuid';
 
 import './image-input.styles.css';
-
-// setting primary photo
-// draggable
 
 
 const thumbsContainer = {
   display: 'flex',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
+  flexDirection: 'column',
   marginTop: 16
 };
 
@@ -40,6 +37,9 @@ const img = {
   height: '100%'
 };
 
+//array move
+const arrayMove = require('array-move');
+
 const ImageInput = (props) => {
 
 const [imageFiles, setFiles] = useState([])
@@ -47,8 +47,10 @@ const [imageFiles, setFiles] = useState([])
   //callback to parent
   const onDrop = useCallback(acceptedFiles => {
     setFiles([...imageFiles,
-          ...acceptedFiles.map(file => Object.assign(file, {
-            preview: URL.createObjectURL(file)}))
+            ...acceptedFiles.map(file => Object.assign(file, {
+            preview: URL.createObjectURL(file),
+            id: uuidv4()
+          }))
             ])
   }, [imageFiles])
 
@@ -63,15 +65,34 @@ const [imageFiles, setFiles] = useState([])
     setFiles(newFiles)
   }
 
-  const images = imageFiles.map(file => (
-    <div style={thumb} key={file.name}>
-      <div style={thumbInner}>
-        <img
-          src={file.preview}
-          style={img}
-          onClick={removeFile(file)}
-        />
+  const moveArray = (index) => {
+    let arrImg = [...imageFiles];
+    let arr = arrayMove(arrImg, index, 0);
+    setFiles(arr)
+  }
+
+//cannot use index for imageFiles
+// adding uuid onDrop
+
+// another issue: array-move - mutating the state 
+
+  const images = imageFiles.map((file, index) => (
+      <div style={thumb} key={file.id}>
+        <div style={thumbInner}>
+          <img
+            key={file.id}
+            src={file.preview}
+            style={img}
+            onClick={removeFile(file)}
+          />
       </div>
+   <div>
+      <input
+      key={file.id}  
+      type="radio" 
+      name="frequency" 
+      onChange={() => moveArray(index)} />
+    </div>
     </div>
   ))
 
@@ -84,11 +105,13 @@ const [imageFiles, setFiles] = useState([])
   }, [imageFiles])
 
 
+
   return (
     <div>
     {
       props.currentStep == 3 ?
         <section className="container">
+        {console.log(imageFiles)}
           <div 
           {...getRootProps({ className: "dropzone" })}
           style={{height: imageFiles.length == 0 ? '530px' : '130px' }}
@@ -96,7 +119,7 @@ const [imageFiles, setFiles] = useState([])
             <input {...getInputProps()} />
             <p>Drop bicycle photos here, or click to select it</p>
           </div>
-          <aside>
+          <aside style={thumbsContainer}>
             <ul>{images}</ul>
           </aside>
         </section>

@@ -60,12 +60,11 @@ componentDidMount() {
 
 //receiving imageFiles from callback
 uploadImages = (imageFiles) => {
-	console.log(imageFiles)
 			this.setState({
 				image: imageFiles
 			});
 	}
-
+ 
 //specs through callback
 uploadSpecs = (specs) => {
 	this.setState({
@@ -95,6 +94,10 @@ uploadAddress = (location) => {
 	this.setState({address: location})
 }
 
+onRadioChange = (event) => {
+    this.setState({condition: event.target.value});
+  }
+
 //image upload
 //* Promise.all expects an array of promises | return Promise inside the map callback
 // if there is no return value, will return an array with undefined values
@@ -123,7 +126,6 @@ uploadImage = async (event) => {
 							.then(imgUrl => {
 								imgUrl.split(',');
 								urlarray.push(imgUrl)
-								console.log(urlarray)
 								this.setState({url:urlarray})
 								resolve(urlarray)
 									})
@@ -137,9 +139,8 @@ uploadImage = async (event) => {
 		const {bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, country, region, subCategory, size, condition} = this.state;
 		
 		try {
-			console.log(this.state.url)
 			await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address, region, subCategory, size, condition});
-			this.setState({manufacturer: '', model: '', price: '', phone: '', address: ''})
+			this.setState({manufacturer: '', model: '', price: '', phone: '', address: '', size: ''})
 		} catch (error) {
 			console.log(error)
 		}
@@ -218,8 +219,6 @@ prev = (event) => {
 		return(
 			<div className="sell-form">	
 				<Form onSubmit={this.handleBind}>
-				{console.log(this.state.description)}
-				{console.log(this.state.options)}
 					<GeneralInfo
 						currentStep={this.state.currentStep} 
 						handleChange={this.handleChange}
@@ -255,6 +254,7 @@ prev = (event) => {
 						size={this.state.size}
 						condition={this.state.condition}
 						handleChange={this.handleChange}
+						onRadioChange={this.onRadioChange}
 					/>
 					<div>
 					 {this.previousButton()}

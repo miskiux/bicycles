@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react';
+
+import { v4 as uuidv4 } from 'uuid';
  
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
@@ -14,58 +16,65 @@ const gridContainer = {
   justifyContent: 'space-between'
 };
 
-// remove function - deletes the last one
-
+//removing index
 
 const SpecForm = (props) => {
 
 	//SPEC options
 	const [options, setOptions] = useState([]);
 
+	//dropdowns
+	const [dropdowns, setDropdowns] = useState([])
+
 	//shownSelection
 	const [toggleSpec, setToggleSpec] = useState([])
 
 	//spec inputs
-	const [specs, setSpecs] = useState([]);
+	const [inputs, setInputs] = useState([]);
 
-	const addSpec = () => {
-		let values = [...specs];
+	const addInput = () => {
+		let values = [...inputs];
 		    values.push([]);
-		    setSpecs(values);
+		    setInputs(values);
 	}
 
-	//remove "description" onClick
-  	const removeSpec = (index) => {
-	    let values = [...specs]
-		    values.splice(index, 1);
-		    setSpecs(values);
+	const combineDropdowns = () => {
+		setDropdowns([...dropdowns, {id: uuidv4()}]);
+	}
+
+  	const removeInput = (index) => {
+  		console.log('spec' + index)
+			let values = inputs.filter((item, idx) => idx !== index);
+		    setInputs(values);
 		    props.uploadSpecs(values)
 	}
 
 	const removeOption = (index) => {
-	    let values = [...options]
-		    values.splice(index, 1);
-		    setSpecs(values);
+		console.log('option' + index)
+		    let values = options.filter((item, idx) => idx !== index);
+		    setOptions(values);
 		    props.uploadOptions(values)
-	}	
+	}
 
+	const removeDropdown = (id) => {
+		let newList = dropdowns.filter((item) => item.id !== id);
+			setDropdowns(newList)
+	}	
 
 	const callOption = (id, option) => {
 		let values = [...options];
 			values[id] = Object.values(option)[0];
-	    	setOptions(values);
-	    	props.uploadOptions(values);
+	    		setOptions(values);
+	    		props.uploadOptions(values);
   };
  
   //input handle change
   const handleChange = (e, index) => {
-    let values = [...specs];
+    let values = [...inputs];
     	values[index] = e.target.value;
-    		setSpecs(values);
+    		setInputs(values);
     		props.uploadSpecs(values)
   };
-
-
 
   //input toggling
   const handleToggle = id => {
@@ -75,23 +84,23 @@ const SpecForm = (props) => {
 	}
 
 	return (
-	<div>
-	{ 
-	props.currentStep == 4 ?
-	<div class="ui grid"
-	style={gridContainer}>
+		<div>
+			{ 
+				props.currentStep == 4 ?
+				<div class="ui grid"
+				style={gridContainer}>
 					<div className='addspecs'>
 							<AddIcon onClick={() => {
-								addSpec();
+								addInput();
+								combineDropdowns();
 							}} />
 							<p>Add specs</p>
 						<div>
 							{
-							specs.map((spec, index) => (
-								<div className="description">
-									<Spec 
+							dropdowns.map((dropdown, index) => (
+								<div key={dropdown.id} className="description">							
+									<Spec
 										id={index}
-										key={index}
 										callOption={callOption}
 										handleToggle={handleToggle}
 										/>
@@ -99,15 +108,16 @@ const SpecForm = (props) => {
 								toggleSpec.includes(index) ?
 								<div>
 									<TextField
-										key={index}
+										id={index}
 										onChange={(e) => handleChange(e, index)}  
 										id="standard-basic" 
 										label="Description"  
 									    />
 									<Button type="button" 
 									onClick={() => {
+										removeDropdown(dropdown.id);
 										removeOption(index);
-										removeSpec(index);
+										removeInput(index);
 									}}
 									> X </Button>
 								</div>
@@ -119,7 +129,7 @@ const SpecForm = (props) => {
 						</div>
 					</div>
 				<div>
-					<AdditionalInfo />
+					<AdditionalInfo {...props} />
 				</div>			
 		</div>
 		: ""

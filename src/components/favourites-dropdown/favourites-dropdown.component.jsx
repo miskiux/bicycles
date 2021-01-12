@@ -33,7 +33,14 @@ return (
 		</div>
 	: null 	
 	}
-		<ArrowRightIcon onClick={() => {setOpen(!open); setClose(!close)}} className="ArrowRightIcon" style={{ fontSize: 60 }} color="primary"></ArrowRightIcon>
+		<ArrowRightIcon onClick={() => {
+			setOpen(!open); 
+			setClose(!close)}} 
+			className="ArrowRightIcon" 
+			style={{ fontSize: 60 }} 
+			color="primary">
+		</ArrowRightIcon>
+		
 		<div className="bicycle-dropdown">
 						{ open ?
 							<div>
