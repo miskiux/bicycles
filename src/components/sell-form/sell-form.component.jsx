@@ -25,7 +25,10 @@ import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 
 import 'semantic-ui-css/semantic.min.css';
 
-//how to avoid tons of callbacks
+// how to avoid tons of callbacks
+// revokeImageUrl on formSubmit
+// building a loader
+// losing spec form state(options, inputs) on re-render
 
 class SellForm extends React.Component {
 	constructor(props) {
@@ -60,6 +63,7 @@ componentDidMount() {
 
 //receiving imageFiles from callback
 uploadImages = (imageFiles) => {
+	console.log(imageFiles)
 			this.setState({
 				image: imageFiles
 			});

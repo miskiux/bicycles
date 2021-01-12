@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-
+ 
 import { v4 as uuidv4 } from 'uuid';
  
 import AddIcon from '@material-ui/icons/Add';
@@ -15,8 +15,6 @@ const gridContainer = {
   display: 'flex',
   justifyContent: 'space-between'
 };
-
-//removing index
 
 const SpecForm = (props) => {
 
@@ -37,29 +35,10 @@ const SpecForm = (props) => {
 		    values.push([]);
 		    setInputs(values);
 	}
-
+ 
 	const combineDropdowns = () => {
 		setDropdowns([...dropdowns, {id: uuidv4()}]);
 	}
-
-  	const removeInput = (index) => {
-  		console.log('spec' + index)
-			let values = inputs.filter((item, idx) => idx !== index);
-		    setInputs(values);
-		    props.uploadSpecs(values)
-	}
-
-	const removeOption = (index) => {
-		console.log('option' + index)
-		    let values = options.filter((item, idx) => idx !== index);
-		    setOptions(values);
-		    props.uploadOptions(values)
-	}
-
-	const removeDropdown = (id) => {
-		let newList = dropdowns.filter((item) => item.id !== id);
-			setDropdowns(newList)
-	}	
 
 	const callOption = (id, option) => {
 		let values = [...options];
@@ -82,6 +61,27 @@ const SpecForm = (props) => {
 		ids.push(id)
 		setToggleSpec(ids)
 	}
+
+
+	//REMOVE FUNCTIONS
+	const removeInput = (index) => {
+  		console.log('spec' + index)
+			let values = inputs.filter((item, idx) => idx !== index);
+		    setInputs(values);
+		    props.uploadSpecs(values)
+	}
+
+	const removeOption = (index) => {
+		console.log('option' + index)
+		    let values = options.filter((item, idx) => idx !== index);
+		    setOptions(values);
+		    props.uploadOptions(values)
+	}
+
+	const removeDropdown = (id) => {
+		let newList = dropdowns.filter((item) => item.id !== id);
+			setDropdowns(newList)
+	}	
 
 	return (
 		<div>
@@ -114,10 +114,10 @@ const SpecForm = (props) => {
 										label="Description"  
 									    />
 									<Button type="button" 
-									onClick={() => {
-										removeDropdown(dropdown.id);
-										removeOption(index);
-										removeInput(index);
+										onClick={() => {
+											removeDropdown(dropdown.id);
+											removeOption(index);
+											removeInput(index);
 									}}
 									> X </Button>
 								</div>

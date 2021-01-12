@@ -37,7 +37,9 @@ const img = {
   height: '100%'
 };
 
-//array move
+
+//getting current index after : MOVE, REMOVE
+
 const arrayMove = require('array-move');
 
 const ImageInput = (props) => {
@@ -71,11 +73,6 @@ const [imageFiles, setFiles] = useState([])
     setFiles(arr)
   }
 
-//cannot use index for imageFiles
-// adding uuid onDrop
-
-// another issue: array-move - mutating the state 
-
   const images = imageFiles.map((file, index) => (
       <div style={thumb} key={file.id}>
         <div style={thumbInner}>
@@ -96,9 +93,10 @@ const [imageFiles, setFiles] = useState([])
     </div>
   ))
 
-  useEffect(() => () => {
-    imageFiles.forEach(file => URL.revokeObjectURL(file.preview));
-   }, [imageFiles]);
+  //after form submit - images.forEach
+  // useEffect(() => () => {
+  //   imageFiles.forEach(file => URL.revokeObjectURL(file.preview));
+  //  }, [imageFiles]);
 
   useEffect(() => {
     props.uploadImages(imageFiles)
