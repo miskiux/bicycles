@@ -8,9 +8,7 @@ const INITIAL_STATE = {
 }
 
 const shopReducer = (state = INITIAL_STATE, action) => {
-	if (action.type === ShopActionTypes.FILTER_BY_PRICE) {
-		console.log(action.payload)
-	}
+	
 	switch (action.type) {
 		case ShopActionTypes.FETCH_BICYCLES_START:
 		return {

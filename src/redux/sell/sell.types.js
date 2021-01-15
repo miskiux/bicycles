@@ -1,5 +1,6 @@
 const SellActionTypes = {
-	
+	IMAGE_UPLOAD_SUCCESS: 'IMAGE_UPLOAD_SUCCESS',
+	BICYCLE_UPLOAD_START: 'BICYCLE_UPLOAD_START'
 }
 
 export default SellActionTypes;

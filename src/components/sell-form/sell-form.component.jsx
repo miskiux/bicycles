@@ -7,6 +7,9 @@ import { connect } from "react-redux";
 import ImageInput from './image-input/image-input.component';
 
 import { selectCurrentUser }  from '../../redux/user/user.selectors';
+import { SelectHasImagesLoaded } from '../../redux/sell/sell.selectors';
+import { bicycleUploadStart } from '../../redux/sell/sell.actions';
+ 
 import { useStorage } from "../../hooks/useStorage.js";
 
 import GeneralInfo from './general-info/general-info.component'
@@ -20,15 +23,15 @@ import { Grid, Form, Input, Segment, Button } from 'semantic-ui-react';
 
 import 'semantic-ui-css/semantic.min.css';
 
-// losing spec form state(options, inputs) on re-render
+//  onSubmit => 
+// 1. isLoading - true 
+// 2. useStorage - dispatch => IMAGE_UPLOAD_SUCCESS: isLoading => false
 
-// 1. container - using with-spinner higher order components
+// 3. SAGA listens to IMAGE_UPLOAD_SUCCESS
+// 4. onImageUploadSuccess => yield addBiciData()
+// 5. put(BICYCLE_UPLOAD_SUCCESS) => isLoading - false 
 
-//STEPS : 1. DISPATCHING UPLOAD_START - opens withSpinner; 2. listen to success => UPLOAD_SUCCESS => closes withSpinner, brings SUCCESS COMPONENT
-
-	//getting document id
-
-function SellForm({currentUser}) {
+function SellForm({currentUser, hasImagesLoaded, bicycleUploadStart}) {
 
 	const [data, setData] = useState({
 			currentStep: 1, 
@@ -77,36 +80,43 @@ useEffect(() => {
 	setData( {...data, userId: currentUser.id} )
 }, [currentUser])
 
-
-// if  not work, addItem dispatch action: isLoading: true
 const { url } = useStorage(image, isLoading);
+
+useEffect(() => {
+	if (hasImagesLoaded === true) {
+		bicycleUploadStart({bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, size, condition, options})
+		setData((prevData) => ({...data, manufacturer: '', model: '', price: '', phone: '', address: '', size: ''}))
+	}
+}, [hasImagesLoaded])
 
 const startLoading = () => {
 	setIsLoading(true)
 }
+	
+		//dispatch an action
+	// try {
 
-const addItem = async (event) => {
-	try {
-		await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, size, condition, options});
-			setData((prevData) => ({...data, manufacturer: '', model: '', price: '', phone: '', address: '', size: ''}))
-	} catch (error) {
-		console.log(error)
-	}
-}
+	// 	await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, size, condition, options});
+	// 		setData((prevData) => ({...data, manufacturer: '', model: '', price: '', phone: '', address: '', size: ''}))
+	// } catch (error) {
+	// 	console.log(error)
+	// }	
 
 	const handleChange = event => {
 		const {name, value} = event.target;
 		setData({...data, [name]: value })
 	}
 
-	//handle bind for form submit
+	//wait till finished value is received
+	//sagas
+
 	const handleBind = async event => {
 		event.preventDefault();
-			await startLoading();
-			await addItem();
+		startLoading(); 
 	}
+
 	//receiving imageFiles from callback
-const uploadImages = (imageFiles) => {
+	const uploadImages = (imageFiles) => {
 		setData({...data, image: imageFiles})
 	}
  
@@ -243,9 +253,14 @@ const prev = () => {
 		
 
 const mapStateToProps = (state) => ({
-  currentUser: selectCurrentUser(state)
+  currentUser: selectCurrentUser(state),
+  hasImagesLoaded: SelectHasImagesLoaded(state) 
 });
 
+const mapDispatchToProps = dispatch => ({
+	bicycleUploadStart:(additionalData) => dispatch(bicycleUploadStart(additionalData))
+})
 
-export default connect(mapStateToProps)(SellForm);
+
+export default connect(mapStateToProps, mapDispatchToProps)(SellForm);
 

@@ -1,6 +1,6 @@
 //sagas listenting to actions
 
-//saga middleware to run sagas concurrently - to run them all together
+// saga middleware to run sagas concurrently - to run them all together
 // takeEvery () => listens for every action of a specific type we pass to it. creates a non blocking code. to continue running other sagas
 // takeLatest () => issuing API call one time
 
