@@ -1,10 +1,10 @@
 import React from 'react';
-import SellForm from '../../components/sell-form/sell-form.component';
+import SellFormContainer from "../../components/sell-form/sell-form.container.jsx";
 
 
 const SellPage = () => (
 <div className='sellpage'>
-	<SellForm />
+	<SellFormContainer />
 </div>
 	)
 

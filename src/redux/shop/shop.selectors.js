@@ -8,7 +8,7 @@ const countrySelector = state => state.shop.country
 const regionSelector = state => state.shop.region
 //memoized selector for checkboxes of manufacturer options
 
-
+ 
 const selectShop = state => state.shop;
 
 export const selectIsBicyclesFetching = createSelector(

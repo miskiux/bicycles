@@ -4,22 +4,23 @@ import {storage} from "../firebase/firebase.utils";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { imageUploadSuccess } from '../redux/sell/sell.actions'
+import { imageUploadSuccess } from '../redux/sell/sell.actions';
+import { imageUploadStart } from '../redux/sell/sell.actions';
 
-export const useStorage = (image, isLoading) => {
+export const useStorage = (image) => {
 
 	const [url, setUrl] = useState([]);
-
+ 
 	const userId = useSelector(state => state.user.currentUser)
+	const isLoading = useSelector(state => state.sell.imagesLoading) 
+
 	const dispatch = useDispatch()
 
 
 //* Promise.all expects an array of promises | return Promise inside the map callback
 // if there is no return value, will return an array with undefined values
 
-//dispatching that it is done
 	useEffect(() => {
-		console.log(isLoading)
 		if(isLoading === true && image) {
 			const urlarray = [];
 				let result = Promise.all(
@@ -50,8 +51,8 @@ export const useStorage = (image, isLoading) => {
 
 							})
 						)
-					.then(() => dispatch(imageUploadSuccess()))
-					//isLoading => false
+					.then(() => dispatch(imageUploadSuccess()));
+					dispatch(imageUploadStart())
 			}
 	}, [isLoading, image]);
 	return { url }

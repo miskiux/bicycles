@@ -45,7 +45,7 @@ export const addBiciData = async (additionalData) => {
     const biciRef = firestore.collection("bicycle").doc(); // getting back user reference at user location and then getting a snapshot
     const batch = firestore.batch();
           
-const { bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address, region, subCategory, options, size, condition } = additionalData;
+const { bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, options, size, condition } = additionalData;
 const createdAt = new Date();
 
       try {

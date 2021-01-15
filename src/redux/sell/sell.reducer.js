@@ -1,7 +1,9 @@
 import SellActionTypes from './sell.types';
 
 const INITIAL_STATE = {
-	isUploading: false
+	imagesLoading: false,
+	isBicycleUploading: false,
+	isLoading: false,
 }
 
 const sellReducer = (state = INITIAL_STATE, action) => {
@@ -9,7 +11,18 @@ const sellReducer = (state = INITIAL_STATE, action) => {
 		case SellActionTypes.IMAGE_UPLOAD_SUCCESS:
 		return {
 			...state,
-			isUploading: true
+			isBicycleUploading: true
+		}
+		case SellActionTypes.IMAGE_UPLOAD_START:
+		return {
+			...state,
+			imagesLoading: true,
+			isLoading: true
+		}
+		case SellActionTypes.UPLOAD_FINISHED:
+		return {
+			...state,
+			isLoading: false
 		}
 		default:
 			return state;

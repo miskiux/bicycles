@@ -8,7 +8,9 @@ import ImageInput from './image-input/image-input.component';
 
 import { selectCurrentUser }  from '../../redux/user/user.selectors';
 import { SelectHasImagesLoaded } from '../../redux/sell/sell.selectors';
+
 import { bicycleUploadStart } from '../../redux/sell/sell.actions';
+import { imageUploadStart } from '../../redux/sell/sell.actions';
  
 import { useStorage } from "../../hooks/useStorage.js";
 
@@ -23,15 +25,7 @@ import { Grid, Form, Input, Segment, Button } from 'semantic-ui-react';
 
 import 'semantic-ui-css/semantic.min.css';
 
-//  onSubmit => 
-// 1. isLoading - true 
-// 2. useStorage - dispatch => IMAGE_UPLOAD_SUCCESS: isLoading => false
-
-// 3. SAGA listens to IMAGE_UPLOAD_SUCCESS
-// 4. onImageUploadSuccess => yield addBiciData()
-// 5. put(BICYCLE_UPLOAD_SUCCESS) => isLoading - false 
-
-function SellForm({currentUser, hasImagesLoaded, bicycleUploadStart}) {
+function SellForm({currentUser, hasImagesLoaded, bicycleUploadStart, imageUploadStart}) {
 
 	const [data, setData] = useState({
 			currentStep: 1, 
@@ -53,8 +47,6 @@ function SellForm({currentUser, hasImagesLoaded, bicycleUploadStart}) {
       		region: '',
       		image: [],
 		})
-
-	const [ isLoading, setIsLoading ] = useState(false)
 
 	const {
 		currentStep,  
@@ -80,7 +72,7 @@ useEffect(() => {
 	setData( {...data, userId: currentUser.id} )
 }, [currentUser])
 
-const { url } = useStorage(image, isLoading);
+const { url } = useStorage(image);
 
 useEffect(() => {
 	if (hasImagesLoaded === true) {
@@ -89,63 +81,42 @@ useEffect(() => {
 	}
 }, [hasImagesLoaded])
 
-const startLoading = () => {
-	setIsLoading(true)
-}
-	
-		//dispatch an action
-	// try {
-
-	// 	await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, size, condition, options});
-	// 		setData((prevData) => ({...data, manufacturer: '', model: '', price: '', phone: '', address: '', size: ''}))
-	// } catch (error) {
-	// 	console.log(error)
-	// }	
-
 	const handleChange = event => {
 		const {name, value} = event.target;
 		setData({...data, [name]: value })
 	}
 
-	//wait till finished value is received
-	//sagas
-
-	const handleBind = async event => {
-		event.preventDefault();
-		startLoading(); 
-	}
-
 	//receiving imageFiles from callback
 	const uploadImages = (imageFiles) => {
-		setData({...data, image: imageFiles})
+		setData((prevData) => ({...data, image: imageFiles}))
 	}
  
 //specs through callback
 const uploadSpecs = (specs) => {
-	setData({...data, description: specs})
+	setData((prevData) => ({...data, description: specs}))
 }
 
 //callback from description
 const uploadOptions = (option) => {
-	setData({...data, options: option})
+	setData((prevData) => ({...data, options: option}))
 }
 
 const uploadGender = (gender) => {
 	let value = Object.values(gender)[0];
-	setData({...data, gender: gender})
+	setData((prevData) => ({...data, gender: value}))
 }
 
 const uploadType = (type) => {
 	let value = Object.values(type)[0];
-	setData({...data, bicycleType:value})
+	setData((prevData) => ({...data, bicycleType:value}))
 }
 
 const uploadSubType = (sub) => {
-	setData({...data, subCategory: sub})
+	setData((prevData) => ({...data, subCategory: sub}))
 }
 
 const uploadAddress = (location) => {
-	setData({...data, address: location})
+	setData((prevData) => ({...data, address: location}))
 }
 
 const onRadioChange = (event) => {
@@ -153,7 +124,7 @@ const onRadioChange = (event) => {
   }
 
 const handleYear = year => {
-		setData({...data, year: year})
+		setData((prevData) => ({...data, year: year}))
 	}
 
 
@@ -198,7 +169,7 @@ const prev = () => {
 
 		return(
 			<div className="sell-form">	
-				<Form onSubmit={handleBind}>
+				<Form onSubmit={() => imageUploadStart() }>
 				{console.log(url)}
 					<GeneralInfo
 						currentStep={currentStep} 
@@ -258,7 +229,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	bicycleUploadStart:(additionalData) => dispatch(bicycleUploadStart(additionalData))
+	bicycleUploadStart:(additionalData) => dispatch(bicycleUploadStart(additionalData)),
+	imageUploadStart: () => dispatch(imageUploadStart())
 })
 
 
