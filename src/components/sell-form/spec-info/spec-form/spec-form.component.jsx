@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
  
 import { v4 as uuidv4 } from 'uuid';
  
@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Spec from '../spec/spec.component';
 import AdditionalInfo from '../size-condition/size-condition.component'
 
-import { Grid, Input, Segment, Form, Button } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import './spec-form.styles.css'
 
 const gridContainer = {
@@ -86,7 +86,7 @@ const SpecForm = (props) => {
 	return (
 		<div>
 			{ 
-				props.currentStep == 4 ?
+				props.currentStep === 4 ?
 				<div class="ui grid"
 				style={gridContainer}>
 					<div className='addspecs'>

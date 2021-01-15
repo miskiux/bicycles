@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 
 import { auth, firestore, storage, addBiciData } from "../../firebase/firebase.utils";
 
@@ -6,11 +6,8 @@ import { connect } from "react-redux";
 
 import ImageInput from './image-input/image-input.component';
 
-import { selectFiles } from '../../redux/sell/sell.selectors'
-import { selectCurrentUser }  from '../../redux/user/user.selectors'
-import { selectImagePopUp } from '../../redux/sell/sell.selectors'
-
-import { toggleImagePopUp } from '../../redux/sell/sell.actions'
+import { selectCurrentUser }  from '../../redux/user/user.selectors';
+import { useStorage } from "../../hooks/useStorage.js";
 
 import GeneralInfo from './general-info/general-info.component'
 import ContactInformation from './contact-information/contact-information.component'
@@ -21,21 +18,20 @@ import './sell-form.styles.css'
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { Grid, Form, Input, Segment, Button } from 'semantic-ui-react';
 
-import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
-
 import 'semantic-ui-css/semantic.min.css';
 
-// how to avoid tons of callbacks
-// revokeImageUrl on formSubmit
-// building a loader
 // losing spec form state(options, inputs) on re-render
 
-class SellForm extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			currentStep: 1,
-			url: [], 
+// 1. container - using with-spinner higher order components
+
+//STEPS : 1. DISPATCHING UPLOAD_START - opens withSpinner; 2. listen to success => UPLOAD_SUCCESS => closes withSpinner, brings SUCCESS COMPONENT
+
+	//getting document id
+
+function SellForm({currentUser}) {
+
+	const [data, setData] = useState({
+			currentStep: 1, 
 			userId: '',
 			bicycleType: '',
 			subCategory: '',
@@ -53,149 +49,122 @@ class SellForm extends React.Component {
       		address: '',
       		region: '',
       		image: [],
-		}
-	}
+		})
 
-componentDidMount() {
-	const {currentUser} = this.props;
-	this.setState({userId: currentUser.id})
+	const [ isLoading, setIsLoading ] = useState(false)
+
+	const {
+		currentStep,  
+		userId,
+		bicycleType,
+		subCategory,
+		options,
+		description,
+		size,
+		condition,
+		gender,
+		manufacturer,
+		model,
+		price,
+		year,
+		country,
+		phone,
+		address,
+		region,
+		image } = data
+
+useEffect(() => {
+	setData( {...data, userId: currentUser.id} )
+}, [currentUser])
+
+
+// if  not work, addItem dispatch action: isLoading: true
+const { url } = useStorage(image, isLoading);
+
+const startLoading = () => {
+	setIsLoading(true)
 }
 
-//receiving imageFiles from callback
-uploadImages = (imageFiles) => {
-	console.log(imageFiles)
-			this.setState({
-				image: imageFiles
-			});
+const addItem = async (event) => {
+	try {
+		await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, size, condition, options});
+			setData((prevData) => ({...data, manufacturer: '', model: '', price: '', phone: '', address: '', size: ''}))
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+	const handleChange = event => {
+		const {name, value} = event.target;
+		setData({...data, [name]: value })
+	}
+
+	//handle bind for form submit
+	const handleBind = async event => {
+		event.preventDefault();
+			await startLoading();
+			await addItem();
+	}
+	//receiving imageFiles from callback
+const uploadImages = (imageFiles) => {
+		setData({...data, image: imageFiles})
 	}
  
 //specs through callback
-uploadSpecs = (specs) => {
-	this.setState({
-		description: specs
-	})
+const uploadSpecs = (specs) => {
+	setData({...data, description: specs})
 }
 
 //callback from description
-uploadOptions = (option) => {
-	this.setState({
-		options: option
-	})
-}
-uploadGender = (gender) => {
-	this.setState({gender: gender})
+const uploadOptions = (option) => {
+	setData({...data, options: option})
 }
 
-uploadType = (type) => {
-	this.setState({bicycleType:type})
+const uploadGender = (gender) => {
+	let value = Object.values(gender)[0];
+	setData({...data, gender: gender})
 }
 
-uploadSubType = (sub) => {
-	this.setState({subCategory: sub})
+const uploadType = (type) => {
+	let value = Object.values(type)[0];
+	setData({...data, bicycleType:value})
 }
 
-uploadAddress = (location) => {
-	this.setState({address: location})
+const uploadSubType = (sub) => {
+	setData({...data, subCategory: sub})
 }
 
-onRadioChange = (event) => {
-    this.setState({condition: event.target.value});
+const uploadAddress = (location) => {
+	setData({...data, address: location})
+}
+
+const onRadioChange = (event) => {
+	setData({...data, condition: event.target.value})
   }
 
-//image upload
-//* Promise.all expects an array of promises | return Promise inside the map callback
-// if there is no return value, will return an array with undefined values
-uploadImage = async (event) => {
-
-		const {image, userId, url } = this.state
-		const urlarray = []
-
-	let result = await Promise.all(
-		image.map((image) => {
-			return new Promise ((resolve, reject) => {
-			//storing image
-			const uploadTask = storage.ref(`/images/${userId}/${image.name}`).put(image)
-			//getting the image url
-				uploadTask.on(
-				"state_changed",
-				(snapshot) => {
-					const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-					console.log(progress)
-				},
-				error => {
-					console.log(error);
-				},
-				 () => {
-					storage.ref(`/images/${userId}`).child(image.name).getDownloadURL()
-							.then(imgUrl => {
-								imgUrl.split(',');
-								urlarray.push(imgUrl)
-								this.setState({url:urlarray})
-								resolve(urlarray)
-									})
-								})
-					})
-				})
-			)	
-}
-//additem getting reference through addBiciData
-	addItem = async (event) => {
-		const {bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, country, region, subCategory, size, condition} = this.state;
-		
-		try {
-			await addBiciData({bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address, region, subCategory, size, condition});
-			this.setState({manufacturer: '', model: '', price: '', phone: '', address: '', size: ''})
-		} catch (error) {
-			console.log(error)
-		}
+const handleYear = year => {
+		setData({...data, year: year})
 	}
 
-	handleChange = event => {
-		const {name, value} = event.target;
-		this.setState({ [name]: value })
-	}
-
-	handleYear = year => {
-		this.setState({year: year})
-	}
-
-	//handle bind for form
-	handleBind = async event => {
-		event.preventDefault();
-		await this.uploadImage();
-		await this.addItem();
-	}
 
 //NAVIGATING: CURRENT STEP
 
-next = (event) => {
-	let currentStep = this.state.currentStep
-	currentStep = currentStep >= 3 ? 
-	4: currentStep + 1
-	this.setState({
-		currentStep: currentStep
-	})
-}
+const next = () => {
+		setData({...data, currentStep: currentStep + 1})
+		}
 
-prev = (event) => {
-	let currentStep = this.state.currentStep
-	currentStep = currentStep <= 1 ? 
-	1: currentStep - 1
-    this.setState({
-      currentStep: currentStep
-    })
+const prev = () => {
+   	setData({...data, currentStep: currentStep - 1})
 }
 
 		//NAVIGATING: NAVIGATION BUTTONS
 
-  previousButton = () => {
- 	let currentStep = this.state.currentStep
-
+  const previousButton = () => {
  	if(currentStep !==1) {
  		return (
  			<Button 
  			type="button"
- 			onClick={this.prev}>Back</Button>
+ 			onClick={prev}>Back</Button>
  			)
  	}
  	return null;
@@ -204,11 +173,10 @@ prev = (event) => {
 
  // next button onClick to 
 
-  nextButton = () => {
- 	let currentStep = this.state.currentStep
+  const nextButton = () => {
  	if(currentStep < 4){
     return (
-      <Button onClick={this.next}
+      <Button onClick={next}
       type="button"
       >
       Next
@@ -218,68 +186,64 @@ prev = (event) => {
 	return null
  } 
 
-
-	render() {
 		return(
 			<div className="sell-form">	
-				<Form onSubmit={this.handleBind}>
+				<Form onSubmit={handleBind}>
+				{console.log(url)}
 					<GeneralInfo
-						currentStep={this.state.currentStep} 
-						handleChange={this.handleChange}
-						manufacturer={this.state.manufacturer}
-						year={this.state.year}
-						model={this.state.model}
-						bicycleType={this.state.bicycleType}
-						gender={this.state.gender}
-						price={this.state.price}
-						handleYear={this.handleYear}
-						uploadGender={this.uploadGender}
-						uploadType={this.uploadType}
-						uploadSubType={this.uploadSubType}
+						currentStep={currentStep} 
+						handleChange={handleChange}
+						manufacturer={manufacturer}
+						year={year}
+						model={model}
+						bicycleType={bicycleType}
+						gender={gender}
+						price={price}
+						handleYear={handleYear}
+						uploadGender={uploadGender}
+						uploadType={uploadType}
+						uploadSubType={uploadSubType}
 						/>
 
 					<ContactInformation
-						currentStep={this.state.currentStep}
-						handleChange={this.handleChange}
-						phone={this.state.phone}
-						uploadAddress={this.uploadAddress}
+						currentStep={currentStep}
+						handleChange={handleChange}
+						phone={phone}
+						uploadAddress={uploadAddress}
 					/>
 
 					<ImageInput
-						currentStep={this.state.currentStep}
-						uploadImages={this.uploadImages}
+						currentStep={currentStep}
+						uploadImages={uploadImages}
 					/>
 
 					<SpecForm
-						uploadSpecs={this.uploadSpecs}
-						uploadOptions={this.uploadOptions}
-						currentStep={this.state.currentStep} 
-						description={this.description}
-						size={this.state.size}
-						condition={this.state.condition}
-						handleChange={this.handleChange}
-						onRadioChange={this.onRadioChange}
+						uploadSpecs={uploadSpecs}
+						uploadOptions={uploadOptions}
+						currentStep={currentStep} 
+						description={description}
+						size={size}
+						condition={condition}
+						handleChange={handleChange}
+						onRadioChange={onRadioChange}
 					/>
 					<div>
-					 {this.previousButton()}
-      				 {this.nextButton()}
+					 {previousButton()}
+      				 {nextButton()}
       				</div>
       				 
       				 {
-      				 	this.state.currentStep === 4 ?
+      				 	currentStep === 4 ?
       				 		<Button type='submit'>Submit</Button>
-      				 			: ""
+      				 	: ""
       				 }
 				</Form>
 			</div>
-						)
-					}
-				}
+		)}
+		
 
 const mapStateToProps = (state) => ({
-  currentUser: selectCurrentUser(state),
-  files: selectFiles(state),
-  imagePopUp: selectImagePopUp(state)
+  currentUser: selectCurrentUser(state)
 });
 
 

@@ -17,20 +17,6 @@ export const fetchBicyclesFailure = (errorMessage) => ({
 	payload: errorMessage
 })
 
-export const fetchBicyclesStartAsync = () => {
-	return dispatch => {
-		const bicycleRef = firestore.collection("bicycle");
-		dispatch(fetchBicyclesStart());
-
-		bicycleRef.get()
-		.then(snapshot => {
-			const bicycleMap = getBiciDataForShop(snapshot)
-			dispatch(fetchBicyclesSuccess(bicycleMap));
-		})
-		.catch(error => 
-			dispatch(fetchBicyclesFailure(error.message)) )
-	}
-}
 
 //filter actions
 export const filterByPrice = payload => ({

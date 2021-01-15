@@ -15,11 +15,10 @@ const persistConfig = {
 }
 
 const rootReducer = combineReducers({
-	user: userReducer,  //keys(user) represent individual slices of state  
+	user: userReducer, 
 	favourites: favouritesReducer,
 	directory: directoryReducer,
 	shop: shopReducer,
-	sell: sellReducer
 
 })
 

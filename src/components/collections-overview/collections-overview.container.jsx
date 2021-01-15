@@ -11,10 +11,8 @@ import CollectionsOverview from './collections-overview.component'
 
 const mapStateToProps = createStructuredSelector ({
 	isLoading: selectIsBicyclesFetching //isLoading with-spinner prop
-
 });
 
-//currying all functions together
 const CollectionsOverviewContainer = compose(
 	connect(mapStateToProps),
 	WithSpinner

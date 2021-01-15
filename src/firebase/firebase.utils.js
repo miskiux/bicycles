@@ -43,9 +43,8 @@ const config = {
 export const addBiciData = async (additionalData) => {
 
     const biciRef = firestore.collection("bicycle").doc(); // getting back user reference at user location and then getting a snapshot
-
-    const batch = firestore.batch();      
-
+    const batch = firestore.batch();
+          
 const { bicycleType, description, gender, manufacturer, model, year, price, userId, url, country, phone, address, region, subCategory, options, size, condition } = additionalData;
 const createdAt = new Date();
 
@@ -74,6 +73,7 @@ const createdAt = new Date();
           console.log('error updating user', error.message);
       }
     return await batch.commit();
+
   }
 
 //getting bicycle data
@@ -83,7 +83,7 @@ export const getBiciDataForShop = (bicycle) => {
     const { bicycleType, item, address, phone, userId } = doc.data()
     //returning an object
     return {
-      routeName: encodeURI(bicycleType.toLowerCase()).replace(/%20/g, " "), //for routing
+      // routeName: encodeURI(bicycleType.toLowerCase()).replace(/%20/g, " "), //for routing
       id: doc.id,
       bicycleType,
       item,
