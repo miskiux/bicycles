@@ -12,7 +12,7 @@ const genderList = [
   {
     key: "Kids",
     label: "Kids",
-    label: "Kids",
+    value: "Kids",
   },
   {
     key: "Boys",

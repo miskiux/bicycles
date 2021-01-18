@@ -5,6 +5,8 @@ import SellActionTypes from './sell.types';
 import { addBiciData } from '../../firebase/firebase.utils';
 import { uploadSuccess } from './sell.actions'
 
+//handling errors
+
 export function* uploadBicycle(action) {
 	try {
 		yield addBiciData(action.payload)   
@@ -14,7 +16,7 @@ export function* uploadBicycle(action) {
 		yield put(uploadSuccess())
 	}
 }
- 
+  
 export function* onBicycleUpload() {
 	yield takeLatest(SellActionTypes.BICYCLE_UPLOAD_START, uploadBicycle)
 }

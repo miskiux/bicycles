@@ -4,3 +4,7 @@
 	justify-content: center;
 	margin: 40px;
 }
+
+.mapboxgl-ctrl-geocoder--input {
+	padding: 1em 2em ! important;
+}

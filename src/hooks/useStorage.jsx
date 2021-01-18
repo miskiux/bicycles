@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 
 import {storage} from "../firebase/firebase.utils";
 
@@ -52,7 +52,6 @@ export const useStorage = (image) => {
 							})
 						)
 					.then(() => dispatch(imageUploadSuccess()));
-					dispatch(imageUploadStart())
 			}
 	}, [isLoading, image]);
 	return { url }

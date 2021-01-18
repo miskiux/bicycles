@@ -22,20 +22,21 @@ const CollectionItem = ({ item, addItem, id, match }) => {
 //routing
 const history = useHistory();
 
-const [currentPosition, setCurrentPosition] = useState(0);
+const [index, setIndex] = useState(0);
 
-let currentUrl = item.url[currentPosition]
+const images = item.url
 
 const onClickForward = () => {
-	currentPosition !== item.url.length -1 ?
-	setCurrentPosition(currentPosition + 1) : setCurrentPosition(currentPosition = 0);
-	currentUrl = item.url[currentPosition]
+	setIndex((index + 1) % images.length);
 }
 
 const onClickBackwards = () => {
-	currentPosition !== 0 ?
-	setCurrentPosition(currentPosition - 1) : setCurrentPosition(currentPosition = item.url.length - 1);
-	currentUrl = item.url[currentPosition]
+	let nextIndex = index - 1;
+	if (nextIndex < 0) {
+		setIndex(images.length - 1); 
+    } else {
+      	setIndex(nextIndex);
+    }
 }
 
 const NavigateToView = () => {
@@ -52,7 +53,7 @@ const NavigateToView = () => {
 		<div
 			className='image'
 			style={{
-				backgroundImage: `url(${currentUrl})`
+				backgroundImage: `url(${images[index]})`
 			}}
 		/>
 		<div className='collection-footer'>

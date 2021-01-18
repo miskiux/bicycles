@@ -72,32 +72,36 @@ const { url } = item
 	<div>
         {
           open ?
-          <div className='item-wrapper'>
-            <div
-              onMouseOver={() => setIsHover(true)}
-              onMouseLeave={() => setIsHover(false)}
-              onClick={() => {
-                toggleCarousel();
-                setOpen(!open)
-              }}
-              className='asset-image'
-              style={{
-                backgroundImage: `url(${url[1]})`
-              }}
-              >
-              </div>
-                { isHover ?
-              <div 
-              className={cursorClasses}
-              style={{
-                    left: `${position.x}px`,
-                    top: `${position.y}px`
-                  }}>
-                  <span className="image-count">1 / {item.url.length}</span>
-              </div> 
-                  : ""
+          <div>
+            <div className='item-wrapper'>
+              <div
+                onMouseOver={() => setIsHover(true)}
+                onMouseLeave={() => setIsHover(false)}
+                onClick={() => {
+                  toggleCarousel();
+                  setOpen(!open)
+                }}
+                className='asset-image'
+                style={{
+                  backgroundImage: `url(${url[1]})`
+                }}
+                >
+                </div>
+                  { isHover ?
+                <div 
+                className={cursorClasses}
+                style={{
+                      left: `${position.x}px`,
+                      top: `${position.y}px`
+                    }}>
+                    <span className="image-count">1 / {item.url.length}</span>
+                </div> 
+                    : ""
                }
-            </div>
+               </div>
+               
+              </div>
+            
             : <ViewCarousel item={item} handleCarousel={handleCarousel} />
         }
         

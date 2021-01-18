@@ -1,6 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
-
-import { auth, firestore, storage, addBiciData } from "../../firebase/firebase.utils";
+import React, {useState, useEffect} from 'react';
 
 import { connect } from "react-redux";
 
@@ -8,11 +6,12 @@ import ImageInput from './image-input/image-input.component';
 
 import { selectCurrentUser }  from '../../redux/user/user.selectors';
 import { SelectHasImagesLoaded } from '../../redux/sell/sell.selectors';
+import { SelectIsLoaded } from '../../redux/sell/sell.selectors';
 
 import { bicycleUploadStart } from '../../redux/sell/sell.actions';
 import { imageUploadStart } from '../../redux/sell/sell.actions';
  
-import { useStorage } from "../../hooks/useStorage.js";
+import { useStorage } from "../../hooks/useStorage.jsx";
 
 import GeneralInfo from './general-info/general-info.component'
 import ContactInformation from './contact-information/contact-information.component'
@@ -21,11 +20,13 @@ import SpecForm from './spec-info/spec-form/spec-form.component';
 import './sell-form.styles.css'
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { Grid, Form, Input, Segment, Button } from 'semantic-ui-react';
+import { Form, Button } from 'semantic-ui-react';
+
+import { SpinnerContainer, SpinnerOverlay } from '../with-spinner/with-spinner.styles'
 
 import 'semantic-ui-css/semantic.min.css';
 
-function SellForm({currentUser, hasImagesLoaded, bicycleUploadStart, imageUploadStart}) {
+function SellForm({currentUser, hasImagesLoaded, bicycleUploadStart, imageUploadStart, isLoaded}) {
 
 	const [data, setData] = useState({
 			currentStep: 1, 
@@ -62,10 +63,8 @@ function SellForm({currentUser, hasImagesLoaded, bicycleUploadStart, imageUpload
 		model,
 		price,
 		year,
-		country,
 		phone,
 		address,
-		region,
 		image } = data
 
 useEffect(() => {
@@ -168,64 +167,72 @@ const prev = () => {
  } 
 
 		return(
-			<div className="sell-form">	
-				<Form onSubmit={() => imageUploadStart() }>
-				{console.log(url)}
-					<GeneralInfo
-						currentStep={currentStep} 
-						handleChange={handleChange}
-						manufacturer={manufacturer}
-						year={year}
-						model={model}
-						bicycleType={bicycleType}
-						gender={gender}
-						price={price}
-						handleYear={handleYear}
-						uploadGender={uploadGender}
-						uploadType={uploadType}
-						uploadSubType={uploadSubType}
-						/>
+			<div className="sell-form">
+			{console.log(address)}	
+				{ isLoaded ? 
+					<SpinnerOverlay>
+						<SpinnerContainer />
+					</SpinnerOverlay>
+					:
+					<Form onSubmit={() => imageUploadStart() }>
 
-					<ContactInformation
-						currentStep={currentStep}
-						handleChange={handleChange}
-						phone={phone}
-						uploadAddress={uploadAddress}
-					/>
-
-					<ImageInput
-						currentStep={currentStep}
-						uploadImages={uploadImages}
-					/>
-
-					<SpecForm
-						uploadSpecs={uploadSpecs}
-						uploadOptions={uploadOptions}
-						currentStep={currentStep} 
-						description={description}
-						size={size}
-						condition={condition}
-						handleChange={handleChange}
-						onRadioChange={onRadioChange}
-					/>
-					<div>
-					 {previousButton()}
-      				 {nextButton()}
-      				</div>
-      				 
-      				 {
-      				 	currentStep === 4 ?
-      				 		<Button type='submit'>Submit</Button>
-      				 	: ""
-      				 }
-				</Form>
+									<GeneralInfo
+										currentStep={currentStep} 
+										handleChange={handleChange}
+										manufacturer={manufacturer}
+										year={year}
+										model={model}
+										bicycleType={bicycleType}
+										gender={gender}
+										price={price}
+										handleYear={handleYear}
+										uploadGender={uploadGender}
+										uploadType={uploadType}
+										uploadSubType={uploadSubType}
+										/>
+				
+									<ContactInformation
+										currentStep={currentStep}
+										handleChange={handleChange}
+										phone={phone}
+										uploadAddress={uploadAddress}
+									/>
+				
+									<ImageInput
+										currentStep={currentStep}
+										uploadImages={uploadImages}
+									/>
+				
+									<SpecForm
+										uploadSpecs={uploadSpecs}
+										uploadOptions={uploadOptions}
+										currentStep={currentStep} 
+										description={description}
+										size={size}
+										condition={condition}
+										handleChange={handleChange}
+										onRadioChange={onRadioChange}
+									/>
+									<div>
+									 {previousButton()}
+				      				 {nextButton()}
+				      				</div>
+				      				 
+				      				 {
+				      				 	currentStep === 4 ?
+				      				 		<Button type='submit'>Submit</Button>
+				      				 	: ""
+				      				 }
+								</Form>
+							}
 			</div>
 		)}
 		
 
 const mapStateToProps = (state) => ({
   currentUser: selectCurrentUser(state),
-  hasImagesLoaded: SelectHasImagesLoaded(state) 
+  hasImagesLoaded: SelectHasImagesLoaded(state) ,
+  isLoaded: SelectIsLoaded(state)
 });
 
 const mapDispatchToProps = dispatch => ({

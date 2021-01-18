@@ -12,7 +12,7 @@ const bicycleList = [
   {
     key: "Vintage",
     label: "Vintage",
-    label: "Vintage",
+    value: "Vintage",
   },
   {
     key: "Off-Road",

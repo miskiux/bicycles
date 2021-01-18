@@ -103,7 +103,7 @@ if (selectedType.key === "Off-Road") {
 												<input 
 													name='manufacturer' 
 													type='text'
-													autocomplete="off" 
+													autoComplete="off" 
 													value={props.manufacturer} 
 													onChange={props.handleChange}
 													/>
