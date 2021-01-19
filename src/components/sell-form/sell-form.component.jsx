@@ -35,6 +35,7 @@ function SellForm({currentUser, hasImagesLoaded, bicycleUploadStart, imageUpload
 			subCategory: '',
 			options:[],
       		description: [],
+      		info: "",
       		size: "",
       		condition: "",
       		gender: '',
@@ -47,6 +48,7 @@ function SellForm({currentUser, hasImagesLoaded, bicycleUploadStart, imageUpload
       		address: '',
       		region: '',
       		image: [],
+      		email: ''
 		})
 
 	const {
@@ -57,26 +59,28 @@ function SellForm({currentUser, hasImagesLoaded, bicycleUploadStart, imageUpload
 		options,
 		description,
 		size,
+		info,
 		condition,
 		gender,
 		manufacturer,
 		model,
 		price,
 		year,
+		email,
 		phone,
 		address,
 		image } = data
 
 useEffect(() => {
-	setData( {...data, userId: currentUser.id} )
+	setData( {...data, userId: currentUser.id, email: currentUser.email} )
 }, [currentUser])
 
 const { url } = useStorage(image);
 
 useEffect(() => {
 	if (hasImagesLoaded === true) {
-		bicycleUploadStart({bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, size, condition, options})
-		setData((prevData) => ({...data, manufacturer: '', model: '', price: '', phone: '', address: '', size: ''}))
+		bicycleUploadStart({bicycleType, email, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, size, condition, options, info})
+		setData((prevData) => ({...data, manufacturer: '', model: '', price: '', phone: '', address: '', size: '', info: ''}))
 	}
 }, [hasImagesLoaded])
 
@@ -209,6 +213,7 @@ const prev = () => {
 										currentStep={currentStep} 
 										description={description}
 										size={size}
+										info={info}
 										condition={condition}
 										handleChange={handleChange}
 										onRadioChange={onRadioChange}

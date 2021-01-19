@@ -6,6 +6,7 @@ import './favourite-item.styles.scss'
 
 const FavouriteItem = ({ item, clearItem }) => {
 	const  { url, price, manufacturer } = item
+	console.log(item)
 	return (
 <div className='favourite-item'>
 	<div className='remove-button' onClick={() => clearItem(item)}>&#10005;</div>

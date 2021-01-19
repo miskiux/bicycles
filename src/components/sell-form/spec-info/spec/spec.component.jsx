@@ -9,13 +9,16 @@ const specOptions = [
     key: "Frame",
     label: "Frame",
     value: "Frame",
-    selected: false,
+  },
+  {
+    key: "Frame",
+    label: "Frame",
+    value: "Frame",
   },
   {
     key: "Fork",
     label: "Fork",
     value: "Fork",
-    selected: false,
   },
   {
     key: "Headset",

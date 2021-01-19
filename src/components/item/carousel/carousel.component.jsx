@@ -21,7 +21,7 @@ const { url } = item
 
 let imgStyles={
   width: 100+"%",
-  height: "auto"
+  height: 100+"vh"
 }
 
 const [x, setX] = useState(0)
@@ -51,7 +51,7 @@ const goRight = () => {
             url.map((image, index) => {
               return(
                 <div key={index} className="slide" style={{transform:`translateX(${x}%)`}}>
-                  <img src={image} alt="Alt text" style={imgStyles}
+                  <img src={image} alt="Alt text" className='imgStyles'
                     />
                 </div>
                 )

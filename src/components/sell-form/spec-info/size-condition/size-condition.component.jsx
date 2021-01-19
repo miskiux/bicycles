@@ -9,11 +9,11 @@ function AdditionalInfo (props) {
 	return (
 		<div>
 			<div>
-				<label> Size of your bicycle </label>
+				<label> Size of your bicycle(cm) </label>
 					<input
 						name='size' 
 						type='text'
-						autocomplete="off" 
+						autoComplete="off" 
 						value={props.size} 
 						onChange={props.handleChange}
 						/>
@@ -31,6 +31,17 @@ function AdditionalInfo (props) {
 				      </div>
 					</div>
 			</div>
+				<div>
+					<label> Additional information </label>
+						<input
+							style={{height: '90px'}}
+							name='info' 
+							type='text'
+							autoComplete="off" 
+							value={props.info} 
+							onChange={props.handleChange}
+							/>
+					</div>
 		</div>
 		)
 }

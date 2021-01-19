@@ -45,18 +45,19 @@ export const addBiciData = async (additionalData) => {
     const biciRef = firestore.collection("bicycle").doc(); // getting back user reference at user location and then getting a snapshot
     const batch = firestore.batch();
           
-const { bicycleType, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, options, size, condition } = additionalData;
+const { bicycleType, email, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, options, size, condition, info } = additionalData;
 const createdAt = new Date();
 
       try {
         await batch.set(biciRef, {
-          address,
           phone,
           userId,
           bicycleType,
           subCategory,
           createdAt,
+          email,
           item: {
+            address,
             manufacturer,
             model,
             year,
@@ -67,7 +68,8 @@ const createdAt = new Date();
             options,
             description,
             size,
-            condition
+            condition,
+            info
         }})
       } catch (error) {
           console.log('error updating user', error.message);
@@ -80,16 +82,17 @@ const createdAt = new Date();
 
 export const getBiciDataForShop = (bicycle) => {
   const bicycleObj = bicycle.docs.map(doc => {
-    const { bicycleType, item, address, phone, userId } = doc.data()
+    const { bicycleType, item, address, email, phone, userId, subCategory } = doc.data()
     //returning an object
     return {
       routeName: encodeURI(bicycleType.toLowerCase()).replace(/%20/g, " "), //for routing
       id: doc.id,
       bicycleType,
       item,
-      address,
       phone,
-      userId
+      userId,
+      email,
+      subCategory,
     }
   })
   return bicycleObj.reduce((accumulator, item) => {

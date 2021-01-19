@@ -17,7 +17,7 @@ const FavouriteDropdown = ({ favouriteItems }) => {
 
 const[open, setOpen] = useState(false);
 const[close, setClose] = useState(true);
-
+console.log(favouriteItems)
 return (
 	<div className='favourites-dropdown'>
 	{ close ?
@@ -53,7 +53,7 @@ return (
 		)}
 
 const mapStateToProps = (state) => ({
-	favouriteItems: selectFavouriteItems(state) //passing whole reducer state, which then goes i have to "selectCartItemsFlash"()
+	favouriteItems: selectFavouriteItems(state) 
 })
 
 export default connect(mapStateToProps)(FavouriteDropdown);

@@ -1,35 +1,101 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import { connect } from 'react-redux';
+import axios from "axios";
 
 import { toggleCarousel } from '../../redux/shop/shop.actions';
 
 import ViewCarousel from './carousel/carousel.component'
+import ReactMapGL,{Marker} from "react-map-gl";
+
+import {Container, Row, Col} from 'react-bootstrap';
+import RoomSharpIcon from '@material-ui/icons/RoomSharp';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './item.styles.css';
 import classNames from "classnames";
+  
+//UL
+// 3 on each ul
+// figuring out how to wrap larger text
 
+//marker losing its sight on zoom
 
-// redux => turn off the header(on back, header is off!)
-// 1. changing inner html background to white
-// 2. shop page: if(toggleCarousel === true) {dispatch action   
+const mapStyle = {
+  width: "100%",
+  height: 350,
+};
 
-const Item = ({item, toggleCarousel}) => {
+const Item = ({item, toggleCarousel, subCategory, phone, email}) => {
 
 //cursor
 const [position, setPosition] = useState({x: 0, y: 0});
 const [isHover, setIsHover] = useState(false);
 const [hidden, setHidden] = useState(false);
+const [isSpec, setIsSpec] = useState(false);
+const [open, setOpen] = useState(true)
+
+// location
+const [viewport, setViewport] = useState({
+    latitude: 54.526,
+    longitude: 15.2551,
+    zoom: 11,
+    bearing: 0,
+    pitch: 0,
+  });
+
+const { latitude, longitude } = viewport
+
+
+const {
+  manufacturer,
+  model,
+  condition,
+  description,
+  gender,
+  info,
+  options,
+  price,
+  size,
+  year,
+  address,
+  url
+} = item
 
 
 //carousel
-const [open, setOpen] = useState(true)
 
 //cursor
 useEffect(() => {
       addEventListeners();
       return () => removeEventListeners();
    }, []);
+
+
+//make sure sell form is giving place_name
+
+useEffect(() => {
+  if(address) {
+    try {
+      axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?access_token=${process.env.REACT_APP_API_KEY}`)
+        .then(res => {
+          let entry = res.data.features[0].center
+          let longitude = entry[0];
+          let latitude = entry[1];
+          setViewport({...viewport, latitude:latitude, longitude:longitude})
+          
+        })
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+}, [])
+
+const handleViewportChange = useCallback(
+    (newViewport) => setViewport(newViewport),
+    []
+  );
 
 const addEventListeners = () => {
        document.addEventListener("mousemove", onMouseMove);
@@ -67,7 +133,12 @@ const addEventListeners = () => {
     setOpen(!open)
    }
 
-const { url } = item
+   //dispalying specifications based on option index
+   const showSpecification = () => {
+    setIsSpec(true)
+   }
+
+
 	return (
 	<div>
         {
@@ -98,8 +169,107 @@ const { url } = item
                 </div> 
                     : ""
                }
+                  <Container className="item-container">
+                     <Row className="item-info-container">
+                        <Col>
+
+                          <div className="item-info"> 
+                              <h6 className="item-info-title">Size</h6>
+                              <span>{size}</span>
+                              <span>cm</span>
+                          </div>
+                              <div className="item-info"> 
+                                <h6 className="item-info-title">Year</h6>
+                                <span>{year}</span>
+                              </div>
+
+                              <div className="item-info"> 
+                                <h6 className="item-info-title">Condition</h6>
+                                <span>{condition}</span>
+                              </div>
+
+                              <div className="item-info"> 
+                                <h6 className="item-info-title">Gender</h6>
+                                <span>{gender}</span>
+                              </div>
+
+                              <div className="item-info"> 
+                                <h6 className="item-info-title">Type</h6>
+                                <span>{subCategory}</span>
+                              </div>
+
+                        </Col>
+                      <Col xs lg="2">
+                        <div className="item-price"> 
+                            <h3>€{price}</h3>
+                        </div>
+                      </Col>
+                    </Row>
+                  </Container>
+                  <div className="item-name">
+                <h2 className="item-manufacturer"> 
+                  {manufacturer}
+                </h2>
+                <h3 style={{letterSpacing: '15px'}}>{model}</h3>
+             </div>
+
+              <div className="item-specifications"> 
+                <ul>
+                  {
+                    options.map((option, i) => (
+                      <div className="item-options">
+                        <li key={i} onMouseOver={showSpecification}>{option}</li> 
+                          { isSpec ?
+                            <div className='item-description'>
+                            <span>{description[i]}</span>
+                            </div>
+                          : null
+                          }
+                      </div>
+                      ))
+                  }
+                </ul>
+              </div>
+              <Container className="client-wrapper">
+              <Row>
+                  <Col xs={6}>
+                    <div className="client-info">
+                      <p>{info}</p>
+                    </div>
+                  </Col>
+                  <Col xs={6} className='client-contacts'>
+                    <div>
+                      <ReactMapGL
+                        {...viewport}
+                        {...mapStyle}
+                        onViewportChange={handleViewportChange}
+                        mapboxApiAccessToken={process.env.REACT_APP_API_KEY}
+                      >
+                      <Marker latitude={latitude} longitude={longitude} offsetLeft={-20} offsetTop={-10}>
+                      <div>
+                        <RoomSharpIcon style={{ color: '#FF8C00' }} fontSize="large" />
+                      </div> 
+                      </Marker>
+                      </ReactMapGL>
+                      <div>
+                        <div className='client-additional-info'>
+                          <h3>Address</h3>
+                          <span>{address}</span>
+                        </div>
+                        <div className='client-additional-info'>
+                          <h3>Phone</h3>
+                          <span>{phone}</span>
+                        </div>
+                        <div className='client-additional-info'>
+                          <h3>Email</h3>
+                          <span>{email}</span>
+                        </div> 
+                      </div>
+                    </div>
+                  </Col>
+                </Row>
+              </Container>
                </div>
-               
               </div>
             
             : <ViewCarousel item={item} handleCarousel={handleCarousel} />
