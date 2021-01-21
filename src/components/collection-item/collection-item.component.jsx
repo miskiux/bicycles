@@ -63,7 +63,7 @@ const NavigateToView = () => {
 			</div>
 				<span className='price'>${price}</span>
 		</div>
-		<AddCircle onClick={addItem} 
+		<AddCircle onClick={() => addItem({item, id})} 
 			className="addcircle"
 			/>
 		<ViewShow 
@@ -78,7 +78,7 @@ const NavigateToView = () => {
 	)}
 
 const mapDispatchToProps = dispatch => ({
-	addItem: item => dispatch(addItem(item)) //creating new function - whenever there is addItem, it will get an item in as property, and then dispatching addItem(action)
+	addItem: item => dispatch(addItem(item)) 
 })
 
 export default compose(

@@ -3,6 +3,7 @@ import ShopActionTypes from './shop.types'
 const INITIAL_STATE = {
 	bicycles: null,
 	isFetching: false,
+	isDeleting: false,
 	errorMessage: undefined,
 	toggleCarousel: true
 }
@@ -27,6 +28,16 @@ const shopReducer = (state = INITIAL_STATE, action) => {
 			isFetching: false,
 			errorMessage: action.payload
 
+		}
+		case ShopActionTypes.DELETE_BICYCLE_START:
+		return {
+			...state,
+			isDeleting: true
+		}
+		case ShopActionTypes.DELETE_BICYCLE_SUCCESS:
+		return {
+			...state,
+			isDeleting: false
 		}
 		case ShopActionTypes.FILTER_BY_PRICE:
 		return {

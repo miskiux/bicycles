@@ -7,13 +7,15 @@
 // call => invokes the method
 //put => dispatches an action 
 
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { takeLatest, call, put, all } from 'redux-saga/effects';
 
-import {firestore, getBiciDataForShop} from '../../firebase/firebase.utils';
+import { firestore, getBiciDataForShop, deleteUserBicycleImages } from '../../firebase/firebase.utils';
+import {storage} from "../../firebase/firebase.utils";
 
 import {
 	fetchBicyclesSuccess,
-	fetchBicyclesFailure
+	fetchBicyclesFailure,
+	deleteBicycleSuccess
 } from './shop.actions';
 
 import ShopActionTypes from './shop.types';
@@ -32,6 +34,25 @@ export function* fetchBicyclesStartAsync() {
 	}
 }
 
+export function* deleteBicycle({payload:{key, id}}) {
+		// const folderKey = action.payload.key
+		// const docId = action.payload.id
+			try {
+				const bicycleRef = firestore.collection("bicycle").doc(id);
+				const bicycleDelete = bicycleRef.delete();
+
+				yield all([
+				  call(deleteUserBicycleImages(key)),
+				  call(bicycleDelete)
+				])
+
+			} catch (error) {
+				console.log(error)
+			} finally {
+				yield put(deleteBicycleSuccess())
+			}
+}
+
 export function* fetchBicyclesStart() {
 	yield takeLatest(
 		ShopActionTypes.FETCH_BICYCLES_START, 
@@ -39,4 +60,17 @@ export function* fetchBicyclesStart() {
 	) //2nd param -> another generator function that will run in response to takeEvery listener
 }
 
+export function* onBicycleDelete () {
+	yield takeLatest(
+		ShopActionTypes.DELETE_BICYCLE_START,
+		deleteBicycle
+		)
+}
+
+export function* shopSagas() {
+	yield all([
+		call(fetchBicyclesStart),
+		call(onBicycleDelete)
+		]);
+}
 

@@ -14,20 +14,25 @@ import ItemView from "./components/item-view/item-view.component.jsx";
 
 import { checkUserSession } from "./redux/user/user.actions";
 
+import { deleteBicycleSuccess } from './redux/shop/shop.actions'
+
 import { selectCurrentUser } from './redux/user/user.selectors';
 
 
 function App({ currentUser, checkUserSession }) {
 
   useEffect(() => {
-    checkUserSession()
+    checkUserSession();
+
   }, [])
 
     return (
       <div>
         <Header />
         <Switch>
-          <Route exact path="/" component={HomePage} />
+          <Route 
+              exact 
+              path="/" component={HomePage} />
           <Route  
               path="/shop" 
               component={ShopPage} 
@@ -49,10 +54,10 @@ function App({ currentUser, checkUserSession }) {
            }
            />
             <Route
-              exact
-              path='/item/:bicycleId'
-              component={ItemView}
-              />  
+                exact
+                path='/item/:bicycleId'
+                component={ItemView}
+                />
         </Switch>
       </div>
     );
@@ -64,7 +69,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  checkUserSession: () => dispatch(checkUserSession())
+  checkUserSession: () => dispatch(checkUserSession()),
+  
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

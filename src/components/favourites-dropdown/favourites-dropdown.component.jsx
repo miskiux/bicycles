@@ -15,40 +15,18 @@ import './favourites-dropdown.styles.scss';
 
 const FavouriteDropdown = ({ favouriteItems }) => {
 
-const[open, setOpen] = useState(false);
-const[close, setClose] = useState(true);
-console.log(favouriteItems)
 return (
 	<div className='favourites-dropdown'>
-	{ close ?
 		<div className='favourite-items'>
 		{
-			favouriteItems.length && close ? (
+			favouriteItems.length ? (
 			favouriteItems.map(favouriteItem => (
-				<FavouriteItem key={favouriteItem.id} item={favouriteItem} />
+				<FavouriteItem key={favouriteItem.id} id={favouriteItem.id} item={favouriteItem.item} />
 				))
 		) : (
 			<span className="empty-message">You have no favourites</span>
 		)}
 		</div>
-	: null 	
-	}
-		<ArrowRightIcon onClick={() => {
-			setOpen(!open); 
-			setClose(!close)}} 
-			className="ArrowRightIcon" 
-			style={{ fontSize: 60 }} 
-			color="primary">
-		</ArrowRightIcon>
-		
-		<div className="bicycle-dropdown">
-						{ open ?
-							<div>
-						<BiciInfo />
-							</div>
-						: null
-						}
-				</div>
 	</div>
 		)}
 
@@ -57,3 +35,4 @@ const mapStateToProps = (state) => ({
 })
 
 export default connect(mapStateToProps)(FavouriteDropdown);
+

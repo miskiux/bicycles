@@ -5,10 +5,13 @@ import axios from "axios";
 
 import { toggleCarousel } from '../../redux/shop/shop.actions';
 
+import ReactHover, { Trigger, Hover } from 'react-hover'
+
 import ViewCarousel from './carousel/carousel.component'
 import ReactMapGL,{Marker} from "react-map-gl";
 
 import {Container, Row, Col} from 'react-bootstrap';
+
 import RoomSharpIcon from '@material-ui/icons/RoomSharp';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -21,16 +24,24 @@ import classNames from "classnames";
 
 //marker losing its sight on zoom
 
+//overflow
+
 const mapStyle = {
   width: "100%",
   height: 350,
 };
 
+const optionsCursorTrueWithMargin = {
+      followCursor:true,
+      shiftX:20,
+      shiftY:0
+}
+
 const Item = ({item, toggleCarousel, subCategory, phone, email}) => {
 
 //cursor
 const [position, setPosition] = useState({x: 0, y: 0});
-const [isHover, setIsHover] = useState(false);
+
 const [hidden, setHidden] = useState(false);
 const [isSpec, setIsSpec] = useState(false);
 const [open, setOpen] = useState(true)
@@ -145,34 +156,34 @@ const addEventListeners = () => {
           open ?
           <div>
             <div className='item-wrapper'>
-              <div
-                onMouseOver={() => setIsHover(true)}
-                onMouseLeave={() => setIsHover(false)}
-                onClick={() => {
-                  toggleCarousel();
-                  setOpen(!open)
-                }}
-                className='asset-image'
-                style={{
-                  backgroundImage: `url(${url[1]})`
-                }}
-                >
-                </div>
-                  { isHover ?
-                <div 
-                className={cursorClasses}
-                style={{
-                      left: `${position.x}px`,
-                      top: `${position.y}px`
-                    }}>
+            <ReactHover options={optionsCursorTrueWithMargin}>
+              <Trigger type='trigger'>
+                <div
+                  onClick={() => {
+                    toggleCarousel();
+                    setOpen(!open)
+                  }}
+                  className='asset-image'
+                  style={{
+                    backgroundImage: `url(${url[0]})`
+                  }}
+                  >
+                  </div>
+                   </Trigger>
+                   <Hover type='hover'>
+                      <div 
+                        className={cursorClasses}
+                        style={{
+                          left: `${position.x}px`,
+                          top: `${position.y}px`
+                        }}>
                     <span className="image-count">1 / {item.url.length}</span>
-                </div> 
-                    : ""
-               }
+                      </div> 
+                   </Hover>
+                </ReactHover>
                   <Container className="item-container">
                      <Row className="item-info-container">
                         <Col>
-
                           <div className="item-info"> 
                               <h6 className="item-info-title">Size</h6>
                               <span>{size}</span>

@@ -12,11 +12,8 @@
   }
 
   .item-details {
+    display: inline-block;
     width: 80%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
     padding: 10px 20px;
 
     .name {

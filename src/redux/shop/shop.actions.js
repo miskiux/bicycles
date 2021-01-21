@@ -44,6 +44,17 @@ export const toggleCarousel = () => ({
 	type: ShopActionTypes.TOGGLE_CAROUSEL,
 })
 
+//delete actions
+
+export const deleteBicycleStart = (payload) => ({
+	type: ShopActionTypes.DELETE_BICYCLE_START,
+	payload
+})
+
+export const deleteBicycleSuccess = () => ({
+	type: ShopActionTypes.DELETE_BICYCLE_SUCCESS
+})
+
 
 
 

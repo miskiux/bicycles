@@ -75,11 +75,12 @@ useEffect(() => {
 	setData( {...data, userId: currentUser.id, email: currentUser.email} )
 }, [currentUser])
 
-const { url } = useStorage(image);
+
+const { url, key } = useStorage(image);
 
 useEffect(() => {
 	if (hasImagesLoaded === true) {
-		bicycleUploadStart({bicycleType, email, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, size, condition, options, info})
+		bicycleUploadStart({bicycleType, email, key, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, size, condition, options, info})
 		setData((prevData) => ({...data, manufacturer: '', model: '', price: '', phone: '', address: '', size: '', info: ''}))
 	}
 }, [hasImagesLoaded])

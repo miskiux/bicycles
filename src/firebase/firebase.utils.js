@@ -1,7 +1,10 @@
 import firebase from 'firebase/app';
+import * as functions from "firebase-functions";
+import * as admin from 'firebase-admin';
 import 'firebase/firestore';
 import 'firebase/auth';
 import '@firebase/storage';
+
 
 const config = {
     apiKey: "AIzaSyAPpbMBEihUbYOuO51R6f-Um88OZXo5I68",
@@ -13,6 +16,17 @@ const config = {
     appId: "1:397239191781:web:5105e88a7099a054dcac0c",
     measurementId: "G-436ZVS1NPV"
   };
+
+  export const deleteUserBicycleImages = (key) => {
+    const storageRef = storage.ref(`images/${key}`);
+      storageRef.listAll()
+        .then((listResults) => {
+          const promises = listResults.items.map((img) => {
+            return img.delete();
+          })
+          Promise.all(promises)
+        })
+  }  
 
   export const createUserProfileDocument = async (userAuth, additionalData) => {
     if(!userAuth) return; // exit from the function of userAuth is null(which it is when user is signout)
@@ -45,11 +59,12 @@ export const addBiciData = async (additionalData) => {
     const biciRef = firestore.collection("bicycle").doc(); // getting back user reference at user location and then getting a snapshot
     const batch = firestore.batch();
           
-const { bicycleType, email, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, options, size, condition, info } = additionalData;
+const { bicycleType, key, email, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, options, size, condition, info } = additionalData;
 const createdAt = new Date();
 
       try {
         await batch.set(biciRef, {
+          key,
           phone,
           userId,
           bicycleType,
@@ -82,7 +97,7 @@ const createdAt = new Date();
 
 export const getBiciDataForShop = (bicycle) => {
   const bicycleObj = bicycle.docs.map(doc => {
-    const { bicycleType, item, address, email, phone, userId, subCategory } = doc.data()
+    const { bicycleType, item, address, email, key, phone, userId, subCategory } = doc.data()
     //returning an object
     return {
       routeName: encodeURI(bicycleType.toLowerCase()).replace(/%20/g, " "), //for routing
@@ -92,6 +107,7 @@ export const getBiciDataForShop = (bicycle) => {
       phone,
       userId,
       email,
+      key,
       subCategory,
     }
   })

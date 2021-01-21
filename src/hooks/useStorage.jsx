@@ -2,6 +2,8 @@ import {useState, useEffect} from 'react';
 
 import {storage} from "../firebase/firebase.utils";
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { useSelector, useDispatch } from "react-redux";
 
 import { imageUploadSuccess } from '../redux/sell/sell.actions';
@@ -10,8 +12,9 @@ import { imageUploadStart } from '../redux/sell/sell.actions';
 export const useStorage = (image) => {
 
 	const [url, setUrl] = useState([]);
- 
-	const userId = useSelector(state => state.user.currentUser)
+	const [key, setKey] = useState(uuidv4());
+
+	const userId = useSelector(state => state.user.currentUser.id)
 	const isLoading = useSelector(state => state.sell.imagesLoading) 
 
 	const dispatch = useDispatch()
@@ -27,7 +30,7 @@ export const useStorage = (image) => {
 					image.map((image) => {
 						return new Promise ((resolve, reject) => {
 						//storing image
-						const uploadTask = storage.ref(`/images/${userId}/${image.name}`).put(image)
+						const uploadTask = storage.ref(`/images/${key}/${image.name}`).put(image)
 						//getting the image url
 							uploadTask.on(
 							"state_changed",
@@ -39,7 +42,7 @@ export const useStorage = (image) => {
 								console.log(error);
 							},
 							 () => {
-								storage.ref(`/images/${userId}`).child(image.name).getDownloadURL()
+								storage.ref(`/images/${key}`).child(image.name).getDownloadURL()
 										.then(imgUrl => {
 											imgUrl.split(',');
 											urlarray.push(imgUrl)
@@ -54,7 +57,7 @@ export const useStorage = (image) => {
 					.then(() => dispatch(imageUploadSuccess()));
 			}
 	}, [isLoading, image]);
-	return { url }
+	return { url, key }
 }
 
 

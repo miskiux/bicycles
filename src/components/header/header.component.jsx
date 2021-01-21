@@ -4,7 +4,7 @@ import { Link, Route } from "react-router-dom";
 import { auth } from "../../firebase/firebase.utils";
 
 import Favourites from '../favourites/favourites.component';
-import FavouriteDropdown from '../favourites-dropdown/favourites-dropdown.component';
+import AccountDropdown from '../account-dropdown/account-dropdown.component';
 
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
@@ -47,7 +47,7 @@ const Header = ({ currentUser, hidden, toggleCarousel, signOutStart }) => (
     </div>
     {
       hidden ? null :
-        <FavouriteDropdown />
+        <AccountDropdown />
     }
 
     </div>
