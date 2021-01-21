@@ -4,6 +4,7 @@ const INITIAL_STATE = {
 	imagesLoading: false,
 	isBicycleUploading: false,
 	isLoading: false,
+	submitSuccess: false
 }
  
 const sellReducer = (state = INITIAL_STATE, action) => {
@@ -25,6 +26,11 @@ const sellReducer = (state = INITIAL_STATE, action) => {
 			...state,
 			isLoading: false,
 			isBicycleUploading: false
+		}
+		case SellActionTypes.SUBMIT_SUCCESS:
+		return {
+			...state,
+			submitSuccess: true
 		}
 		default:
 			return state;

@@ -10,7 +10,7 @@ import './account-dropdown.styles.scss'
 
 function AccountDropdown() {
 
-	const [toggle, setToggle] = useState(false)
+	const [toggle, setToggle] = useState(0)
 
 	return (
 		<div className='account-dropdown'>
@@ -18,7 +18,7 @@ function AccountDropdown() {
 			  <Row>
 			    <Col>
 			    	{
-						toggle ?
+						toggle === 1 ?
 						<BiciInfo />
 						: 
 						<FavouriteDropdown />
@@ -30,14 +30,14 @@ function AccountDropdown() {
 			<div className='account-selection-container'>
 				<Row>
 				    <Col>
-				    	<div className='account-selection' onMouseOver={() => setToggle(!toggle)}>
+				    	<div className='account-selection' onClick={() => setToggle(0)}>
 				    		<h3>favourites</h3>
 				    	</div>
 				    </Col>
 				</Row>
 				<Row>
 				    <Col>
-				    	<div className='account-selection' onMouseOver={() => setToggle(!toggle)}>
+				    	<div className='account-selection' onClick={() => setToggle(1)}>
 				    		<h3>listings</h3>
 				    	</div>
 				    </Col>

@@ -8,5 +8,18 @@
 }
 
 .bici-remove {
-	height: 20%;
+	height: 10%;
 }
+
+.bici-deletion {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-left: 25%;
+}
+
+.bici-deletion-selection {
+	margin-top: 10px;
+	display: inline-flex;
+}	

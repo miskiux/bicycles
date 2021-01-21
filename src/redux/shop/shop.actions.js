@@ -55,6 +55,10 @@ export const deleteBicycleSuccess = () => ({
 	type: ShopActionTypes.DELETE_BICYCLE_SUCCESS
 })
 
+export const hasBicycleDeleted = () => ({
+	type: ShopActionTypes.HAS_BICYCLE_DELETED
+})
+
 
 
 

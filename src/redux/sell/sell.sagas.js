@@ -3,7 +3,7 @@ import { takeLatest, call, put, all } from 'redux-saga/effects';
 import SellActionTypes from './sell.types';
 
 import { addBiciData } from '../../firebase/firebase.utils';
-import { uploadSuccess } from './sell.actions'
+import { uploadSuccess, submitSuccess } from './sell.actions'
 
 //handling errors
 
@@ -13,7 +13,10 @@ export function* uploadBicycle(action) {
 	} catch (error) {
 		console.log(error)
 	} finally {
-		yield put(uploadSuccess())
+		yield all([
+			    put(uploadSuccess()),
+			    put(submitSuccess()),
+			]);
 	}
 }
   

@@ -15,7 +15,8 @@ import {storage} from "../../firebase/firebase.utils";
 import {
 	fetchBicyclesSuccess,
 	fetchBicyclesFailure,
-	deleteBicycleSuccess
+	deleteBicycleSuccess,
+	hasBicycleDeleted
 } from './shop.actions';
 
 import ShopActionTypes from './shop.types';
@@ -35,8 +36,7 @@ export function* fetchBicyclesStartAsync() {
 }
 
 export function* deleteBicycle({payload:{key, id}}) {
-		// const folderKey = action.payload.key
-		// const docId = action.payload.id
+
 			try {
 				const bicycleRef = firestore.collection("bicycle").doc(id);
 				const bicycleDelete = bicycleRef.delete();
@@ -49,7 +49,11 @@ export function* deleteBicycle({payload:{key, id}}) {
 			} catch (error) {
 				console.log(error)
 			} finally {
-				yield put(deleteBicycleSuccess())
+				yield all([
+				    put(deleteBicycleSuccess()),
+				    put(hasBicycleDeleted()),
+				]);
+
 			}
 }
 

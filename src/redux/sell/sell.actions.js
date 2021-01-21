@@ -16,4 +16,8 @@ export const imageUploadStart = () => ({
 export const uploadSuccess = () => ({
 	type: SellActionTypes.UPLOAD_FINISHED
 })
+
+export const submitSuccess = () => ({
+	type: SellActionTypes.SUBMIT_SUCCESS
+})
  

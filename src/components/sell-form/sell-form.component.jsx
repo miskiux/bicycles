@@ -1,15 +1,18 @@
 import React, {useState, useEffect} from 'react';
 
 import { connect } from "react-redux";
+import { withRouter, useHistory } from 'react-router-dom'
 
 import ImageInput from './image-input/image-input.component';
 
 import { selectCurrentUser }  from '../../redux/user/user.selectors';
 import { SelectHasImagesLoaded } from '../../redux/sell/sell.selectors';
 import { SelectIsLoaded } from '../../redux/sell/sell.selectors';
+import { SelectSubmitSuccess } from '../../redux/sell/sell.selectors'
 
 import { bicycleUploadStart } from '../../redux/sell/sell.actions';
 import { imageUploadStart } from '../../redux/sell/sell.actions';
+import { submitSuccess } from '../../redux/sell/sell.actions';
  
 import { useStorage } from "../../hooks/useStorage.jsx";
 
@@ -21,12 +24,29 @@ import './sell-form.styles.css'
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { Form, Button } from 'semantic-ui-react';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import { SpinnerContainer, SpinnerOverlay } from '../with-spinner/with-spinner.styles'
 
+import { makeStyles } from '@material-ui/core/styles';
 import 'semantic-ui-css/semantic.min.css';
 
-function SellForm({currentUser, hasImagesLoaded, bicycleUploadStart, imageUploadStart, isLoaded}) {
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+
+function SellForm({submitDone, currentUser, hasImagesLoaded, bicycleUploadStart, imageUploadStart, isLoaded, submitSuccess}) {
 
 	const [data, setData] = useState({
 			currentStep: 1, 
@@ -50,6 +70,8 @@ function SellForm({currentUser, hasImagesLoaded, bicycleUploadStart, imageUpload
       		image: [],
       		email: ''
 		})
+	const classes = useStyles();
+	const [open, setOpen] = useState(true);
 
 	const {
 		currentStep,  
@@ -171,6 +193,14 @@ const prev = () => {
 	return null
  } 
 
+ // submit success actions
+const history = useHistory();
+
+ const handleClose = () => {
+	submitSuccess();
+	history.push(`/shop`)
+ }
+
 		return(
 			<div className="sell-form">
 			{console.log(address)}	
@@ -178,7 +208,15 @@ const prev = () => {
 					<SpinnerOverlay>
 						<SpinnerContainer />
 					</SpinnerOverlay>
-					:
+					: submitDone ?
+					<div className={classes.root}>
+						<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+					        <Alert onClose={handleClose} severity="success">
+					          Your bicycle has been submitted !
+					        </Alert>
+					     </Snackbar>
+					</div>
+				     :
 					<Form onSubmit={() => imageUploadStart() }>
 
 									<GeneralInfo
@@ -237,13 +275,15 @@ const prev = () => {
 
 const mapStateToProps = (state) => ({
   currentUser: selectCurrentUser(state),
-  hasImagesLoaded: SelectHasImagesLoaded(state) ,
-  isLoaded: SelectIsLoaded(state)
+  hasImagesLoaded: SelectHasImagesLoaded(state),
+  isLoaded: SelectIsLoaded(state),
+  submitDone: SelectSubmitSuccess(state)
 });
 
 const mapDispatchToProps = dispatch => ({
 	bicycleUploadStart:(additionalData) => dispatch(bicycleUploadStart(additionalData)),
-	imageUploadStart: () => dispatch(imageUploadStart())
+	imageUploadStart: () => dispatch(imageUploadStart()),
+	submitSuccess: () => dispatch(submitSuccess())
 })
 
 

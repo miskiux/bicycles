@@ -16,3 +16,8 @@ export const SelectImagesLoading = createSelector(
 [selectSell],
 sell => sell.imagesLoading
 	)
+
+export const SelectSubmitSuccess = createSelector(
+[selectSell],
+sell => sell.submitSuccess
+	)

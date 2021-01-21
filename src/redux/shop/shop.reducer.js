@@ -4,6 +4,7 @@ const INITIAL_STATE = {
 	bicycles: null,
 	isFetching: false,
 	isDeleting: false,
+	hasDeleted: false,
 	errorMessage: undefined,
 	toggleCarousel: true
 }
@@ -37,7 +38,12 @@ const shopReducer = (state = INITIAL_STATE, action) => {
 		case ShopActionTypes.DELETE_BICYCLE_SUCCESS:
 		return {
 			...state,
-			isDeleting: false
+			isDeleting: false,
+		}
+		case ShopActionTypes.HAS_BICYCLE_DELETED:
+		return {
+			...state,
+			hasDeleted: true,
 		}
 		case ShopActionTypes.FILTER_BY_PRICE:
 		return {

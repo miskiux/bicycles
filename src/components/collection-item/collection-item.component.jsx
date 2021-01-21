@@ -49,8 +49,8 @@ const NavigateToView = () => {
 	const { manufacturer, model, price } = item;
 	return (
 	<div className='collection-item'>
-	<div className="selection-menu"></div>
-		<div
+	
+			<div
 			className='image'
 			style={{
 				backgroundImage: `url(${images[index]})`
