@@ -45,6 +45,7 @@
     margin: 20px;
     height: 30vh;
     width: 30vw;
+    font-weight:normal;
     box-shadow:
   0 2.8px 2.2px rgba(0, 0, 0, 0.034),
   0 6.7px 5.3px rgba(0, 0, 0, 0.048),
@@ -52,6 +53,10 @@
   0 22.3px 17.9px rgba(0, 0, 0, 0.072),
   0 10.8px 33.4px rgba(0, 0, 0, 0.086),
   0 90px 100px rgba(0, 0, 0, 0.12)
+  }
+
+  .account-selection-name {
+    font-weight:normal;
   }
 
 

@@ -11,11 +11,6 @@ const specOptions = [
     value: "Frame",
   },
   {
-    key: "Frame",
-    label: "Frame",
-    value: "Frame",
-  },
-  {
     key: "Fork",
     label: "Fork",
     value: "Fork",

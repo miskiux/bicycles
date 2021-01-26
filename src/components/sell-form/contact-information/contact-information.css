@@ -1,10 +1,21 @@
-.bici-location {
-	font-size: 15px;
+.location-wrapper {
 	display: flex;
-	justify-content: center;
-	margin: 40px;
+}
+
+.column {
+	flex: 10%;
+}
+.bici-location {
+	text-orientation: upright;
+    writing-mode: vertical-lr;
+	letter-spacing: 0px;
+	font-size: 16px;
 }
 
 .mapboxgl-ctrl-geocoder--input {
 	padding: 1em 2em ! important;
+}
+
+.map {
+	flex: 90%;
 }

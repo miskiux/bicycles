@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, Suspense} from 'react';
 import { connect } from 'react-redux';
 
 import CollectionItem from '../collection-item/collection-item.component'  
@@ -12,13 +12,14 @@ import { selectToggleCarousel } from '../../redux/shop/shop.selectors'
 
 import { toggleCarousel } from '../../redux/shop/shop.actions';
 
+import { SpinnerContainer, SpinnerOverlay } from '../with-spinner/with-spinner.styles'
 import './collections-overview.styles.scss'
 
 
 const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufacturerFilter, countryFilter, regionFilter, toggleHeader, toggleCarousel }) => {
  
 	const [filteredBicycles, setFilteredBicycles] = useState([]);
-
+ 
 	//filtering section
 	useEffect(() => {
 

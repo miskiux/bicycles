@@ -11,6 +11,8 @@ import Select from "react-select";
 import bicycleList from '../../../assets/general-info.data/bicycle-list.js'
 import genderList from '../../../assets/general-info.data/gender-list'
 
+import './general-info.styles.css'
+
 
 const offroadSubList = ["-","Cross Country", "Dirtjump", "Downhill", "Enduro", "Fat Bike", "Trail"];
 const roadSubList = ["-","Cyclocross", "Hybrid/Commuter", "Touring", "Track", "Triathlon"]
@@ -90,13 +92,17 @@ if (selectedType.key === "Off-Road") {
 	return (
 		<div>
 		{
-			props.currentStep == 1 ?	
+			props.currentStep == 1 ?
+			<div className='general-info'>	
 				<Grid columns={1}>
 					<Grid.Row>
 						<Grid.Column>
 							<Segment>
 								<Form.Group widths='equal'>
-								<div>
+								<div className='general-info-wrapper'>
+									
+										<h3> bicycle information</h3>
+
 									<Form.Field>
 										<label>Manufacturer</label>
 											<Hint options={hintData}>
@@ -125,7 +131,7 @@ if (selectedType.key === "Off-Road") {
 												<input 
 													name='model' 
 													type='text'
-													autocomplete="off" 
+													autoComplete="off"  
 													value={props.model}
 													onChange={props.handleChange}								  
 												/>
@@ -169,18 +175,20 @@ if (selectedType.key === "Off-Road") {
 												<Form.Field>
 												<label>Price</label>
 											<Input 
-											name='price' 
+											name='price'
+											autoComplete="off"  
 											type='text' 
 											value={props.price}
 											onChange={props.handleChange}					  
 										/>
 									</Form.Field>
-								</div>
+									</div>
 								</Form.Group>
 							</Segment>
 						</Grid.Column>
 					</Grid.Row>
 					</Grid>
+				</div>
 			: ""
 		}
 		</div>

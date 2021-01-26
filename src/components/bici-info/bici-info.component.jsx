@@ -37,9 +37,10 @@ const hasDeleted = useSelector(state => state.shop.hasDeleted)
 
 //receiving bicycles based on userID
 useEffect(() => {
-	console.log(currentUser.id)
-	let userBicycles = bicycles.filter(bicycle => bicycle.userId === currentUser.id)
-	setBiciInfo(userBicycles)
+	if(currentUser) {
+		let userBicycles = bicycles.filter(bicycle => bicycle.userId === currentUser.id)
+		setBiciInfo(userBicycles)
+	}
 
 }, [currentUser])
 
@@ -63,8 +64,9 @@ const handleId = (id) => {
 
 	return (
 		<div>
-			
-					<div className="bicycle-page">
+		{
+			currentUser ?
+			<div className="bicycle-page">
 			 {
 				biciInfo.map(({id, key, ...otherCollectionProps}) =>
 					<div key={id} className='bici-info'>
@@ -93,7 +95,9 @@ const handleId = (id) => {
 		 				}
 					</div>
 			)}
-			</div> 			
+			</div>
+			: "go sign in boy" 		 
+		}	
 		</div>
 		)
 }

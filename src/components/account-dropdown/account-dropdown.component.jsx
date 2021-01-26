@@ -31,14 +31,14 @@ function AccountDropdown() {
 				<Row>
 				    <Col>
 				    	<div className='account-selection' onClick={() => setToggle(0)}>
-				    		<h3>favourites</h3>
+				    		<h3 className='account-selection-name'>favourites</h3>
 				    	</div>
 				    </Col>
 				</Row>
 				<Row>
 				    <Col>
 				    	<div className='account-selection' onClick={() => setToggle(1)}>
-				    		<h3>listings</h3>
+				    		<h3 className='account-selection-name'>listings</h3>
 				    	</div>
 				    </Col>
 				 </Row>

@@ -1,0 +1,17 @@
+.general-info{
+	display: flex;
+	justify-content: center;
+}
+
+.general-info-wrapper {
+	width: 60vw !important;
+	padding: 10px;
+}
+
+.field {
+	width: 60%;
+}
+
+.rah-input-wrapper {
+	width: 100%;
+}

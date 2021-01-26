@@ -73,9 +73,7 @@ function ContactInformation (props) {
   return (
     <div>
       {props.currentStep == 2 ? (
-        <div>
-          {console.log(location)}
-          <h2 className="bici-location">bicycle location</h2>
+        <div className='location-wrapper'>
           <div className="map">
             <ReactMapGL
               ref={mapRef}
@@ -92,6 +90,9 @@ function ContactInformation (props) {
                 position="top-left"
               />
             </ReactMapGL>
+          </div>
+          <div className='bici-location-name'>
+            <h2 className="bici-location">bicycle location</h2>
           </div>
         </div>
       ) : (

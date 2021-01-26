@@ -1,4 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, Suspense} from 'react';
+import {useImage, Img} from 'react-image'
+
 
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -11,18 +13,26 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import {AddCircle} from '@styled-icons/ionicons-outline/AddCircle'
 import { ViewShow } from '@styled-icons/zondicons/ViewShow'
 
+
 import { addItem } from '../../redux/favourites/favourites.actions'
 
+import { SpinnerContainer, SpinnerOverlay } from '../with-spinner/with-spinner.styles'
 import './collection-item.styles.scss';
 
+ //too many spinners: main and and individual spinners
 
-//cannot receive match params from itemId
 const CollectionItem = ({ item, addItem, id, match }) => {
 
-//routing
 const history = useHistory();
 
 const [index, setIndex] = useState(0);
+
+const MyImageComponent = () => {
+  const {src} = useImage({
+    srcList: images[index],
+  })
+  return <img className='image' src={src} />
+}
 
 const images = item.url
 
@@ -46,16 +56,18 @@ const NavigateToView = () => {
 	})
 }
 
+
+
 	const { manufacturer, model, price } = item;
 	return (
 	<div className='collection-item'>
-	
-			<div
-			className='image'
-			style={{
-				backgroundImage: `url(${images[index]})`
-			}}
-		/>
+		<Suspense fallback={
+			<SpinnerOverlay>
+				<SpinnerContainer />
+			</SpinnerOverlay>
+			}>
+      		<MyImageComponent />
+   		</Suspense>
 		<div className='collection-footer'>
 			<div className='model-manufacturer'>
 				<span className='name'>{manufacturer}</span>
