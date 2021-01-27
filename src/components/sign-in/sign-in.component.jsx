@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
+import { Redirect } from "react-router";
 
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
@@ -8,7 +9,8 @@ import { googleSignInStart, emailSignInStart } from '../../redux/user/user.actio
 
 import './sign-in.styles.scss';
 
-function SignIn({ googleSignInStart, emailSignInStart }) {
+function SignIn({ googleSignInStart, emailSignInStart, currentStep }) {
+
 
 	const [userInfo, setUserInfo] = useState({
 		email: '',
@@ -16,6 +18,8 @@ function SignIn({ googleSignInStart, emailSignInStart }) {
 	})
 
 	const { email, password } = userInfo;
+
+	const redirect = useSelector(state => state.user.redirectTo)
 
 	const handleSubmit = async event => {
 		event.preventDefault();
@@ -27,32 +31,41 @@ function SignIn({ googleSignInStart, emailSignInStart }) {
 		setUserInfo({...userInfo, [name]: value}) 
 	}
 
+	if (redirect) {
+  		return <Redirect to={redirect} />;
+	}
+
 		return(
-		<div className='sign-in'>
-			<span>Sign in with your email and password </span>
-		<form onSubmit={handleSubmit}>
-			<FormInput 
-				name='email' 
-				type='email' 
-				value={email} 
-				handleChange={handleChange}
-				label='email'
-				required  
-				/>
-			<FormInput 
-				name='password' 
-				type='password' 
-				value={password}
-				handleChange={handleChange}
-				label='password'
-				required  
-			/>
-			<div className='buttons'>
-				<CustomButton type='submit'>Sign In</CustomButton>
-				<CustomButton type="button" onClick={googleSignInStart} isGoogleSignIn>Sign in with Google</CustomButton>
+			<div className='user-sign-options'>
+				{
+					currentStep === 1 ?
+						<div className='sign-in'>
+						<form onSubmit={handleSubmit}>
+							<FormInput 
+								name='email' 
+								type='email' 
+								value={email} 
+								handleChange={handleChange}
+								label='email'
+								required  
+								/>
+							<FormInput 
+								name='password' 
+								type='password' 
+								value={password}
+								handleChange={handleChange}
+								label='password'
+								required  
+							/>
+							<div className='buttons'>
+								<CustomButton type='submit'>Sign In</CustomButton>
+								<CustomButton type="button" onClick={googleSignInStart} isGoogleSignIn>Sign in with Google</CustomButton>
+							</div>
+						</form>
+					</div>
+					: ""
+				}
 			</div>
-		</form>
-	</div>
 		)
 	}
 

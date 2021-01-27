@@ -36,7 +36,7 @@ function ShopPage({fetchBicyclesStart, match}) {
 							<Link to={`${match.path}/city bicycle`}>city bicycle</Link>
 						</li>
 						<li>
-							<Link to={`${match.path}/road`}>road bicycle</Link>
+							<Link to={`${match.path}/road bicycle`}>road bicycle</Link>
 						</li>
 						<li>
 							<Link to={`${match.path}/vintage`}>vintage</Link>

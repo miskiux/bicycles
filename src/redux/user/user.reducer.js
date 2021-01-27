@@ -22,6 +22,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
         currentUser: null,
         error: null
       }
+    case UserActionTypes.REDIRECT:
+      return {
+        ...state,
+        redirectTo: action.payload
+      }
     case UserActionTypes.SIGN_IN_FAILURE:
     case UserActionTypes.SIGN_OUT_FAILURE:
     case UserActionTypes.SIGN_UP_FAILURE:

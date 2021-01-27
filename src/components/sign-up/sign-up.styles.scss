@@ -1,9 +1,19 @@
+.user-sign-options {
+	display: flex;
+	justify-content: center;
+	border: solid 1px;
+	border-color: rgba(128,128,128, 0.1);
+
 .sign-up {
 	display: flex;
 	flex-direction: column;
 	width:380px;
+}
 
-.title {
-	margin: 10px 0;
+
+.sign-up-button {
+	display: flex;
+	justify-content: center;
+	padding: 20px;
 	}
 }

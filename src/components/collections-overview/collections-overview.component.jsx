@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import CollectionItem from '../collection-item/collection-item.component'  
  
-import { selectBicycles } from '../../redux/shop/shop.selectors' 
+import { selectAll } from '../../redux/shop/shop.selectors' 
 import { selectPriceFilter } from '../../redux/shop/shop.selectors'
 import { selectManufacturerFilter } from '../../redux/shop/shop.selectors'
 import { selectRegionFilter } from '../../redux/shop/shop.selectors'
@@ -70,7 +70,7 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
 }
 
 const mapStateToProps = (state) => ({
-	bicycles: selectBicycles(state),
+	bicycles: selectAll(state),
 	priceFilter: selectPriceFilter(state),
 	manufacturerFilter: selectManufacturerFilter(state),
 	countryFilter: selectCountryFilter(state),

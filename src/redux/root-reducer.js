@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
 	favourites: favouritesReducer,
 	directory: directoryReducer,
 	shop: shopReducer,
-	sell: sellReducer
+	sell: sellReducer,
 
 })
 

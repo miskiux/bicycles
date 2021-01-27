@@ -53,4 +53,11 @@ export const signUpFailure = (error) => ({
 	payload: error
 }) 
 
+//redirect
+export const redirect = link => ({
+	type: UserActionTypes.REDIRECT,
+	payload: link
+})
+
+
 

@@ -16,25 +16,11 @@ import './category.styles.scss';
 
 const CategoryPage = ({ category, match, priceFilter, manufacturerFilter, countryFilter, regionFilter, history }) => {
 
-const [items, setItems] = useState([]);
 const [bicycleCategory, setBicycleCategory] = useState([]);
-
-	
-useEffect(() => {
-	const categoryBicycles = category.reduce((r, a) => {
-			r[a.routeName] = r[a.routeName] || [];
-			r[a.routeName].push(a);
-			return r;
-		}, Object.create(null));
-	setItems(categoryBicycles[match.params.categoryId])
-	console.log(categoryBicycles)
-			
-}, [category]);
-
+ 
 
 useEffect(() => {
-
-	let result = [...items]
+	let result = [...category]
 	if (priceFilter) {
 			result = result
 						.filter(bicycle => bicycle.item.price
@@ -59,15 +45,15 @@ useEffect(() => {
 			
 		setBicycleCategory(result)
 
-}, [items, priceFilter, manufacturerFilter, countryFilter, regionFilter])
+}, [category, priceFilter, manufacturerFilter, countryFilter, regionFilter])
 
 	return (
 		<div className='category'>
 				<h2></h2>
 				<div>
 				{
-					bicycleCategory.map(({id, ...otherCollectionProps}) =>
-						<CollectionItem id={id} key={id} {...otherCollectionProps} match={match.params} />
+					category.map(({id, ...otherCollectionProps}) =>
+						<CollectionItem id={id} key={id} {...otherCollectionProps} />
 						)
 				}
 				</div>

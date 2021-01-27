@@ -21,21 +21,22 @@ export const selectIsBicyclesLoaded = createSelector(
 shop => !!shop.bicycles
 	)
 
-export const select = createSelector(
+export const selectBicycles = createSelector(
 [selectShop],
 shop => shop.bicycles
 	)
 
-export const selectBicycles = createSelector(
-[select],
-bicycles => bicycles ? Object.keys(bicycles).map(id => bicycles[id]) : []
+export const selectAll = createSelector(
+[selectBicycles],
+bicycles => bicycles ? Object.values(bicycles): []
 	)
 
 
 export const selectCategory = memoize((bicycleUrlParam) => createSelector(
-[select],
-bicycles => (bicycles ?	Object.keys(bicycles).map(routeName => bicycles[routeName]) : null)
-))
+[selectBicycles],
+bicycles => bicycles ? Object.values(bicycles).filter(i => bicycleUrlParam.includes(i.routeName))
+		: []
+	))
 
 export const selectPriceFilter = createSelector(
 [priceRangeSelector],

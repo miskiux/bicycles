@@ -1,6 +1,13 @@
 .sign-in-and-sign-up {
 	width: 950px;
 	display: flex;
-	justify-content: space-between;
+	flex-direction: column;
+	justify-content: center;
 	margin: 30px auto;
+
+	.sign-options {
+		padding: 50px;
+		display: flex;
+		justify-content: center;
+	}
 }

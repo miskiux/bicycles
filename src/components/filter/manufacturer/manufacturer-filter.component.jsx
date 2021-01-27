@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {selectBicycles} from '../../../redux/shop/shop.selectors'
+import {selectAll} from '../../../redux/shop/shop.selectors'
 
 import {filterByManufacturer} from '../../../redux/shop/shop.actions'
 
@@ -61,7 +61,7 @@ const [checkBoxValues, setCheckBoxValues] = useState([])
 
 
 const mapStateToProps = (state) => ({
-	manufacturers: selectBicycles(state)
+	manufacturers: selectAll(state)
 })
 
 const mapDispatchToProps = dispatch => ({
