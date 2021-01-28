@@ -30,35 +30,19 @@ const [range, setRange] = useState(false);
   }
 // if range false => 
 	return (
-		<div className="slider-content">
-				<div className="slider-area">
-						<div className="from-to-label"></div>
-							<div className={classes.root}>
-						      <Typography id="range-slider" gutterBottom>
-						      </Typography>
-						      <Slider
-						        value={value}
-						        min={0}
-  								step={50}
-						        max={10000}
-						        onChange={handleChange}
-						        valueLabelDisplay="auto"
-						        aria-labelledby="range-slider"
-						        getAriaValueText={valuetext}
-						      />
-						    </div>
-						    <div>
-						    {
-						    	range ?
-						    	<div>
-						    	<div className='remove-button'>&#10005;</div>
-						    	<p>From {value[0]}</p>
-						    	<p>To {value[1]}</p>
-						    	</div>
-						    : ( null
-						    	)
-						    }
-						    </div>
+		<div>
+			<div className={classes.root}>
+		      <Slider
+		        value={value}
+		        min={0}
+				step={50}
+		        max={10000}
+		        onChange={handleChange}
+		        valueLabelDisplay="auto"
+		        aria-labelledby="range-slider"
+		        getAriaValueText={valuetext}
+		      />
+		    </div>
 						<div className="confirm-selection">
 							<button
 							onClick={() => {
@@ -66,7 +50,6 @@ const [range, setRange] = useState(false);
 									setRange(range => range + 1);}}
 							>Confirm Selection</button>
 						</div>
-				</div>
 		</div>
 		)
 }

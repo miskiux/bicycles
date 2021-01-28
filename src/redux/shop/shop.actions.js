@@ -29,13 +29,8 @@ export const filterByManufacturer = payload => ({
 	payload
 })
 
-export const filterByCountry = payload => ({
-	type: ShopActionTypes.FILTER_BY_COUNTRY,
-	payload
-})
-
-export const filterByRegion = payload => ({
-	type: ShopActionTypes.FILTER_BY_REGION,
+export const filterByLocation = payload => ({
+	type: ShopActionTypes.FILTER_BY_LOCATION,
 	payload
 })
 

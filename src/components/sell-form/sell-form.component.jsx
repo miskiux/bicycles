@@ -68,7 +68,8 @@ function SellForm({submitDone, currentUser, hasImagesLoaded, bicycleUploadStart,
       		address: '',
       		region: '',
       		image: [],
-      		email: ''
+      		email: '',
+      		coordinates: []
 		})
 	const classes = useStyles();
 	const [open, setOpen] = useState(true);
@@ -91,6 +92,7 @@ function SellForm({submitDone, currentUser, hasImagesLoaded, bicycleUploadStart,
 		email,
 		phone,
 		address,
+		coordinates,
 		image } = data
 
 useEffect(() => {
@@ -143,6 +145,10 @@ const uploadSubType = (sub) => {
 
 const uploadAddress = (location) => {
 	setData((prevData) => ({...data, address: location}))
+}
+
+const uploadCoordinates = (coords) => {
+	setData(() => ({...data, coordinates: coords })) 
 }
 
 const onRadioChange = (event) => {
@@ -203,7 +209,7 @@ const history = useHistory();
 
 		return(
 			<div className="sell-form">
-			{console.log(address)}	
+			{console.log(coordinates)}	
 				{ isLoaded ? 
 					<SpinnerOverlay>
 						<SpinnerContainer />
@@ -239,6 +245,7 @@ const history = useHistory();
 										handleChange={handleChange}
 										phone={phone}
 										uploadAddress={uploadAddress}
+										uploadCoordinates={uploadCoordinates}
 									/>
 				
 									<ImageInput

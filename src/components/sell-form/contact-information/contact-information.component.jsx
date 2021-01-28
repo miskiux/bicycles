@@ -34,6 +34,7 @@ function ContactInformation (props) {
   useEffect(() => {
     if(location) {
       props.uploadAddress(location)
+      props.uploadCoordinates([viewport.latitude, viewport.longitude])
     }
   }, [location]);
 

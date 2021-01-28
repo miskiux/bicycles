@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import BiciItem from './bici-item.component'
 
 import { selectCurrentUser } from '../../redux/user/user.selectors';
-import { selectBicycles } from '../../redux/shop/shop.selectors';
+import { selectAll } from '../../redux/shop/shop.selectors';
 
 import { deleteBicycleStart } from '../../redux/shop/shop.actions'
 import { hasBicycleDeleted } from '../../redux/shop/shop.actions'
@@ -104,7 +104,7 @@ const handleId = (id) => {
 
 const mapStateToProps = (state) => ({
   currentUser: selectCurrentUser(state),
-  bicycles: selectBicycles(state)
+  bicycles: selectAll(state)
 });
 
 const mapDispatchToProps = dispatch => ({

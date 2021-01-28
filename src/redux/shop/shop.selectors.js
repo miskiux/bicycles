@@ -2,12 +2,9 @@ import memoize from 'lodash.memoize';
 import { createSelector } from 'reselect';
 
 //values for filtering;
-const priceRangeSelector = state => state.shop.priceRange
-const manufacturerSelector = state => state.shop.manufacturers
-const countrySelector = state => state.shop.country
-const regionSelector = state => state.shop.region
-//memoized selector for checkboxes of manufacturer options
-
+export const priceRangeSelector = state => state.shop.priceRange
+export const manufacturerSelector = state => state.shop.manufacturers
+export const locationSelector = state => state.shop.locationId
  
 const selectShop = state => state.shop;
 
@@ -38,26 +35,13 @@ bicycles => bicycles ? Object.values(bicycles).filter(i => bicycleUrlParam.inclu
 		: []
 	))
 
-export const selectPriceFilter = createSelector(
-[priceRangeSelector],
-(priceRange) => priceRange
-)
+export const selectLocationBicycles = createSelector(
+[selectAll],
 
-export const selectManufacturerFilter = createSelector(
-[manufacturerSelector],
-(manufacturers) => manufacturers
-	)
-
-export const selectCountryFilter = createSelector(
-[countrySelector],
-(country) => country
-	)
-
-export const selectRegionFilter = createSelector(
-[regionSelector],
-(region) => region
-
-	)
+bicycles => bicycles.map(o => ['id', 'coordinates'].reduce((acc, current) => {
+	acc[current] = o[current];
+	return acc
+	}, {})))
 
 export const selectToggleCarousel = createSelector(
 [selectShop],

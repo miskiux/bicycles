@@ -55,15 +55,10 @@ const shopReducer = (state = INITIAL_STATE, action) => {
 			...state,
 			manufacturers: action.payload
 		}
-		case ShopActionTypes.FILTER_BY_COUNTRY:
+		case ShopActionTypes.FILTER_BY_LOCATION:
 		return {
 			...state,
-			country: action.payload
-		}
-		case ShopActionTypes.FILTER_BY_REGION:
-		return {
-			...state,
-			region: action.payload
+			locationId: action.payload
 		}
 		case ShopActionTypes.TOGGLE_CAROUSEL:
 			return {

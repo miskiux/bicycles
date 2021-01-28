@@ -4,10 +4,9 @@ import { connect } from 'react-redux';
 import CollectionItem from '../collection-item/collection-item.component'  
  
 import { selectAll } from '../../redux/shop/shop.selectors' 
-import { selectPriceFilter } from '../../redux/shop/shop.selectors'
-import { selectManufacturerFilter } from '../../redux/shop/shop.selectors'
-import { selectRegionFilter } from '../../redux/shop/shop.selectors'
-import { selectCountryFilter } from '../../redux/shop/shop.selectors'
+import { priceRangeSelector } from '../../redux/shop/shop.selectors'
+import { manufacturerSelector } from '../../redux/shop/shop.selectors'
+import { locationSelector } from '../../redux/shop/shop.selectors'
 import { selectToggleCarousel } from '../../redux/shop/shop.selectors'
 
 import { toggleCarousel } from '../../redux/shop/shop.actions';
@@ -16,7 +15,7 @@ import { SpinnerContainer, SpinnerOverlay } from '../with-spinner/with-spinner.s
 import './collections-overview.styles.scss'
 
 
-const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufacturerFilter, countryFilter, regionFilter, toggleHeader, toggleCarousel }) => {
+const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufacturerFilter, toggleHeader, toggleCarousel, locationFilter }) => {
  
 	const [filteredBicycles, setFilteredBicycles] = useState([]);
  
@@ -34,20 +33,15 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
 					.split(",")
 						.some(key => manufacturerFilter.includes(key)))	
 			}
-			if(countryFilter) {
-				result = result.filter(bicycle => bicycle.country
-						.split(",")
-							.some(key => countryFilter.includes(key))
-					) 
+			if (locationFilter) {
+				result = result.filter(bicycle => bicycle.id
+					.split(",")
+						.some(key => locationFilter.includes(key)))
 			}
-			if (regionFilter) {
-					result = result.filter(bicycle => bicycle.region
-						.split(",")
-							.some(key => regionFilter.includes(key)))
-				}
+			
 			setFilteredBicycles(result);
 
-	}, [bicycles, priceFilter, manufacturerFilter, countryFilter, regionFilter])
+	}, [bicycles, priceFilter, manufacturerFilter, locationFilter])
 
 	useEffect(() => {
 		if (toggleHeader == false) {
@@ -58,7 +52,9 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
 
 	return (
 			<div className='collections-overview'>
+			{console.log(bicycles)}
 				<div className='preview'>
+			}
 
 		{
 			filteredBicycles.map(({id, ...otherCollectionProps}) =>
@@ -71,10 +67,9 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
 
 const mapStateToProps = (state) => ({
 	bicycles: selectAll(state),
-	priceFilter: selectPriceFilter(state),
-	manufacturerFilter: selectManufacturerFilter(state),
-	countryFilter: selectCountryFilter(state),
-	regionFilter: selectRegionFilter(state),
+	priceFilter: priceRangeSelector(state),
+	manufacturerFilter: manufacturerSelector(state),
+	locationFilter: locationSelector(state),
 	toggleHeader: selectToggleCarousel(state)
 })
 

@@ -6,15 +6,13 @@ import CollectionItem from '../../components/collection-item/collection-item.com
 
 import { selectCategory } from '../../redux/shop/shop.selectors';
 
-import {selectPriceFilter} from '../../redux/shop/shop.selectors' ;
-import {selectManufacturerFilter} from '../../redux/shop/shop.selectors'
-import { selectRegionFilter } from '../../redux/shop/shop.selectors'
-import { selectCountryFilter } from '../../redux/shop/shop.selectors'
-
+import { priceRangeSelector } from '../../redux/shop/shop.selectors'
+import { manufacturerSelector } from '../../redux/shop/shop.selectors'
+import { locationSelector } from '../../redux/shop/shop.selectors'
 
 import './category.styles.scss';
 
-const CategoryPage = ({ category, match, priceFilter, manufacturerFilter, countryFilter, regionFilter, history }) => {
+const CategoryPage = ({ category, match, priceFilter, manufacturerFilter, locationFilter }) => {
 
 const [bicycleCategory, setBicycleCategory] = useState([]);
  
@@ -31,21 +29,10 @@ useEffect(() => {
 					.split(",")
 						.some(key => manufacturerFilter.includes(key)))	
 			}
-	if(countryFilter) {
-				result = result.filter(bicycle => bicycle.country
-						.split(",")
-							.some(key => countryFilter.includes(key))
-					) 
-			}
-	if (regionFilter) {
-				result = result.filter(bicycle => bicycle.region
-						.split(",")
-							.some(key => regionFilter.includes(key)))
-				}
 			
 		setBicycleCategory(result)
 
-}, [category, priceFilter, manufacturerFilter, countryFilter, regionFilter])
+}, [category, priceFilter, manufacturerFilter])
 
 	return (
 		<div className='category'>
@@ -63,11 +50,9 @@ useEffect(() => {
 
 const mapStateToProps = (state, ownProps) => ({
 	category: selectCategory(ownProps.match.params.categoryId)(state),
-	priceFilter: selectPriceFilter(state),
-	manufacturerFilter: selectManufacturerFilter(state),
-	countryFilter: selectCountryFilter(state),
-	regionFilter: selectRegionFilter(state)
-
+	priceFilter: priceRangeSelector(state),
+	manufacturerFilter: manufacturerSelector(state),
+	locationFilter: locationSelector(state),
 })
 
 
