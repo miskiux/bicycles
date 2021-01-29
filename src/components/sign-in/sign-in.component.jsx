@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import { connect, useSelector } from 'react-redux';
-import { Redirect } from "react-router";
 
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
@@ -8,6 +7,7 @@ import CustomButton from '../custom-button/custom-button.component';
 import { googleSignInStart, emailSignInStart } from '../../redux/user/user.actions'
 
 import './sign-in.styles.scss';
+
 
 function SignIn({ googleSignInStart, emailSignInStart, currentStep }) {
 
@@ -19,8 +19,6 @@ function SignIn({ googleSignInStart, emailSignInStart, currentStep }) {
 
 	const { email, password } = userInfo;
 
-	const redirect = useSelector(state => state.user.redirectTo)
-
 	const handleSubmit = async event => {
 		event.preventDefault();
 		emailSignInStart(email, password);	
@@ -31,15 +29,11 @@ function SignIn({ googleSignInStart, emailSignInStart, currentStep }) {
 		setUserInfo({...userInfo, [name]: value}) 
 	}
 
-	if (redirect) {
-  		return <Redirect to={redirect} />;
-	}
-
 		return(
 			<div className='user-sign-options'>
 				{
 					currentStep === 1 ?
-						<div className='sign-in'>
+					<div className='sign-in'>
 						<form onSubmit={handleSubmit}>
 							<FormInput 
 								name='email' 

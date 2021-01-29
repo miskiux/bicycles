@@ -9,6 +9,7 @@ import {signUpStart} from '../../redux/user/user.actions'
 
 import './sign-up.styles.scss';
 
+
 function SignUp({signUpStart, currentStep}) {
 
 	const [signUpInfo, setSignUpInfo] = useState({
@@ -35,6 +36,7 @@ function SignUp({signUpStart, currentStep}) {
 
 		setSignUpInfo({...signUpInfo, [name]: value}) 
 	}
+
 
 		return(
 			<div className='user-sign-options'>

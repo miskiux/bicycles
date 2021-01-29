@@ -8,6 +8,7 @@ import "./App.css";
 
 import Header from "./components/header/header.component.jsx";
 import ProtectedRoute from './components/protected-routes/protected-route.component'
+import UnauthenticatedRoute from './components/protected-routes/unauthenticatedRoute'
 
 import { checkUserSession } from "./redux/user/user.actions";
 import { deleteBicycleSuccess } from './redux/shop/shop.actions'
@@ -45,7 +46,7 @@ function App({ checkUserSession }) {
               <Route exact path="/" component={HomePage} />
               <ProtectedRoute path="/sell" user={user} component={SellPage} />
               <Route path="/shop" component={ShopPage} />
-              <Route exact path="/signin" component={SignInAndSignUp} />
+              <UnauthenticatedRoute exact path="/signin" user={user} component={SignInAndSignUp} />
               <Route exact path='/item/:bicycleId' component={ItemView} />
              </Suspense> 
            </ErrorBoundary>

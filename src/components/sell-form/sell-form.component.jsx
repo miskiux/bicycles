@@ -30,7 +30,6 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { SpinnerContainer, SpinnerOverlay } from '../with-spinner/with-spinner.styles'
 
 import { makeStyles } from '@material-ui/core/styles';
-import 'semantic-ui-css/semantic.min.css';
 
 
 function Alert(props) {
@@ -69,7 +68,7 @@ function SellForm({submitDone, currentUser, hasImagesLoaded, bicycleUploadStart,
       		region: '',
       		image: [],
       		email: '',
-      		coordinates: []
+      		coordinates: null
 		})
 	const classes = useStyles();
 	const [open, setOpen] = useState(true);
@@ -104,7 +103,7 @@ const { url, key } = useStorage(image);
 
 useEffect(() => {
 	if (hasImagesLoaded === true) {
-		bicycleUploadStart({bicycleType, email, key, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, size, condition, options, info})
+		bicycleUploadStart({bicycleType, email, key, description, gender, manufacturer, model, year, price, userId, url, phone, address, subCategory, size, condition, options, info, coordinates})
 		setData((prevData) => ({...data, manufacturer: '', model: '', price: '', phone: '', address: '', size: '', info: ''}))
 	}
 }, [hasImagesLoaded])
@@ -148,7 +147,8 @@ const uploadAddress = (location) => {
 }
 
 const uploadCoordinates = (coords) => {
-	setData(() => ({...data, coordinates: coords })) 
+	console.log(coords)
+	setData((prevData) => ({...data, coordinates: coords })) 
 }
 
 const onRadioChange = (event) => {
@@ -209,7 +209,6 @@ const history = useHistory();
 
 		return(
 			<div className="sell-form">
-			{console.log(coordinates)}	
 				{ isLoaded ? 
 					<SpinnerOverlay>
 						<SpinnerContainer />
@@ -224,7 +223,6 @@ const history = useHistory();
 					</div>
 				     :
 					<Form onSubmit={() => imageUploadStart() }>
-
 									<GeneralInfo
 										currentStep={currentStep} 
 										handleChange={handleChange}

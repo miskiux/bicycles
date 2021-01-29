@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 
 import Item from '../item/item.component'
 
-import { selectBicycles } from '../../redux/shop/shop.selectors';
+import { selectAll } from '../../redux/shop/shop.selectors';
 
  //different data types of category and shop
 //persist
@@ -40,7 +40,7 @@ const ItemView = ({bicycles, match, location}) => {
 }
 
 const mapStateToProps = state => ({
-	bicycles: selectBicycles(state)
+	bicycles: selectAll(state)
 })
 
 

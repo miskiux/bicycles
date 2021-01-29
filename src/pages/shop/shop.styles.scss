@@ -1,22 +1,31 @@
 .shop-page {
 }
 
-.listbox {
+.list-container {
+	display: flex;
+	justify-content: center;
+
+.list-wrapper{
+	display: flex;
 	text-align: center;
+	padding: 0px;
+	margin-top:10px;
+    border-bottom: solid 1.3px;
+    border-color: rgba(0, 0, 0, 0.2);
 
-.list-wrapper ul li {
-	display: inline-block;
-	text-align:center;
-	position: relative;
-    max-width: 100%;
-    padding:10px;
+    .category-option {
+    	margin: 0px 0px -16px;
+    	padding: 20px;
+    	list-style-type: none;
+    }
 
-ul {
-	max-width: 100%;
-	list-style-type: none;
-	}
-li {
-	font-color: black;
-}	
+    .category-wrapper {
+    	padding-left: 0px;
+    }
+
+	.active_item {
+		border-bottom: solid 1.3px;
+		border-color: rgb(0, 0, 0);
+	}	
 }
 }
