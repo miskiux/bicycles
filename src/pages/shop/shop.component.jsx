@@ -66,10 +66,9 @@ function ShopPage({fetchBicyclesStart, match}) {
 					return (
 						<div key={link.id} className="list-wrapper">
 							<ul className='category-wrapper'>
-								<li
-				                  onClick={() => handleClick(link.id)}
-				                  className={`${link.id === activeLink ? "active_item" : ""} category-option`}>
-		                  			<Link to={link.to}>{link.name}</Link>
+								<li className='category-list'>
+		                  		 <Link onClick={() => handleClick(link.id)}
+				                  className={`${link.id === activeLink ? "active_item" : ""} category-option`} to={link.to}>{link.name}</Link>
 		                		 </li>
 							</ul>
 						</div>

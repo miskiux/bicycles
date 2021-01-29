@@ -7,6 +7,9 @@ import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 
 import {filterByPrice} from '../../../redux/shop/shop.actions'
+import './price-item.styles.css'
+
+//send a confirm prop
 
 const PriceItem = ({ filterByPrice }) => {
 
@@ -30,7 +33,7 @@ const [range, setRange] = useState(false);
   }
 // if range false => 
 	return (
-		<div>
+		<div className='price-filter'>
 			<div className={classes.root}>
 		      <Slider
 		        value={value}
@@ -41,16 +44,13 @@ const [range, setRange] = useState(false);
 		        valueLabelDisplay="auto"
 		        aria-labelledby="range-slider"
 		        getAriaValueText={valuetext}
-		      />
-		    </div>
-						<div className="confirm-selection">
-							<button
-							onClick={() => {
-									filterByPrice(value);
-									setRange(range => range + 1);}}
-							>Confirm Selection</button>
-						</div>
-		</div>
+		      	/>
+			</div>
+					<button className='confirm' onClick={() => {
+						filterByPrice(value);
+						setRange(range => range + 1);}}> confirm </button>
+					
+		 </div>
 		)
 }
 

@@ -54,7 +54,6 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
 			<div className='collections-overview'>
 			{console.log(bicycles)}
 				<div className='preview'>
-			}
 
 		{
 			filteredBicycles.map(({id, ...otherCollectionProps}) =>
