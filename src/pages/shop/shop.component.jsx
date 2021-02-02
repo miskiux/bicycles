@@ -13,6 +13,7 @@ import { SpinnerContainer, SpinnerOverlay } from '../../components/with-spinner/
 
 import './shop.styles.scss';
 
+
 const CollectionsOverviewContainer = lazy(() => import("../../components/collections-overview/collections-overview.container"))
 const CategoryPageContainer = lazy(() => import("../category/category.container"))
 
@@ -59,7 +60,7 @@ function ShopPage({fetchBicyclesStart, match}) {
   };
 
 	return (
-	<div>
+	<div className='shop-page-container'>
 		<div className="list-container">
 			{
 				links.map(link => {
@@ -80,11 +81,6 @@ function ShopPage({fetchBicyclesStart, match}) {
 				<Filter />
 			</div>
 				<div className='shop-page'>
-					<Suspense fallback={
-		              <SpinnerOverlay>
-		                <SpinnerContainer />
-		              </SpinnerOverlay>
-		              }>
 					<Route 
 					  exact
 		              path={`${match.path}`}
@@ -94,7 +90,6 @@ function ShopPage({fetchBicyclesStart, match}) {
 		              path={`${match.path}/:categoryId`}
 		              component={CategoryPageContainer}
 		            />
-		            </Suspense>
 				</div>
 			</div>
 		)

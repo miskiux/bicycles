@@ -13,9 +13,9 @@ import ReactMapGL,{Marker} from "react-map-gl";
 import {Container, Row, Col} from 'react-bootstrap';
 
 import RoomSharpIcon from '@material-ui/icons/RoomSharp';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
 import './item.styles.css';
+
+import './styles.scss'
 import classNames from "classnames";
   
 //UL

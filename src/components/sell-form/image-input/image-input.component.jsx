@@ -93,16 +93,9 @@ const [imageFiles, setFiles] = useState([])
     </div>
   ))
 
-  //after form submit - images.forEach
-  // useEffect(() => () => {
-  //   imageFiles.forEach(file => URL.revokeObjectURL(file.preview));
-  //  }, [imageFiles]);
-
   useEffect(() => {
     props.uploadImages(imageFiles)
   }, [imageFiles])
-
-
 
   return (
     <div>

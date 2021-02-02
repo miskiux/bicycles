@@ -1,0 +1,13 @@
+.manufacturer-wrapper {
+	display:flex;
+	height: 18vh;
+	flex-direction: column;
+	overflow: scroll;
+}
+.manufacturer-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.manufacturer-checkbox {
+	padding: 5px;
+}

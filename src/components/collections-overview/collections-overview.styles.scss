@@ -1,13 +1,7 @@
 .collections-overview {
   display:flex;
-	position: relative;
-  margin-bottom: 30px;
-  height:100vh;
-
-  .title {
-    font-size: 16px;
-    margin-bottom: 25px;
-  }
+  justify-content: center;
+  align-content: center;
 
   .preview {
     display: flex;

@@ -10,7 +10,6 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import {store, persistor} from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react'
-
 import 'semantic-ui-css/semantic.min.css';
 
 ReactDOM.render(

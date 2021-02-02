@@ -1,98 +1,77 @@
 .collection-item {
-  width: 57vh;
   display: flex;
-  flex-direction: column;
-  height: 300px;
-  align-items: center;
-  position: relative;
-  padding:12px;
-  margin-bottom: 20px;
+  flex-direction: row;
+  width: 100%;
+  height: 390px;
+  max-width: 550px;
+  margin: 10px;
+  border: 1px solid transparent;
 
   .image {
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    margin-bottom: 5px;
-    object-fit: contain;
+    max-width:80%; 
+    height:auto;
   }
-
-  .image-arrow-right {
-    position:absolute;
-    top:125px;
-    right:10px;
-    display:none;
-  }
-
-  .image-arrow-left {
-    position:absolute;
-    top:125px;
-    left:10px;
-    display:none;
-  }
-
-.addcircle {
-position: absolute;
-width:5%;
-top: 219px;
-right:13px;
-display: none;
-}
-
-.view-show {
-position: absolute;
-opacity:1;
-width:4%;
-top: 243px;
-right:15px;
-display: none;
-
-}
 
   &:hover {
-    .image {
-      opacity:0.9;
-    }
-    .image-arrow-left {
+      border: 1px solid rgba(128,128,128, 0.1);
+      border-radius: 4px;
+    
+    .navigation-arrows {
       display: flex;
+      justify-content: center;
+      margin: 5px;
     }
-    .image-arrow-right {
+    .addcircle {
       display: flex;
+      align-self: flex-end;
     }
+  }
 
-    .selection-menu {
+  .addcircle {
+    display: none;
+  }
 
-}
-     .addcircle {
-      display: flex;
-    }
-    .view-show {
-      opacity: 1;
-      display: flex;
-    }
-
+  .navigation-arrows {
+    display: none;
   }
 
   .model-manufacturer {
     display: flex;
+    text-align: center;
+    align-items: center;
     flex-direction: column;
 
 }
+.collection-menu {
+    height: auto;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: flex-end;
+}
 
   .collection-footer {
-    width: 80%;
-    height: 5%;
     display: flex;
-    justify-content: space-between;
-    font-size: 18px;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    min-height: 10vh;
+    padding: 5px;
+    font-size: 13px;
+    background-color: rgba(128,128,128, 0.1);
 
-    .name {
-      width: 90%;
-      margin-bottom: 0px;
+    .manufacturer-name {
+      font-weight: bold;
+      padding: 0px;
+      margin: 0px;
     }
 
     .price {
-      width: 15%;
+      text-align: center;
+      font-size: 10px;
     }
   }
 }

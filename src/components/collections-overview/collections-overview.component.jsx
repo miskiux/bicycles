@@ -21,7 +21,6 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
  
 	//filtering section
 	useEffect(() => {
-
 		let result = [...bicycles];
 
 			if (priceFilter) {
@@ -49,17 +48,22 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
 		}
 	}, [])
 
-
 	return (
+		<div>
+			<Suspense fallback={
+		             <SpinnerOverlay>
+		                <SpinnerContainer />
+		              </SpinnerOverlay>
+		              }>
 			<div className='collections-overview'>
-			{console.log(bicycles)}
 				<div className='preview'>
-
-		{
+			{
 			filteredBicycles.map(({id, ...otherCollectionProps}) =>
  				<CollectionItem id={id} key={id} {...otherCollectionProps}/>
 			)}
-		</div>
+				</div>
+			</div>
+		 </Suspense>
 	</div>	
 		)
 }

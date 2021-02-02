@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+ import React, {useState, useEffect} from 'react';
 import axios from "axios";
 
 import { connect } from "react-redux";
@@ -8,24 +8,24 @@ import { withStyles, makeStyles } from '@material-ui/core/styles';
 
 import {selectLocationBicycles} from '../../../redux/shop/shop.selectors'
 import { filterByLocation } from '../../../redux/shop/shop.actions'; 
-
+import './location-item.styles.css'
 
 const useStyles = makeStyles({
   root: {
-    width: 250,
+    width: 15+'vw',
   },
 });
 const PrettoSlider = withStyles({
   root: {
-    color: '#52af77',
-    height: 8,
+    color: 'rgb(51,51,51)',
+    height: 4,
   },
   thumb: {
     height: 24,
     width: 24,
     backgroundColor: '#fff',
     border: '2px solid currentColor',
-    marginTop: -8,
+    marginTop: -10,
     marginLeft: -12,
     '&:focus, &:hover, &$active': {
       boxShadow: 'inherit',
@@ -36,11 +36,11 @@ const PrettoSlider = withStyles({
     left: 'calc(-50% + 4px)',
   },
   track: {
-    height: 8,
+    height: 4,
     borderRadius: 4,
   },
   rail: {
-    height: 8,
+    height: 4,
     borderRadius: 4,
   },
 })(Slider);
@@ -112,16 +112,21 @@ const handleChange = (event, newValue) => {
 }
 
 	return (
-		<div>
+		<div className='location-filter'>
+			<div className='location-label'>
+					 <label>Range</label>
+					 <label className='measurement-label'>(km)</label>
+			</div>
 			<div className={classes.root}>
 		        <PrettoSlider valueLabelDisplay="auto" aria-label="pretto slider" max={1000} onChange={handleChange} defaultValue={20} />
 		    </div>
 		    	<div className="confirm-selection">
 					<button
+						className='confirm'
 						onClick={() => {
 						findLocation();
 					}}
-					>Confirm Selection</button>
+					>confirm</button>
 				</div>
 		 </div>
 		)

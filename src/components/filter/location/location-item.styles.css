@@ -1,0 +1,19 @@
+.location-filter {
+	display: flex;
+	flex-direction: column;
+	height: 15vh;
+	width: 100%;
+	flex-direction: column;
+    justify-content: center;
+    align-items: center;
+	outline: none;
+}
+
+.location-label {
+	padding: 10px;
+}
+
+.measurement-label {
+	font-size: 10px;
+	padding: 5px;
+}
