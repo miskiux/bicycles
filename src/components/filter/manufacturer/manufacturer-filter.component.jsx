@@ -3,17 +3,21 @@ import {selectAll} from '../../../redux/shop/shop.selectors'
 
 import {filterByManufacturer} from '../../../redux/shop/shop.actions'
 
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
+
 import { Checkbox } from 'semantic-ui-react';
+import { Input } from 'semantic-ui-react';
+
 import './manufacturer-filter.css'
 
 
 const ManufacturerCheckBox = ({ manufacturers, filterByManufacturer }) => {
 
 const [manufacturersCheckBoxOptions, setManufacturersCheckBoxOptions] = useState([]);
-const [checkBoxValues, setCheckBoxValues] = useState([])
+const [checkBoxValues, setCheckBoxValues] = useState([]);
+const [searchValue, setSearchValue] = useState('');
+const [filteredSelection, setFilteredSelection] = useState([])
 
-//const manufacturerFilter = useSelector(state => state.shop.manufacturers)
 
 	useEffect (() => {
 	const manufacturersFilter = manufacturers.map((bicycles) => bicycles.item.manufacturer)
@@ -28,6 +32,16 @@ const [checkBoxValues, setCheckBoxValues] = useState([])
 					filterByManufacturer(newChecked)
 			}
 	}, [checkBoxValues])
+
+	useEffect(() => {
+		let filteredManufacturer = [...manufacturersCheckBoxOptions]
+		if (searchValue) {
+			filteredManufacturer = filteredManufacturer.filter(man => {
+				return man.toLowerCase().includes(searchValue.toLowerCase());
+			})
+		}
+		setFilteredSelection(filteredManufacturer)
+	}, [searchValue, manufacturersCheckBoxOptions])
 
 	//currentIndex === -1, because indexOf outputs -1 when no such value exist  
 	const handleToggle = (label) => {
@@ -44,10 +58,16 @@ const [checkBoxValues, setCheckBoxValues] = useState([])
 		filterByManufacturer(newChecked)	
 	}
 
+	const onSearchChange = (event) => {
+		setSearchValue(event.target.value)
+	}
+	
 	return (
 		<div className='manufacturer-wrapper'>
+			<Input placeholder='Search...' onChange={onSearchChange} />
+			
 		{
-			manufacturersCheckBoxOptions.map((label, key) => {
+			filteredSelection.map((label, key) => {
 				return (
 					<Checkbox
 						className='manufacturer-checkbox' 
@@ -60,8 +80,6 @@ const [checkBoxValues, setCheckBoxValues] = useState([])
 		</div>
 		)
 	}
-// button onclick + dispatches checlboxvalues
-
 
 const mapStateToProps = (state) => ({
 	manufacturers: selectAll(state)

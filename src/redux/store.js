@@ -17,7 +17,7 @@ const middlewares = [logger, sagaMiddleware]; //expects an array.logger accepts 
 
 export const store = createStore(rootReducer, applyMiddleware(...middlewares)) //spreads out all the values in the [] array into this function call as individual arguments
 
-sagaMiddleware.run(rootSaga) //to run each individual saga
+sagaMiddleware.run(rootSaga)
  
 export const persistor = persistStore(store)
 

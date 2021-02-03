@@ -8,6 +8,12 @@
   display: none;
 }
 
+.ui.input {
+	font-size: 0.8em;
+	margin-bottom: 8px;
+}
+
 .manufacturer-checkbox {
 	padding: 5px;
+	margin-bottom: 4px;
 }

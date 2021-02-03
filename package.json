@@ -28,6 +28,7 @@
     "react-elastic-carousel": "^0.9.5",
     "react-hover": "^2.0.0",
     "react-image": "^4.0.3",
+    "react-lazy-load-image-component": "^1.5.1",
     "react-map-gl": "^6.0.2",
     "react-map-gl-geocoder": "^2.1.6",
     "react-multi-carousel": "^2.6.1",

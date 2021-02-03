@@ -8,6 +8,7 @@ import { priceRangeSelector } from '../../redux/shop/shop.selectors'
 import { manufacturerSelector } from '../../redux/shop/shop.selectors'
 import { locationSelector } from '../../redux/shop/shop.selectors'
 import { selectToggleCarousel } from '../../redux/shop/shop.selectors'
+import { LazyLoadComponent } from 'react-lazy-load-image-component';
 
 import { toggleCarousel } from '../../redux/shop/shop.actions';
 
@@ -18,8 +19,8 @@ import './collections-overview.styles.scss'
 const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufacturerFilter, toggleHeader, toggleCarousel, locationFilter }) => {
  
 	const [filteredBicycles, setFilteredBicycles] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
  
-	//filtering section
 	useEffect(() => {
 		let result = [...bicycles];
 
@@ -42,28 +43,50 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
 
 	}, [bicycles, priceFilter, manufacturerFilter, locationFilter])
 
+	//caching images
+	useEffect(() => {
+		const imagesArr = bicycles.map((bicycle) => bicycle.item.url)
+		const arr = imagesArr.flat()
+		cacheImages(arr)
+	}, [])
+
 	useEffect(() => {
 		if (toggleHeader == false) {
 			toggleCarousel()
 		}
 	}, [])
 
+	const cacheImages = async(srcArray) => {
+		const promises = await srcArray.map((src) => {
+			return new Promise((resolve, reject) => {
+				const img = new Image();
+				img.src = src;
+				img.onload = resolve();
+				img.onerror = reject();
+			})
+		})
+		await Promise.all(promises);
+		setIsLoading(false)
+	}
+	
+	if (isLoading) {
 	return (
-		<div>
-			<Suspense fallback={
-		             <SpinnerOverlay>
-		                <SpinnerContainer />
-		              </SpinnerOverlay>
-		              }>
+		<SpinnerOverlay>
+             <SpinnerContainer />
+          </SpinnerOverlay>
+		)
+  }
+
+	return (
 			<div className='collections-overview'>
 				<div className='preview'>
 			{
 			filteredBicycles.map(({id, ...otherCollectionProps}) =>
- 				<CollectionItem id={id} key={id} {...otherCollectionProps}/>
+				<LazyLoadComponent>
+ 					<CollectionItem id={id} key={id} {...otherCollectionProps}/>
+				</LazyLoadComponent>
 			)}
-				</div>
-			</div>
-		 </Suspense>
+		</div>
 	</div>	
 		)
 }

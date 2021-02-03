@@ -11,7 +11,10 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { ViewShow } from '@styled-icons/zondicons/ViewShow'
 
+
 import { addItem } from '../../redux/favourites/favourites.actions'
+
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import { SpinnerContainer, SpinnerOverlay } from '../with-spinner/with-spinner.styles'
 
@@ -21,32 +24,40 @@ import './collection-item.styles.scss';
 
 const CollectionItem = ({ item, addItem, id, match }) => {
 
-const history = useHistory();
 const [index, setIndex] = useState(0);
-
 const [isLoading, setIsLoading] = useState(true);
+const [didLoad, setLoad] = useState(false)
 
 const images = item.url
+const { manufacturer, model, price } = item;
 
-useEffect(() => {
-		cacheImages(images)
-	}, [])
+const imageStyle = didLoad ? { maxWidth:80 + '%', 
+    height:'auto'} : {visibility: 'hidden'};
 
-//caching images
+// useEffect(() => {
+// 		cacheImages(images)
+// 	}, [])
 
-const cacheImages = async(srcArray) => {
-		const promises = await srcArray.map((src) => {
-			return new Promise((resolve, reject) => {
-				const img = new Image();
-				img.src = src;
-				img.onload = resolve();
-				img.onerror = reject();
-				console.log(img)
-			})
-		})
-		await Promise.all(promises);
-		setIsLoading(false)
-	}
+// const cacheImages = async(srcArray) => {
+// 		const promises = await srcArray.map((src) => {
+// 			return new Promise((resolve, reject) => {
+// 				const img = new Image();
+// 				img.src = src;
+// 				img.onload = resolve();
+// 				img.onerror = reject();
+// 				console.log(img)
+// 			})
+// 		})
+// 		await Promise.all(promises);
+// 		setIsLoading(false)
+// }
+
+// const MyImageComponent = () => {
+//   const {src} = useImage({
+//     srcList: images[index],
+//   })
+//   return <img className='image' src={src}  />
+// }
 
 //image directions
 const onClickForward = () => {
@@ -62,6 +73,9 @@ const onClickBackwards = () => {
     }
 }
 
+//routing
+const history = useHistory();
+
 const NavigateToView = () => {
 	history.push({
 		pathname: `/item/${id}`,
@@ -69,38 +83,47 @@ const NavigateToView = () => {
 	})
 }
 
-	const { manufacturer, model, price } = item;
+//transition
+
 //onhover shadow
 
+//transitions to display on render, lazy load pagination
+
 	return (
-		<div>
-	 {
-		isLoading ?
-				  <SpinnerOverlay>
-		            <SpinnerContainer />
-		          </SpinnerOverlay>
-		        :
-		  <div className='collection-item'>
-		    <img className='image' src={images[index]} />
-   		<div className='collection-menu'>
-   			<div className="addcircle">
-				<FavoriteBorderIcon onClick={() => addItem({item, id})}/>
-			</div>	
-		 	<div className='navigation-arrows'>
-				<ChevronLeftIcon onClick={onClickBackwards} className="image-arrow-left" />
-				<ChevronRightIcon onClick={onClickForward} className="image-arrow-right" />
-			</div>
-			<div className='collection-footer'>
-				<div className='model-manufacturer' onClick={NavigateToView}>
-					<span className='manufacturer-name'>{manufacturer}</span>
-					<span className='model-name'>{model}</span>
+		<div className='collection-item'>
+			<Suspense fallback={
+              <SpinnerOverlay>
+                <SpinnerContainer />
+              </SpinnerOverlay>
+             }>
+		    	<LazyLoadImage 
+		    		alt='err' 
+		    		style={imageStyle}
+		    		src={images[index]} 
+		    		afterLoad={() => setLoad(true)}
+		    	 />
+		     </Suspense>
+		    {
+			didLoad ?
+				<div className='collection-menu'>
+	   			<div className="addcircle">
+					<FavoriteBorderIcon onClick={() => addItem({item, id})}/>
+				</div>	
+			 	<div className='navigation-arrows'>
+					<ChevronLeftIcon onClick={onClickBackwards} className="image-arrow-left" />
+					<ChevronRightIcon onClick={onClickForward} className="image-arrow-right" />
 				</div>
-					<span className='price'>${price}</span>
-			</div>
+				<div className='collection-footer'>
+					<div className='model-manufacturer' onClick={NavigateToView}>
+						<span className='manufacturer-name'>{manufacturer}</span>
+						<span className='model-name'>{model}</span>
+					</div>
+						<span className='price'>${price}</span>
+					</div>
+				</div>
+			: ""
+		}
 		</div>
-	 </div>
-	}
-	</div> 
 	)}
 
 const mapDispatchToProps = dispatch => ({
