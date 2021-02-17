@@ -1,13 +1,24 @@
 import React, {useState, useEffect, Suspense} from 'react';
 import { connect } from 'react-redux';
 
+import {useLocation} from "react-router-dom";
+
 import CollectionItem from '../collection-item/collection-item.component'  
  
-import { selectAll } from '../../redux/shop/shop.selectors' 
+import { selectAll } from '../../redux/shop/shop.selectors';
+
 import { priceRangeSelector } from '../../redux/shop/shop.selectors'
-import { manufacturerSelector } from '../../redux/shop/shop.selectors'
-import { locationSelector } from '../../redux/shop/shop.selectors'
-import { selectToggleCarousel } from '../../redux/shop/shop.selectors'
+import { selectFilteredByPrice } from '../../redux/shop/shop.selectors';
+
+import { manufacturerSelector } from '../../redux/shop/shop.selectors';
+import { selectFilteredyByManufacturer } from '../../redux/shop/shop.selectors';
+
+import { selectFilteredByLocation } from '../../redux/shop/shop.selectors';
+import { locationSelector } from '../../redux/shop/shop.selectors';
+
+import { selectToggleCarousel } from '../../redux/shop/shop.selectors';
+
+
 import { LazyLoadComponent } from 'react-lazy-load-image-component';
 
 import { toggleCarousel } from '../../redux/shop/shop.actions';
@@ -16,32 +27,29 @@ import { SpinnerContainer, SpinnerOverlay } from '../with-spinner/with-spinner.s
 import './collections-overview.styles.scss'
 
 
-const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufacturerFilter, toggleHeader, toggleCarousel, locationFilter }) => {
+const CollectionsOverview = ({bicycles, history, priceFilter, manufacturerFilter, toggleHeader, toggleCarousel, locationFilter, price, manufacturer, locationId }) => {
  
+	
+
 	const [filteredBicycles, setFilteredBicycles] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
- 
-	useEffect(() => {
-		let result = [...bicycles];
 
-			if (priceFilter) {
-			result = result.filter(bicycle => bicycle.item.price
-						>= priceFilter[0] && bicycle.item.price <= priceFilter[1])
-			}
-			if(manufacturerFilter) {
-				result = result.filter(bicycle => bicycle.item.manufacturer
-					.split(",")
-						.some(key => manufacturerFilter.includes(key)))	
-			}
-			if (locationFilter) {
-				result = result.filter(bicycle => bicycle.id
-					.split(",")
-						.some(key => locationFilter.includes(key)))
-			}
-			
-			setFilteredBicycles(result);
+	
 
-	}, [bicycles, priceFilter, manufacturerFilter, locationFilter])
+	// useEffect(() => {
+	// 	let result = [...bicycles];
+
+	// 		if (price && price.length !== 0) {
+	// 			result = priceFilter
+	// 		}
+	// 		// if(manufacturer && manufacturer.length !== 0) {
+	// 		// 	result = manufacturerFilter
+	// 		// }
+	// 		// if (locationId && location.length !== 0) {
+	// 		// 	result = locationFilter
+	// 		// }
+	// 		setFilteredBicycles(result);
+	// }, [bicycles, priceFilter, manufacturerFilter, locationFilter, price, manufacturer, locationId])
 
 	//caching images
 	useEffect(() => {
@@ -78,12 +86,12 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
   }
 
 	return (
-			<div className='collections-overview'>
+			<div className='collections-overview'>			
 				<div className='preview'>
 			{
-			filteredBicycles.map(({id, ...otherCollectionProps}) =>
-				<LazyLoadComponent>
- 					<CollectionItem id={id} key={id} {...otherCollectionProps}/>
+			bicycles.map(({id, ...otherCollectionProps}) =>
+				<LazyLoadComponent key={id}>
+ 					<CollectionItem key={id} id={id} {...otherCollectionProps}/>
 				</LazyLoadComponent>
 			)}
 		</div>
@@ -91,16 +99,16 @@ const CollectionsOverview = ({ bicycles, match, history, priceFilter, manufactur
 		)
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
 	bicycles: selectAll(state),
-	priceFilter: priceRangeSelector(state),
-	manufacturerFilter: manufacturerSelector(state),
-	locationFilter: locationSelector(state),
+	
+	locationId: locationSelector(state),
+
 	toggleHeader: selectToggleCarousel(state)
 })
 
 const mapDispatchToProps = dispatch => ({
-	toggleCarousel: () => dispatch(toggleCarousel())
+	toggleCarousel: () => dispatch(toggleCarousel()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionsOverview)

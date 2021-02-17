@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { connect } from "react-redux";
+import { useHistory, useLocation } from 'react-router-dom'
+import * as QueryString from "query-string"
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 
-import {filterByPrice} from '../../../redux/shop/shop.actions'
 import './price-item.styles.css'
+
+//buggina slider
  
 const PrettoSlider = withStyles({
   root: {
@@ -39,10 +41,12 @@ const PrettoSlider = withStyles({
   },
 })(Slider);
 
-const PriceItem = ({ filterByPrice }) => {
+const PriceItem = ({updateQuery}) => {
 
 const [value, setValue] = useState([0, 30000]);
-const [range, setRange] = useState(false);
+
+const {search} = useLocation()
+const history = useHistory();
 	
 		const useStyles = makeStyles({
 		  root: {
@@ -51,17 +55,16 @@ const [range, setRange] = useState(false);
 		    justifyContent: 'center'
 		  },
 		});
+    const classes = useStyles();
 
-		function valuetext(value) {
+		const valuetext = (value) => {
 		  return `${value}`;
-		}
-
-		  const classes = useStyles();
+    }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   }
-// if range false => 
+
 	return (
 		<div className='price-filter'>
 			<div className='price-menu'>
@@ -71,27 +74,22 @@ const [range, setRange] = useState(false);
 				 </div>
 				<div className={classes.root}>
 			      <PrettoSlider
-			        value={value}
-			        min={0}
-					step={50}
-			        max={10000}
-			        onChange={handleChange}
-			        valueLabelDisplay="auto"
-			        aria-labelledby="range-slider"
-			        getAriaValueText={valuetext}
+				        value={value}
+				        min={0}
+						    step={50}
+				        max={10000}
+				        onChange={handleChange}
+				        valueLabelDisplay="auto"
+				        aria-labelledby="range-slider"
+				        getAriaValueText={valuetext}
 			      	/>
 				 </div>
 			 </div>
-				 <button className='confirm' onClick={() => {
-					filterByPrice(value);
-					setRange(range => range + 1);}}> confirm </button>				
+				 <button className='confirm' onClick={() => updateQuery(search, 'price_range', value)}> confirm </button>				
 		 </div>
 		)
 }
 
-const mapDispatchToProps = dispatch => ({
-	filterByPrice: (value) => dispatch(filterByPrice(value))
-})
+export default PriceItem;
 
-export default connect(null, mapDispatchToProps)(PriceItem);
 

@@ -1,4 +1,5 @@
- import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from "axios";
 
 import { connect } from "react-redux";
@@ -45,7 +46,10 @@ const PrettoSlider = withStyles({
   },
 })(Slider);
 
-function LocationItem({reduxBicycles, filterByLocation}) {
+// if url has a keyword then filter by loaction
+// ?location=locations.length 
+
+function LocationItem({reduxBicycles, filterByLocation, updateQuery}) {
 
 const [bicycleDistance, setDistance] = useState([])
 const [userLocation, setUserLocation] = useState({
@@ -54,15 +58,13 @@ const [userLocation, setUserLocation] = useState({
 })
 const [value, setValue] = useState(20);
 const [range, setRange] = useState(false);
-
-const classes = useStyles();
-
-//filter it by distance(creatng action)
-
-//dispatching, creating id list that completes the test
-//filter
+const [addressCount, setAddressCount] = useState(null)
 
 const { lat1, lon1 } = userLocation
+
+const {search} = useLocation()
+
+const classes = useStyles();
 
 const calculateDistance = (lat2, lon2, lat1, lon1) => {
 			  let arr = []
@@ -89,6 +91,8 @@ useEffect(() => {
 		setDistance(filteredObj)
 		const locationIdList = filteredObj.map(item => item.id)
 		filterByLocation(locationIdList)
+
+		setAddressCount(locationIdList.length)
 	}
 }, [userLocation])
 
@@ -125,6 +129,7 @@ const handleChange = (event, newValue) => {
 						className='confirm'
 						onClick={() => {
 						findLocation();
+						updateQuery(search, 'locations', addressCount)
 					}}
 					>confirm</button>
 				</div>

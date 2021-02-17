@@ -1,14 +1,11 @@
 import React, {useState, useEffect, lazy, Suspense} from 'react';
-
-import { Route, Link, Switch } from "react-router-dom";
+import { connect } from 'react-redux';
+import { Route, Link, Switch, useLocation } from "react-router-dom";
+import * as QueryString from "query-string"
 
 import { selectIsBicyclesFetching } from '../../redux/shop/shop.selectors'
-
-import { connect } from 'react-redux';
 import { fetchBicyclesStart } from '../../redux/shop/shop.actions'
-
 import Filter from '../../components/filter/filter.component';
-
 import { SpinnerContainer, SpinnerOverlay } from '../../components/with-spinner/with-spinner.styles'
 
 import './shop.styles.scss';
@@ -20,6 +17,7 @@ const CollectionsOverviewContainer = lazy(() => {
 const CategoryPageContainer = lazy(() => import("../category/category.container"))
 
 //initial active link id == 1
+//perhaps thru route data
 
 function ShopPage({fetchBicyclesStart, match}) {
 
@@ -52,10 +50,22 @@ function ShopPage({fetchBicyclesStart, match}) {
   	])
 
   	const [activeLink, setActiveLink] = useState(null)
-	
+  	const [queryParams, setQueryParams] = useState({})
+  	const location = useLocation();
+
 	useEffect(() => {
 		fetchBicyclesStart();
 	}, [])
+
+	useEffect(() => {
+		if(location.search) {
+			const values = QueryString.parse(location.search)
+			setQueryParams(values)
+		 }
+		 if(!location.search) {
+		 	setQueryParams({})
+		 }
+	}, [location.search])
 
 	const handleClick = id => {
     setActiveLink(id)
@@ -80,7 +90,7 @@ function ShopPage({fetchBicyclesStart, match}) {
 			}
 		 </div>
 			<div className="data-filter-content">
-				<Filter />
+				<Filter data={queryParams} />
 			</div>
 				<div className='shop-page'>
 					<Suspense fallback={

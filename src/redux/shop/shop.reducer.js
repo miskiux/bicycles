@@ -6,7 +6,9 @@ const INITIAL_STATE = {
 	isDeleting: false,
 	hasDeleted: false,
 	errorMessage: undefined,
-	toggleCarousel: true
+	toggleCarousel: true,
+	locationId: [],
+	manufacturerLabel: ''
 }
 
 const shopReducer = (state = INITIAL_STATE, action) => {
@@ -45,15 +47,10 @@ const shopReducer = (state = INITIAL_STATE, action) => {
 			...state,
 			hasDeleted: true,
 		}
-		case ShopActionTypes.FILTER_BY_PRICE:
+		case ShopActionTypes.GET_MANUFACTURER_LABEL:
 		return {
 			...state,
-			priceRange: action.payload
-		}
-		case ShopActionTypes.FILTER_BY_MANUFACTURER:
-		return {
-			...state,
-			manufacturers: action.payload
+			manufacturerLabel: action.payload
 		}
 		case ShopActionTypes.FILTER_BY_LOCATION:
 		return {

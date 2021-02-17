@@ -17,15 +17,9 @@ export const fetchBicyclesFailure = (errorMessage) => ({
 	payload: errorMessage
 })
 
-
 //filter actions
-export const filterByPrice = payload => ({
-	type:ShopActionTypes.FILTER_BY_PRICE,
-	payload
-})
-
-export const filterByManufacturer = payload => ({
-	type:ShopActionTypes.FILTER_BY_MANUFACTURER,
+export const getManufacturerLabel = payload => ({
+	type:ShopActionTypes.GET_MANUFACTURER_LABEL,
 	payload
 })
 

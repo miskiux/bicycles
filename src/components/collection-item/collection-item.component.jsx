@@ -34,31 +34,6 @@ const { manufacturer, model, price } = item;
 const imageStyle = didLoad ? { maxWidth:80 + '%', 
     height:'auto'} : {visibility: 'hidden'};
 
-// useEffect(() => {
-// 		cacheImages(images)
-// 	}, [])
-
-// const cacheImages = async(srcArray) => {
-// 		const promises = await srcArray.map((src) => {
-// 			return new Promise((resolve, reject) => {
-// 				const img = new Image();
-// 				img.src = src;
-// 				img.onload = resolve();
-// 				img.onerror = reject();
-// 				console.log(img)
-// 			})
-// 		})
-// 		await Promise.all(promises);
-// 		setIsLoading(false)
-// }
-
-// const MyImageComponent = () => {
-//   const {src} = useImage({
-//     srcList: images[index],
-//   })
-//   return <img className='image' src={src}  />
-// }
-
 //image directions
 const onClickForward = () => {
 	setIndex((index + 1) % images.length);
@@ -82,6 +57,7 @@ const NavigateToView = () => {
 		
 	})
 }
+
 
 //transition
 

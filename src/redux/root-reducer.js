@@ -11,7 +11,7 @@ import sellReducer from './sell/sell.reducer';
 const persistConfig = {
 	key: 'root',
 	storage,
-	whitelist: ['favourites', 'shop']
+	whitelist: ['favourites']
 }
 
 const rootReducer = combineReducers({
