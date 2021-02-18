@@ -91,7 +91,6 @@ useEffect(() => {
 		setDistance(filteredObj)
 		const locationIdList = filteredObj.map(item => item.id)
 		filterByLocation(locationIdList)
-
 		setAddressCount(locationIdList.length)
 	}
 }, [userLocation])

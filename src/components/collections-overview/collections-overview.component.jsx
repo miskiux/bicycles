@@ -7,17 +7,9 @@ import CollectionItem from '../collection-item/collection-item.component'
  
 import { selectAll } from '../../redux/shop/shop.selectors';
 
-import { priceRangeSelector } from '../../redux/shop/shop.selectors'
-import { selectFilteredByPrice } from '../../redux/shop/shop.selectors';
-
-import { manufacturerSelector } from '../../redux/shop/shop.selectors';
-import { selectFilteredyByManufacturer } from '../../redux/shop/shop.selectors';
-
 import { selectFilteredByLocation } from '../../redux/shop/shop.selectors';
-import { locationSelector } from '../../redux/shop/shop.selectors';
 
 import { selectToggleCarousel } from '../../redux/shop/shop.selectors';
-
 
 import { LazyLoadComponent } from 'react-lazy-load-image-component';
 
@@ -26,32 +18,38 @@ import { toggleCarousel } from '../../redux/shop/shop.actions';
 import { SpinnerContainer, SpinnerOverlay } from '../with-spinner/with-spinner.styles'
 import './collections-overview.styles.scss'
 
+//filtering is not working properly
 
-const CollectionsOverview = ({bicycles, history, priceFilter, manufacturerFilter, toggleHeader, toggleCarousel, locationFilter, price, manufacturer, locationId }) => {
- 
-	
+const CollectionsOverview = ({ bicycles, toggleHeader, toggleCarousel, locationId, filterData }) => {
 
 	const [filteredBicycles, setFilteredBicycles] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
-	
+	const {price_range, manufacturer, locations} = filterData
 
-	// useEffect(() => {
-	// 	let result = [...bicycles];
+	const filterprice = price_range ? price_range.split(',') : ''
+	const filtermanufacturer = manufacturer ? manufacturer.split(',') : ''
+	const filterlocation = locations ? locations : ''
 
-	// 		if (price && price.length !== 0) {
-	// 			result = priceFilter
-	// 		}
-	// 		// if(manufacturer && manufacturer.length !== 0) {
-	// 		// 	result = manufacturerFilter
-	// 		// }
-	// 		// if (locationId && location.length !== 0) {
-	// 		// 	result = locationFilter
-	// 		// }
-	// 		setFilteredBicycles(result);
-	// }, [bicycles, priceFilter, manufacturerFilter, locationFilter, price, manufacturer, locationId])
+	useEffect(() => {
+		let result = [...bicycles];
 
-	//caching images
+			if (filterprice) {
+				result = result.filter(bicycle =>
+					  bicycle.item.price
+						 >= filterprice[1] && bicycle.item.price <= filterprice[0])
+			}
+			if(filtermanufacturer) {
+				result = result.filter(bicycle => bicycle.item.manufacturer
+					.split(",")
+						.some(key => filtermanufacturer.includes(key)))	
+			}
+			if (filterlocation) {
+				result = locationId
+			}
+			setFilteredBicycles(result);
+	}, [bicycles, filterData])
+
 	useEffect(() => {
 		const imagesArr = bicycles.map((bicycle) => bicycle.item.url)
 		const arr = imagesArr.flat()
@@ -89,7 +87,7 @@ const CollectionsOverview = ({bicycles, history, priceFilter, manufacturerFilter
 			<div className='collections-overview'>			
 				<div className='preview'>
 			{
-			bicycles.map(({id, ...otherCollectionProps}) =>
+			filteredBicycles.map(({id, ...otherCollectionProps}) =>
 				<LazyLoadComponent key={id}>
  					<CollectionItem key={id} id={id} {...otherCollectionProps}/>
 				</LazyLoadComponent>
@@ -99,11 +97,9 @@ const CollectionsOverview = ({bicycles, history, priceFilter, manufacturerFilter
 		)
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state) => ({
 	bicycles: selectAll(state),
-	
-	locationId: locationSelector(state),
-
+	locationId: selectFilteredByLocation(state),
 	toggleHeader: selectToggleCarousel(state)
 })
 

@@ -8,7 +8,8 @@ const INITIAL_STATE = {
 	errorMessage: undefined,
 	toggleCarousel: true,
 	locationId: [],
-	manufacturerLabel: ''
+	manufacturerLabel: '',
+	activeLink: 'all',
 }
 
 const shopReducer = (state = INITIAL_STATE, action) => {
@@ -61,6 +62,11 @@ const shopReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				toggleCarousel: !state.toggleCarousel 
+			}
+		case ShopActionTypes.UPDATE_LINK:
+			return {
+				...state,
+				activeLink: action.payload
 			}
 		default:
 			return state;

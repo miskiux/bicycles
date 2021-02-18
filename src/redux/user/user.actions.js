@@ -53,10 +53,15 @@ export const signUpFailure = (error) => ({
 	payload: error
 }) 
 
-//redirect
-export const redirect = link => ({
+//on success
+export const redirect = (link) => ({
 	type: UserActionTypes.REDIRECT,
 	payload: link
+})
+
+export const showWelcome = (payload) => ({
+	type: UserActionTypes.SHOW_SUCCESS,
+	payload
 })
 
 

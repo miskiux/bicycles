@@ -1,9 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { connect } from 'react-redux'
 
 import { useHistory, useLocation } from 'react-router-dom';
-
-import { selectFilterList } from '../../redux/shop/shop.selectors'
 
 import * as QueryString from "query-string"
 
@@ -15,26 +12,12 @@ import { Dropdown, Button, Icon } from 'semantic-ui-react';
 
 import './filter.styles.css';
 
-// filter : dispatch setHideFilter => filter
-// mapStateToProps : destructure
-
-// refactor updateQueryString
-
 const Filter = ({data}) => {
 
-// const fromBlogRoll = location.state && location.state.fromBlogRoll
-
-//   return fromBlogRoll ? (
-//     <button onClick={() => history.goBack()}>Back to Blog Roll</button>
-//   ) : (
-//     <button onClick={() => history.push('/home')}>Home</button>
-//   )
-// }
 const [visibleManufacturer, setVisibleManufacturer] = useState(true)
  
 const {price_range, manufacturer, locations} = data
 
-console.log(locations)
 
 const history = useHistory()
 const {search} = useLocation()
@@ -54,8 +37,6 @@ const updateQueryStringParameter = (uri, key, val) => {
     result = uri + separator + key + "=" + val;
   }
 
-  //let urlState = Object.assign({}, urlState, {[key]:val})
-
     history.push({
             pathname: '/shop',
             search:`${result}`,
@@ -69,7 +50,6 @@ const removeQueryString = (uri, key, val) => {
 
 		if (key === 'manufacturer') {
 			let manArr = manufacturer.split(',')
-			console.log(manArr)
 			let newItems = manArr.filter((i) => !i.includes(val))
 			modifiedObj = {...queryValue, [key]: newItems}
 				if(manArr.length === 1) {
@@ -194,9 +174,5 @@ const removeQueryString = (uri, key, val) => {
 		)
 }
 
-const mapStateToProps = (state) => ({
-	filterList: selectFilterList(state)
-})
-
-export default connect(mapStateToProps)(Filter);
+export default Filter;
 

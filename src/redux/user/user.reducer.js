@@ -3,7 +3,8 @@ import UserActionTypes from './user.types';
 // reducer receives an initial state and action(to transform the state)
 const INITIAL_STATE = {
   currentUser: null,
-  error: null
+  error: null,
+  welcomePopUp: false
 };
 
 //state gets a default parameter,in a case, to default back to INITIAL_STATE
@@ -26,6 +27,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         redirectTo: action.payload
+      }
+    case UserActionTypes.SHOW_SUCCESS:
+      return {
+        ...state,
+        welcomePopUp: action.payload
       }
     case UserActionTypes.SIGN_IN_FAILURE:
     case UserActionTypes.SIGN_OUT_FAILURE:

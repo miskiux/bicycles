@@ -1,8 +1,9 @@
 import React, {useState, useEffect, lazy, Suspense} from 'react';
 import { connect } from 'react-redux';
-import { Route, Link, Switch, useLocation } from "react-router-dom";
+import { Route, Link, Switch, useLocation, withRouter } from "react-router-dom";
 import * as QueryString from "query-string"
 
+import { linkSelector } from '../../redux/shop/shop.selectors'
 import { selectIsBicyclesFetching } from '../../redux/shop/shop.selectors'
 import { fetchBicyclesStart } from '../../redux/shop/shop.actions'
 import Filter from '../../components/filter/filter.component';
@@ -16,42 +17,63 @@ const CollectionsOverviewContainer = lazy(() => {
 	});
 const CategoryPageContainer = lazy(() => import("../category/category.container"))
 
-//initial active link id == 1
-//perhaps thru route data
+//category fixed, go fix shop
 
-function ShopPage({fetchBicyclesStart, match}) {
+function ShopPage({fetchBicyclesStart, match, activeLink}) {
 
 	const [links, setLinks] = useState([
       {
         id: 1,
         name: "all",
-        to: "/shop",
+        to: {
+        	pathname:'/shop',
+        	state: {active: 1}
+    },
       },
       {
         id: 2,
         name: "city bicycle",
-        to: `${match.path}/city bicycle`,
+        to: {
+        	pathname:`${match.path}/city bicycle`,
+        	state: {active: "city bicycle"}
+    },
       },
       {
         id: 3,
         name: "road bicycle",
-        to: `${match.path}/road bicycle`,
+        to: {
+        	pathname:`${match.path}/road bicycle`,
+        	state: {active: "road bicycle"}
+    },
       },
       {
         id: 4,
         name: "vintage",
-        to: `${match.path}/vintage`,
+        to: {
+        	pathname:`${match.path}/vintage`,
+        	state: {active: "vintage"}
+    },
       },
       {
         id: 5,
         name: "off-road",
-        to: `${match.path}/off-road`,
+        to: {
+        	pathname:`${match.path}/off-road`,
+        	state: {active: "off-road"}
+    },
       }
   	])
 
-  	const [activeLink, setActiveLink] = useState(null)
+  	const [activeId, setActiveId] = useState(1)
   	const [queryParams, setQueryParams] = useState({})
   	const location = useLocation();
+
+	console.log(location)  	
+	useEffect(() => {
+		if (location.state) {
+			setActiveId(location.state.active)
+		}
+	}, [location.pathname])
 
 	useEffect(() => {
 		fetchBicyclesStart();
@@ -67,12 +89,10 @@ function ShopPage({fetchBicyclesStart, match}) {
 		 }
 	}, [location.search])
 
-	const handleClick = id => {
-    setActiveLink(id)
-  };
 
 	return (
 	<div className='shop-page-container'>
+	{console.log(activeLink)}
 		<div className="list-container">
 			{
 				links.map(link => {
@@ -80,8 +100,9 @@ function ShopPage({fetchBicyclesStart, match}) {
 						<div key={link.id} className="list-wrapper">
 							<ul className='category-wrapper'>
 								<li className='category-list'>
-		                  		 <Link onClick={() => handleClick(link.id)}
-				                  className={`${link.id === activeLink ? "active_item" : ""} category-option`} to={link.to}>{link.name}</Link>
+			                  		 <Link
+					                  className={`${link.name === activeLink ? "active_item" : ""} category-option`} 
+					                  to={link.to}>{link.name}</Link>
 		                		 </li>
 							</ul>
 						</div>
@@ -101,7 +122,7 @@ function ShopPage({fetchBicyclesStart, match}) {
 					<Route 
 					  exact
 		              path={`${match.path}`}
-		              component={CollectionsOverviewContainer}
+		              render={() => <CollectionsOverviewContainer filterData={queryParams} />}
 		            />
 					<Route 
 		              path={`${match.path}/:categoryId`}
@@ -118,6 +139,10 @@ const mapDispatchToProps = dispatch => ({
 	fetchBicyclesStart: () => dispatch(fetchBicyclesStart())
 })
 
+const mapStateToProps = state => ({
+	activeLink: linkSelector(state)
+})
 
-export default connect(null, mapDispatchToProps)(ShopPage);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);
 

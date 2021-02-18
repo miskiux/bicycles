@@ -46,7 +46,7 @@ function App({ checkUserSession }) {
               <Route exact path="/" component={HomePage} />
               <ProtectedRoute path="/sell" user={user} component={SellPage} />
               <Route path="/shop" component={ShopPage} />
-              <UnauthenticatedRoute exact path="/signin" user={user} component={SignInAndSignUp} />
+              <Route path="/signin" component={SignInAndSignUp} />
               <Route exact path='/item/:bicycleId' component={ItemView} />
              </Suspense> 
            </ErrorBoundary>

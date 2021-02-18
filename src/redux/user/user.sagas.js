@@ -10,10 +10,10 @@ import {
 	signOutSuccess, 
 	signUpSuccess,
 	signUpFailure,
-	redirect
+	redirect,
+	showWelcome
 	 } from './user.actions'
 
-//refactor(reusable generator functionn
 export function* getSnapshotFromUserAuth(userAuth, additionalData, history) {
 	try {
 		const userRef = yield call(createUserProfileDocument, userAuth, additionalData);
@@ -45,7 +45,7 @@ export function* signInWithEmail({payload: {email, password}}) {
 	try {
 		const { user } = yield auth.signInWithEmailAndPassword(email, password);
 		yield getSnapshotFromUserAuth(user)
-		yield put(redirect('/'))
+			yield put(redirect('/'))
 	} catch (error) {
 		yield put(signInFailure(error))
 	}
@@ -69,8 +69,10 @@ export function* isUserAuthenticated() {
 export function* signOut() {
 	try {
 		yield auth.signOut();
-		yield put(signOutSuccess())
-		yield put(redirect(null))
+		yield all([
+			yield put(showWelcome(false)),
+			yield put(signOutSuccess())
+			])
 	} catch (error) {
 		yield put(signInFailure(error))
 	}
@@ -88,7 +90,7 @@ export function* signUp({payload: {displayName, email, password}}) {
 
 export function* signInAferSignUp({payload: {user, additionalData}}) {
 	yield getSnapshotFromUserAuth(user, additionalData)
-	yield put(redirect('/'))
+	//yield put(redirect('/'))
 }
 
 

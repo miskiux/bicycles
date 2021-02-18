@@ -3,17 +3,26 @@ import {connect} from 'react-redux'
 
 import CollectionItem from '../../components/collection-item/collection-item.component'
 
+import { updateLink } from '../../redux/shop/shop.actions'
 import { selectCategory } from '../../redux/shop/shop.selectors';
 
 import './category.styles.scss';
 
-const CategoryPage = ({ category, match}) => {
+const CategoryPage = ({ category, match, location, updateLink}) => {
 
 const [bicycleCategory, setBicycleCategory] = useState([]);
  
+console.log(location)
+console.log(match.params.categoryId)
 
+//active link to redux
+useEffect(() => {
+	if(match.params.categoryId) {
+		updateLink(match.params.categoryId)
+	}
+}, [match.params.categoryId])
 // useEffect(() => {
-// 	let result = [...category]
+// 	let result = [...category]''
 // 	if (priceFilter) {
 // 			result = result
 // 						.filter(bicycle => bicycle.item.price
@@ -47,5 +56,9 @@ const mapStateToProps = (state, ownProps) => ({
 	category: selectCategory(ownProps.match.params.categoryId)(state),
 })
 
+const mapDispatchToProps = dispatch => ({
+	updateLink: (link) => dispatch(updateLink(link))
+})
 
-export default connect(mapStateToProps)(CategoryPage);
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryPage);

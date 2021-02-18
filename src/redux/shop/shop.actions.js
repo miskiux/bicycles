@@ -48,6 +48,14 @@ export const hasBicycleDeleted = () => ({
 	type: ShopActionTypes.HAS_BICYCLE_DELETED
 })
 
+//category link update
+
+export const updateLink = (link) => ({
+	type: ShopActionTypes.UPDATE_LINK,
+	payload: link
+})
+
+
 
 
 

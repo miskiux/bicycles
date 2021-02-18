@@ -5,6 +5,7 @@ import { createSelector } from 'reselect';
 export const filterListSelector = state => state.shop.filterList
 export const manufacturerSelector = state => state.shop.manufacturerLabel
 export const locationSelector = state => state.shop.locationId
+export const linkSelector = state => state.shop.activeLink
 
 const selectShop = state => state.shop;
 
@@ -49,29 +50,12 @@ export const selectToggleCarousel = createSelector(
 
 //filtered bicycles
 
-export const selectFilterList = createSelector(
-[selectShop],
-shop => shop.filterList ? shop.filterList : null
+export const selectFilteredByLocation = createSelector(
+[selectAll, locationSelector],
+(bicycles, locationId) => bicycles.filter(bicycle => bicycle.id
+					.split(",")
+						.some(key => locationId.includes(key)))
 	)
-// export const selectFilteredByPrice = createSelector(
-// [selectAll, priceRangeSelector],
-// (bicycles, priceRange) => bicycles.filter(bicycle =>
-// 					  bicycle.item.price
-// 						 >= priceRange[1] && bicycle.item.price <= priceRange[0]))
-
-// export const selectFilteredyByManufacturer = createSelector(
-// [selectAll, manufacturerSelector],
-// (bicycles, manufacturers) => bicycles.filter(bicycle => bicycle.item.manufacturer
-// 					.split(",")
-// 						.some(key => manufacturers.includes(key)))	
-// 	)
-
-// export const selectFilteredByLocation = createSelector(
-// [selectAll, locationSelector],
-// (bicycles, locationId) => bicycles.filter(bicycle => bicycle.id
-// 					.split(",")
-// 						.some(key => locationId.includes(key)))
-// 	)
 
 
 
