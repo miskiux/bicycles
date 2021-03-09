@@ -14,6 +14,38 @@ const config = {
     appId: "1:397239191781:web:5105e88a7099a054dcac0c",
     measurementId: "G-436ZVS1NPV"
   };
+ 
+  export const updateUserBicycle = async (id, values) => {
+    const ref = firestore.doc(`bicycle/${id}`);
+
+    const { manufacturer,
+            model,
+            price,
+            year,
+            size,
+            condition,
+            info,
+            address,
+            phone } = values
+
+      try {
+        await ref.set({
+        phone,
+        item: {
+          manufacturer,
+          model,
+          price,
+          year,
+          size,
+          condition,
+          info, 
+          address,
+        }
+      }, {merge: true})
+      } catch (error) {
+        console.log(error)
+      }
+  }
 
   export const deleteUserBicycleImages = (key) => {
     const storageRef = storage.ref(`images/${key}`);
@@ -37,7 +69,7 @@ const config = {
       const createdAt = new Date();      
 
 
-      try {             //asynchronous request to store data
+      try {
         await userRef.set({
           displayName,
           email,

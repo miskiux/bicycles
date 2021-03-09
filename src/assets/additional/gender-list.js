@@ -1,4 +1,4 @@
-const genderList = [
+export const genderList = [
   {
     key: "Unisex",
     label: "Unisex",
@@ -25,5 +25,3 @@ const genderList = [
     value: "Girls",
   }
 ];
-
-export default genderList;

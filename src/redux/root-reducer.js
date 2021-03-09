@@ -3,7 +3,7 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'
 
 import userReducer from './user/user.reducer';
-import favouritesReducer from './favourites/favourites.reducer';
+import sideNavReducer from './side-nav/side-nav.reducer';
 import directoryReducer from './directory/directory.reducer';
 import shopReducer from './shop/shop.reducer';
 import sellReducer from './sell/sell.reducer';
@@ -11,12 +11,12 @@ import sellReducer from './sell/sell.reducer';
 const persistConfig = {
 	key: 'root',
 	storage,
-	whitelist: ['favourites', 'user']
+	whitelist: ['user']
 }
 
 const rootReducer = combineReducers({
 	user: userReducer, 
-	favourites: favouritesReducer,
+	sidenav: sideNavReducer,
 	directory: directoryReducer,
 	shop: shopReducer,
 	sell: sellReducer,

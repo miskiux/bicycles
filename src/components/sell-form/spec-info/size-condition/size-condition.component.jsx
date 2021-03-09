@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Input } from 'semantic-ui-react';
 
-
-
 function AdditionalInfo (props) {
 
 	return (

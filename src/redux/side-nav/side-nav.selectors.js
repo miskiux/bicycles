@@ -1,15 +1,10 @@
 import { createSelector } from 'reselect';
 // to save some re-renders off of components
-const selectFavourite = state => state.favourites
+const selectSidebar = state => state.sidenav
 
 export const selectFavouriteItems = createSelector(
-[selectFavourite],
-(favourites) => favourites.favouriteItems
-	)
-
-export const selectFavouriteHidden = createSelector(
-[selectFavourite],
-(favourites) => favourites.hidden
+[selectSidebar],
+(sidenav) => sidenav.favouriteItems
 	)
 
 export const selectCartItemsFlash = createSelector(

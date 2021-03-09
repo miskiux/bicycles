@@ -94,13 +94,11 @@ const [imageFiles, setFiles] = useState([])
   ))
 
   useEffect(() => {
-    props.uploadImages(imageFiles)
+    props.callback('image',imageFiles)
   }, [imageFiles])
 
   return (
     <div>
-    {
-      props.currentStep == 3 ?
         <section className="container">
         {console.log(imageFiles)}
           <div 
@@ -114,9 +112,11 @@ const [imageFiles, setFiles] = useState([])
             <ul>{images}</ul>
           </aside>
         </section>
-        : ""
-    }   
-    </div>
+          <div>
+            <button onClick={() => props.setStep(props.step - 1)}>back</button>
+            <button onClick={() => props.setStep(props.step + 1)}>continue</button>
+      </div>
+   </div>
   )
 }
 

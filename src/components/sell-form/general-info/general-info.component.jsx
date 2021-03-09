@@ -8,8 +8,8 @@ import { Hint } from 'react-autocomplete-hint';
 import { Grid, Form, Input, Segment, Button } from 'semantic-ui-react';
 import Select from "react-select";
 
-import bicycleList from '../../../assets/general-info.data/bicycle-list.js'
-import genderList from '../../../assets/general-info.data/gender-list'
+import {bicycleList} from '../../../assets/additional/bicycle-list.js'
+import {genderList} from '../../../assets/additional/gender-list'
 
 import './general-info.styles.css'
 
@@ -59,12 +59,12 @@ const GeneralInfo = (props) => {
 
 const typeChange = (selectedType) => {
     setSelectedType(selectedType);
-    props.uploadType(selectedType)
+    props.callback('bicycleType', selectedType)
   }
 
 const genderChange = (selectedGender) => {
   	setSelectedGender(selectedGender)
-  	props.uploadGender(selectedGender)
+  	props.callback('gender', selectedGender)
   }
 
 //subcategory
@@ -86,13 +86,10 @@ if (selectedType.key === "Off-Road") {
 
   const handleChange = event => {
   	setSubType(event.target.value)
-  	props.uploadSubType(event.target.value)
+  	props.callback('subCategory', event.target.value)
   } 
 
 	return (
-		<div>
-		{
-			props.currentStep == 1 ?
 			<div className='general-info'>	
 				<Grid columns={1}>
 					<Grid.Row>
@@ -100,9 +97,6 @@ if (selectedType.key === "Off-Road") {
 							<Segment>
 								<Form.Group widths='equal'>
 								<div className='general-info-wrapper'>
-									
-										<h3> bicycle information</h3>
-
 									<Form.Field>
 										<label>Manufacturer</label>
 											<Hint options={hintData}>
@@ -122,8 +116,8 @@ if (selectedType.key === "Off-Road") {
 												start={1960}
 												end={2021}
 												reverse 
-												value={props.year}
-												onChange={(year) => props.handleYear(year)}		
+												value={props.year || ''}
+												onChange={(year) => props.callback('year', year)}		
 												/>
 											</Form.Field>
 											<Form.Field>
@@ -175,22 +169,20 @@ if (selectedType.key === "Off-Road") {
 												<Form.Field>
 												<label>Price</label>
 											<Input 
-											name='price'
-											autoComplete="off"  
-											type='text' 
-											value={props.price}
-											onChange={props.handleChange}					  
-										/>
+												name='price'
+												autoComplete="off"  
+												type='text' 
+												value={props.price}
+												onChange={props.handleChange}					  
+											/>
 									</Form.Field>
 									</div>
 								</Form.Group>
 							</Segment>
 						</Grid.Column>
 					</Grid.Row>
-					</Grid>
-				</div>
-			: ""
-		}
+				</Grid>
+				<Button onClick={() => props.setStep(props.step + 1)}> Continue </Button>
 		</div>
 
 		)

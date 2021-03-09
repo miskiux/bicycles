@@ -9,7 +9,7 @@ import AccountDropdown from '../account-dropdown/account-dropdown.component';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 
-import { selectFavouriteHidden } from '../../redux/favourites/favourites.selectors';
+import { toggleSideNav } from '../../redux/side-nav/side-nav.actions'
 import { selectToggleCarousel } from '../../redux/shop/shop.selectors';
 
 import { signOutStart } from '../../redux/user/user.actions';
@@ -18,7 +18,7 @@ import { connect } from "react-redux";
 import "../../assets/bici.png";
 import "./header.styles.scss";
 
-const Header = ({ currentUser, hidden, toggleCarousel, signOutStart }) => (
+const Header = ({ currentUser, hidden, toggleCarousel, signOutStart, toggleSideNav }) => (
   <div>
     { toggleCarousel ?
   <div class="header">
@@ -45,11 +45,9 @@ const Header = ({ currentUser, hidden, toggleCarousel, signOutStart }) => (
       )}
       <Favourites className="option" />
     </div>
-    {
-      hidden ? null :
-        <AccountDropdown />
-    }
-
+      <div onClick={toggleSideNav}>
+          <AccountDropdown />
+        </div>
     </div>
     : null
 }
@@ -60,12 +58,12 @@ const Header = ({ currentUser, hidden, toggleCarousel, signOutStart }) => (
 // for multiple selectors createStructureSelector
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
-  hidden: selectFavouriteHidden,
   toggleCarousel: selectToggleCarousel
 })
 
 const mapDispatchToProps = dispatch => ({
-  signOutStart: () => dispatch(signOutStart())
+  signOutStart: () => dispatch(signOutStart()),
+  toggleSideNav: () => dispatch(toggleSideNav())
 })
   
 

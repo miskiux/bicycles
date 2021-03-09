@@ -12,7 +12,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { ViewShow } from '@styled-icons/zondicons/ViewShow'
 
 
-import { addItem } from '../../redux/favourites/favourites.actions'
+import { addItem } from '../../redux/side-nav/side-nav.actions'
 
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 

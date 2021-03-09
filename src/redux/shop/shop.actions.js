@@ -55,6 +55,16 @@ export const updateLink = (link) => ({
 	payload: link
 })
 
+//update
+
+export const bicycleUpdateStart = (values) => ({
+	type: ShopActionTypes.BICYCLE_UPDATE_START,
+	payload: values
+})
+
+export const bicycleUpdateSuccess = () => ({
+	type:ShopActionTypes.BICYCLE_UPDATE_SUCCESS
+})
 
 
 

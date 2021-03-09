@@ -1,4 +1,4 @@
-const bicycleList = [
+export const bicycleList = [
   {
     key: "City Bicycle",
     label: "City Bicycle",
@@ -30,5 +30,3 @@ const bicycleList = [
     value: "Other",
   }
 ];
-
-export default bicycleList;

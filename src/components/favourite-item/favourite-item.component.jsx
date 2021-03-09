@@ -1,15 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { withRouter, useHistory } from 'react-router-dom'
 
-import { toggleFavouritesHidden } from '../../redux/favourites/favourites.actions';
-import {clearItemFromCart} from '../../redux/favourites/favourites.actions';
+import { Icon } from 'semantic-ui-react'
+
+import { toggleSideNav } from '../../redux/side-nav/side-nav.actions';
+import {clearItemFromFavourites} from '../../redux/side-nav/side-nav.actions';
 
 import './favourite-item.styles.scss'
 
-const FavouriteItem = ({ item, clearItem, id, toggleFavouritesHidden }) => {
+//onhover clear
+
+const FavouriteItem = ({ item, clearItemFromFavourites, id, toggleSideNav }) => {
+
 	const  { url, price, manufacturer, model } = item
 
 	const history = useHistory();
@@ -20,29 +25,30 @@ const FavouriteItem = ({ item, clearItem, id, toggleFavouritesHidden }) => {
 
 	return (
 <div className='favourite-item'>
-	<div className='remove-button' onClick={() => clearItem(item)}>&#10005;</div>
-		<img src={url} alt='item' 
-		onClick={() => {
+		<img className='favourite-image' src={url} alt='item' 
+			onClick={() => {
 					redirectToView()
-					toggleFavouritesHidden()
+					toggleSideNav()
 				}} 
 		/>
 	<div className='item-details'>
-			<span className='name'>{manufacturer}</span>
-			<span className='name'>{model}</span>
-			<div>
-				<span className='price'>€{price}</span>
+		<div className='name'>
+			<span>{manufacturer}</span>
+			<span>{model}</span>
+		</div>
+			<div className='price'>
+				<span>€{price}</span>
 			</div>
 	</div>
+		<Icon name='remove' onClick={() => clearItemFromFavourites(id)} />
+		
 </div>
 	)
 }
 
-
-
 const mapDispatchToProps = dispatch => ({
-	clearItem: item => dispatch(clearItemFromCart(item)),
-	toggleFavouritesHidden: () => dispatch(toggleFavouritesHidden())
+	clearItemFromFavourites: id => dispatch(clearItemFromFavourites(id)),
+	toggleSideNav: () => dispatch(toggleSideNav())
 })
 
 export default compose(

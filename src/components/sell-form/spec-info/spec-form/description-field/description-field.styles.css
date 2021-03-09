@@ -1,0 +1,38 @@
+.parts-container {
+  position: fixed;
+  right: 20px;
+}
+
+.parts-title {
+  text-align: center;
+}
+
+.bottom-item-wrapper {
+  display: flex;
+}
+
+.bottom-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: auto;
+  min-width: 430px;
+  margin: 15px;
+  padding: 10px;
+}
+
+.bottom-item-name {
+  display: flex;
+  align-items: center;
+}
+
+.part-name {
+  width: 70px;
+}
+
+.input-change {
+}
+
+.field {
+  height: 50px;
+}

@@ -1,12 +1,46 @@
-.description {
-	width:34vh;
-	display:flex;
-	flex-direction: column;
-	padding: 15px;
-	margin:15px;
-	background-color: rgba(232, 236, 241, 0.3);
-	border: solid 1px;
-	border-color: rgba(232, 236, 241, 0.3);
-	border-radius: 10px;
+.container {
+  display: flex;
+  flex-direction: column;
+}
 
+.image-spec-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  height: auto;
+  width: 100%;
+}
+
+.bicycle {
+  max-width: 100%;
+  height: auto;
+  z-index: 1000;
+}
+
+.bike {
+  z-index: 1002;
+}
+
+.path {
+  background-color: white;
+  height: 20px;
+}
+
+.opacity-bicycle {
+  max-width: 100%;
+  height: auto;
+  opacity: 0.4;
+  z-index: -10;
+}
+
+.description {
+  width: 34vh;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  margin: 15px;
+  background-color: rgba(232, 236, 241, 0.3);
+  border: solid 1px;
+  border-color: rgba(232, 236, 241, 0.3);
+  border-radius: 10px;
 }

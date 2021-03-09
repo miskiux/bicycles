@@ -20,4 +20,5 @@ export const uploadSuccess = () => ({
 export const submitSuccess = () => ({
 	type: SellActionTypes.SUBMIT_SUCCESS
 })
+
  

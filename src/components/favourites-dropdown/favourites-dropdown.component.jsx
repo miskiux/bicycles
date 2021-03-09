@@ -4,9 +4,7 @@ import { Route } from "react-router-dom";
 
 import FavouriteItem from '../favourite-item/favourite-item.component';
 
-import BiciInfo from '../bici-info/bici-info.component';
-
-import {selectFavouriteItems} from '../../redux/favourites/favourites.selectors'
+import {selectFavouriteItems} from '../../redux/side-nav/side-nav.selectors'
 import { connect } from 'react-redux';
 
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';

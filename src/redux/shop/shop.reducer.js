@@ -10,6 +10,7 @@ const INITIAL_STATE = {
 	locationId: [],
 	manufacturerLabel: '',
 	activeLink: 'all',
+	isUpdating: false,
 }
 
 const shopReducer = (state = INITIAL_STATE, action) => {
@@ -68,6 +69,16 @@ const shopReducer = (state = INITIAL_STATE, action) => {
 				...state,
 				activeLink: action.payload
 			}
+		case ShopActionTypes.BICYCLE_UPDATE_START:
+		return {
+			...state,
+			isUpdating: true
+		}
+		case ShopActionTypes.BICYCLE_UPDATE_SUCCESS:
+		return {
+			...state,
+			isUpdating: false
+		}
 		default:
 			return state;
 	}

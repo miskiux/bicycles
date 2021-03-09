@@ -2,11 +2,11 @@ import React from 'react';
 import { ReactComponent as FavouriteIcon } from '../../assets/Bike.svg';
 
 import { connect } from 'react-redux';
-import { toggleFavouritesHidden } from '../../redux/favourites/favourites.actions';
+import { toggleSideNav } from '../../redux/side-nav/side-nav.actions';
 import './favourites.styles.scss';
 
-const Favourites = ({toggleFavouritesHidden, itemCount}) => (
-<div className='favourites-icon' onClick={toggleFavouritesHidden}>
+const Favourites = ({toggleSideNav, itemCount}) => (
+<div className='favourites-icon' onClick={toggleSideNav}>
 	<FavouriteIcon className='icon' />
 	{
 		itemCount ?
@@ -20,10 +20,10 @@ const Favourites = ({toggleFavouritesHidden, itemCount}) => (
 
 
 const mapDispatchToProps = dispatch => ({
-	toggleFavouritesHidden: () => dispatch(toggleFavouritesHidden())
+	toggleSideNav: () => dispatch(toggleSideNav())
 })
 
-const mapStateToProps = ({favourites: {favouriteItems}}) => ({
+const mapStateToProps = ({sidenav: {favouriteItems}}) => ({
 	itemCount: favouriteItems.length !== 0
 })
 

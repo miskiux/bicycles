@@ -93,7 +93,7 @@ export function* signInAferSignUp({payload: {user, additionalData}}) {
 	//yield put(redirect('/'))
 }
 
-
+ 
 //LISTENERS
 
 export function* onSignOutStart() {

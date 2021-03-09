@@ -1,0 +1,99 @@
+.bicycle-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 650px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background: transparent; /* Chrome/Safari/Webkit */
+  }
+  .bici-info {
+    display: flex;
+    flex-direction: column;
+  }
+  .navigation {
+    display: flex;
+    width: 30vw;
+    flex-direction: row;
+    justify-content: center;
+    justify-content: space-around;
+    margin: 10px;
+    align-self: center;
+  }
+
+  .navigation-title {
+    font-weight: normal;
+    font-size: 10px;
+  }
+
+  .bici-remove {
+    height: auto;
+    width: 100%;
+  }
+  .bici-update {
+    height: auto;
+    width: 100%;
+  }
+
+  .right-click {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    height: 60px;
+    width: 60px;
+  }
+
+  .bici-deletion {
+    display: flex;
+    flex-direction: row;
+    width: 240px;
+    margin-top: 10px;
+  }
+  .ui.button {
+    width: 100%;
+    padding: 10px;
+    width: 80px;
+  }
+
+  .bici-deletion-selection {
+    margin-top: 10px;
+    display: inline-flex;
+  }
+
+  .go-sign {
+    align-self: center;
+  }
+
+  .go-sign-text {
+    font-weight: normal;
+  }
+
+  .bici-detail {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 50vh;
+  }
+  .bici-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 60px;
+    border-bottom: 1px solid;
+  }
+
+  .bici-title-text {
+    display: flex;
+    flex-direction: row;
+  }
+  .bici-update-text {
+    align-self: center;
+    font-size: 11px;
+  }
+}

@@ -33,8 +33,8 @@ function ContactInformation (props) {
 
   useEffect(() => {
     if(location) {
-      props.uploadAddress(location)
-      props.uploadCoordinates([viewport.latitude, viewport.longitude])
+      props.callback('address', location)
+      props.callback('coordinates', [viewport.latitude, viewport.longitude])
     }
   }, [location]);
 
@@ -72,8 +72,6 @@ function ContactInformation (props) {
   );
 
   return (
-    <div>
-      {props.currentStep == 2 ? (
         <div className='location-wrapper'>
           <div className="map">
             <ReactMapGL
@@ -92,14 +90,11 @@ function ContactInformation (props) {
               />
             </ReactMapGL>
           </div>
-          <div className='bici-location-name'>
-            <h2 className="bici-location">bicycle location</h2>
+          <div>
+            <button onClick={() => props.setStep(props.step - 1)}>back</button>
+            <button onClick={() => props.setStep(props.step + 1)}>continue</button>
           </div>
         </div>
-      ) : (
-        ""
-      )}
-    </div>
   );
 };
 
