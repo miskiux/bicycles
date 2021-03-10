@@ -31,7 +31,7 @@ const FormSteps = ({
     ),
   },
   {
-    title: "Contact information",
+    title: "Bicycle location",
     content: (
       <ContactInformation
         step={step}

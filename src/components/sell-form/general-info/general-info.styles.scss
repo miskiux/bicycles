@@ -1,0 +1,33 @@
+.form-bootstrap {
+  @import "~bootstrap/scss/bootstrap.scss";
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 500px;
+  background: white;
+  border-radius: 5px;
+  border: 0px solid;
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 200px;
+  padding: 40px;
+  -webkit-box-shadow: 0 10px 6px -6px #777;
+  -moz-box-shadow: 0 10px 6px -6px #777;
+  box-shadow: 0 10px 6px -6px #777;
+
+  .form-row {
+    margin: 10px;
+    padding: 10px;
+  }
+}
+
+.form-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.second-tier {
+  width: 60%;
+  justify-content: center;
+  //   text-align: center;
+}

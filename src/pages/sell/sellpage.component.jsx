@@ -15,11 +15,12 @@ import { submitSuccess } from "../../redux/sell/sell.actions";
 import { useStorage } from "../../hooks/useStorage.js";
 
 import FormSteps from "../../components/sell-form/form-steps/FormSteps.component";
-
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import { Form, Button } from "semantic-ui-react";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import "./sellpage.styles.scss";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 import {
   SpinnerContainer,
@@ -148,8 +149,29 @@ function SellPage({
 
   //specForm => onSubmit={imageUploadStart}
   return (
-    <div className="sell-form">
-      {isLoaded ? (
+    <Container className="sell-form-container" fluid>
+      <Row>
+        <Col>
+          <div className="sell-form-nav">
+            <h2>hi</h2>
+            <h2>hi</h2>
+            <h2>hi</h2>
+            <h2>hi</h2>
+          </div>
+        </Col>
+        <Col xs={10}>
+          <div className="sell-form">
+            {steps.map(({ title, content }) => (
+              <div className="form-step-wrapper">
+                <h1 className="step-name">{title}</h1>
+                <div className="form-step">{content}</div>
+              </div>
+            ))}
+          </div>
+        </Col>
+      </Row>
+    </Container>
+    /*isLoaded ? (
         <SpinnerOverlay>
           <SpinnerContainer />
         </SpinnerOverlay>
@@ -162,12 +184,8 @@ function SellPage({
           </Snackbar>
         </div>
       ) : (
-        <div>
-          <h1>{steps[`${step}`].title}</h1>
-          <div className="form-step">{steps[`${step}`].content}</div>
-        </div>
-      )}
-    </div>
+        
+      )}*/
   );
 }
 

@@ -1,0 +1,28 @@
+.sell-form-container {
+  @import "~bootstrap/scss/bootstrap.scss";
+  background: rgba(228, 233, 237, 0.2);
+  margin-top: 40px;
+
+  .sell-form {
+    padding: 30px;
+    margin-top: 40px;
+  }
+  .step-name {
+    text-align: right;
+    font-weight: 100;
+    font-size: 18px;
+    letter-spacing: 1px;
+    margin-bottom: -4px;
+    z-index: 100;
+  }
+  .form-step-wrapper {
+    max-width: 1000px;
+    width: 100%;
+  }
+  .form-step {
+    margin-bottom: 200px;
+  }
+  .sell-form-nav {
+    position: fixed;
+  }
+}

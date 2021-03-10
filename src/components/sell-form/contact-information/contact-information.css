@@ -1,21 +1,7 @@
-.location-wrapper {
-	display: flex;
-}
-
-.column {
-	flex: 10%;
-}
-.bici-location {
-	text-orientation: upright;
-    writing-mode: vertical-lr;
-	letter-spacing: 0px;
-	font-size: 16px;
+.mapboxgl-map {
+  width: 100%;
 }
 
 .mapboxgl-ctrl-geocoder--input {
-	padding: 1em 2em ! important;
-}
-
-.map {
-	flex: 90%;
+  padding: 1em 2em !important;
 }

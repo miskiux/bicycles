@@ -1,36 +1,33 @@
-.container {
+.spec-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .image-spec-wrapper {
+  position: relative;
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  height: auto;
-  width: 100%;
+  width: 800px;
 }
 
 .bicycle {
+  position: absolute;
   max-width: 100%;
   height: auto;
   z-index: 1000;
 }
 
-.bike {
-  z-index: 1002;
-}
-
-.path {
-  background-color: white;
-  height: 20px;
-}
-
 .opacity-bicycle {
+  position: absolute;
   max-width: 100%;
   height: auto;
   opacity: 0.4;
-  z-index: -10;
+}
+
+.description-wrapper {
+  position: absolute;
+  text-align: center;
+  right: 5px;
+  width: auto;
 }
 
 .description {
@@ -43,4 +40,49 @@
   border: solid 1px;
   border-color: rgba(232, 236, 241, 0.3);
   border-radius: 10px;
+}
+
+.view-selections {
+  font-weight: normal;
+  display: inline-block;
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.view-selections::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.2);
+  transition: width 0.3s;
+}
+
+.view-selections:hover::after {
+  width: 100%;
+  //transition: width .3s;
+}
+
+.view-selection-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 50px;
+  width: auto;
+  min-width: 350px;
+}
+
+.view-selection-item {
+  display: grid;
+  grid-template-columns: 40% auto;
+  margin-top: 20px;
+}
+
+.selection-label {
+  font-weight: 100;
+  letter-spacing: 1px;
+}
+
+.selection-value {
+  font-size: 18px;
 }

@@ -23,10 +23,6 @@ import AdditionalInfo from "../size-condition/size-condition.component";
 import { Button } from "semantic-ui-react";
 import "./spec-form.styles.css";
 
-const gridContainer = {
-  display: "flex",
-};
-
 const SpecForm = (props) => {
   const [toggleVal, setToggleVal] = useState("");
   const [listenDocument, setListenDocument] = useState(true);
@@ -57,7 +53,10 @@ const SpecForm = (props) => {
     { idx: 1, item: "Brakes", value: "" },
     { idx: 2, item: "Rim", value: "" },
     { idx: 3, item: "Tyre", value: "" },
+    { idx: 4, item: "Wheel Size", value: "" },
   ]);
+
+  const [viewSelection, setViewSelection] = useState([]);
 
   //reducer
   const [clipping, dispatch] = useReducer((state, action) => {
@@ -138,14 +137,37 @@ const SpecForm = (props) => {
   }, []);
 
   const handleChange = (e, idx) => {
+    console.log(idx);
     let values = [...partsInfo[toggleVal]];
     values[idx].value = e.target.value;
     props.callback("description", values);
   };
 
+  const getTypedSpecs = () => {
+    let typed = [];
+    let bottomspec = bottomData.filter((i) => i.value.length);
+    let saddlespec = saddleData.filter((i) => i.value.length);
+    let framespec = frameData.filter((i) => i.value.length);
+    let handlerspec = handlerData.filter((i) => i.value.length);
+    let wheelspec = wheelData.filter((i) => i.value.length);
+    typed.push(bottomspec, saddlespec, framespec, handlerspec, wheelspec);
+    let result = typed.filter((e) => e.length).flat();
+    setViewSelection(result);
+  };
+
   return (
-    <div class="container" style={gridContainer}>
+    <div class="spec-container">
+      {console.log(viewSelection)}
       <div className="image-spec-wrapper">
+        {toggleVal && (
+          <div className="description-wrapper">
+            <AddDescription
+              itemData={partsInfo[toggleVal]}
+              description={props.description}
+              handleChange={handleChange}
+            />
+          </div>
+        )}
         <svg width="800" height="800">
           <defs>
             <clipPath id="parts">{clipping && figures[clipping]}</clipPath>
@@ -161,17 +183,22 @@ const SpecForm = (props) => {
           <SaddleClip />
           <WheelClip />
         </svg>
-        {toggleVal && (
-          <AddDescription
-            itemData={partsInfo[toggleVal]}
-            description={props.description}
-            handleChange={handleChange}
-          />
-        )}
       </div>
-      <div>
-        <AdditionalInfo {...props} />
+      <div className="view-selection-container">
+        <div onClick={getTypedSpecs}>
+          <h3 className="view-selections">View Selected</h3>
+        </div>
+        <div className="view-selection-grid">
+          {viewSelection &&
+            viewSelection.map(({ item, value }, i) => (
+              <div key={i} className="view-selection-item">
+                <span className="selection-label">{item}:</span>
+                <span className="selection-value">{value}</span>
+              </div>
+            ))}
+        </div>
       </div>
+      <AdditionalInfo />
     </div>
   );
 };

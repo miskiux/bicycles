@@ -15,22 +15,17 @@ function AddDescription({
 }) {
   console.log(description);
   return (
-    <div className="parts-container">
-      <div className="parts-title">
-        <h4>{title}</h4>
-      </div>
+    <div>
       {itemData.map(({ item, idx, value }) => (
-        <div key={idx} className="bottom-item-wrapper">
-          <div className="bottom-item">
-            <FormInput
-              inputStyle="description-field"
-              label={item}
-              name={item}
-              value={value}
-              type="text"
-              handleChange={(e) => handleChange(e, idx)}
-            />
-          </div>
+        <div key={idx} className="description-item">
+          <FormInput
+            inputStyle="description-field"
+            label={item}
+            name={item}
+            value={value}
+            type="text"
+            handleChange={(e) => handleChange(e, idx)}
+          />
         </div>
       ))}
     </div>

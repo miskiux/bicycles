@@ -1,5 +1,10 @@
 export const bicycleList = [
   {
+    key: "default",
+    label: "Choose...",
+    value: "",
+  },
+  {
     key: "City Bicycle",
     label: "City Bicycle",
     value: "City Bicycle",
@@ -28,5 +33,5 @@ export const bicycleList = [
     key: "Other",
     label: "Other",
     value: "Other",
-  }
+  },
 ];
