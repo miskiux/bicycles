@@ -10,7 +10,7 @@ import { imageUploadSuccess } from "../redux/sell/sell.actions";
 
 export const useStorage = (image) => {
   const [url, setUrl] = useState([]);
-  const key = uuidv4();
+  const imgKey = uuidv4();
 
   const isLoading = useSelector((state) => state.sell.imagesLoading);
 
@@ -27,7 +27,7 @@ export const useStorage = (image) => {
           return new Promise((resolve, reject) => {
             //storing image
             const uploadTask = storage
-              .ref(`/images/${key}/${image.name}`)
+              .ref(`/images/${imgKey}/${image.name}`)
               .put(image);
             //getting the image url
             uploadTask.on(
@@ -42,14 +42,14 @@ export const useStorage = (image) => {
               },
               () => {
                 storage
-                  .ref(`/images/${key}`)
+                  .ref(`/images/${imgKey}`)
                   .child(image.name)
                   .getDownloadURL()
                   .then((imgUrl) => {
                     imgUrl.split(",");
                     urlarray.push(imgUrl);
                     setUrl(urlarray);
-                    resolve(result);
+                    resolve(urlarray);
                   });
               }
             );
@@ -58,5 +58,5 @@ export const useStorage = (image) => {
       ).then(() => dispatch(imageUploadSuccess()));
     }
   }, [isLoading, image]);
-  return { url, key };
+  return { url, imgKey };
 };

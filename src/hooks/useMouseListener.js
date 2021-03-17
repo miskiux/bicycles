@@ -37,11 +37,9 @@ export function useMouseListener(shouldTrack = true) {
 
   useEffect(() => {
     if (!shouldTrack) return;
-    console.log("do i run tho ?");
     addMouseListener();
 
     return () => {
-      console.log("returning");
       removeMouseListener();
     };
   }, [shouldTrack, addMouseListener, removeMouseListener]);

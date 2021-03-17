@@ -1,5 +1,5 @@
-import styled from 'styled-components';
- 
+import styled from "styled-components";
+
 export const SpinnerOverlay = styled.div`
   height: 60vh;
   width: 100%;
@@ -8,10 +8,21 @@ export const SpinnerOverlay = styled.div`
   align-items: center;
 `;
 
+export const CustomSpinnerOverlay = styled.div`
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 100;
+  height: 50px;
+  width: 100%;
+  padding: 8px;
+`;
+
 export const SpinnerContainer = styled.div`
   display: inline-block;
-  width: 50px;
-  height: 50px;
+  width: ${(props) => (props.size === "small" ? "30px" : "50px")};
+  height: ${(props) => (props.size === "small" ? "30px" : "50px")};
   border: 3px solid rgba(195, 195, 195, 0.6);
   border-radius: 50%;
   border-top-color: #636767;

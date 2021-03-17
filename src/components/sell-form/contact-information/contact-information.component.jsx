@@ -4,10 +4,11 @@ import axios from "axios";
 
 import ReactMapGL from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
+import { Popup } from "semantic-ui-react";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
-import "./contact-information.css";
+import "./contact-information.scss";
 
 //toggle contribution triggering the form upload
 
@@ -74,6 +75,7 @@ function ContactInformation(props) {
     <React.Fragment>
       <ReactMapGL
         ref={mapRef}
+        scrollZoom={false}
         {...viewport}
         {...mapStyle}
         onViewportChange={handleViewportChange}
@@ -86,6 +88,11 @@ function ContactInformation(props) {
           mapboxApiAccessToken={process.env.REACT_APP_API_KEY}
           position="top-left"
         />
+        {props.errors.address && (
+          <span className="location-error">
+            {Object.values(props.errors.address)}
+          </span>
+        )}
       </ReactMapGL>
     </React.Fragment>
   );

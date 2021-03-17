@@ -3,12 +3,13 @@ import React, { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
 import { v4 as uuidv4 } from "uuid";
-
-import "./image-input.styles.css";
+import styled from "styled-components";
+import CustomSnack from "../../snackbar/Snackbar.component";
+import "./image-input.styles.scss";
 
 const thumbsContainer = {
-  display: "flex",
-  flexDirection: "column",
+  verticalAlign: "top",
+  display: "inline-block",
   marginTop: 16,
 };
 
@@ -36,14 +37,56 @@ const img = {
   height: "100%",
 };
 
-//getting current index after : MOVE, REMOVE
+const wrapper = {
+  verticalAlign: "top",
+  display: "inline-block",
+  textAlign: "center",
+};
 
-const arrayMove = require("array-move");
+const checkbox = {
+  display: "block",
+  margin: "0 auto",
+};
 
-const ImageInput = (props) => {
+const getColor = (props) => {
+  if (props.isDragAccept) {
+    return "#00e676";
+  }
+  if (props.isDragReject) {
+    return "#ff1744";
+  }
+  if (props.isDragActive) {
+    return "#2196f3";
+  }
+  return "#eeeeee";
+};
+
+const Container = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  min-height: 500px;
+  padding: 20px;
+  border-width: 2px;
+  border-radius: 2px;
+  border-color: ${(props) => getColor(props)};
+  border-style: dashed;
+  background-color: #fafafa;
+  color: #bdbdbd;
+  outline: none;
+  transition: border 0.24s ease-in-out;
+`;
+
+const ImageInput = ({ callback, errors }) => {
   const [imageFiles, setFiles] = useState([]);
+  const [showDrop, setShowDrop] = useState(false);
+  const [mainImgId, setMainImgId] = useState("");
+  const [openSnack, setOpen] = useState(false);
+  const arrayMove = require("array-move");
 
-  //callback to parent
+  const handleClick = () => {
+    setOpen((c) => !c);
+  };
   const onDrop = useCallback(
     (acceptedFiles) => {
       setFiles([
@@ -55,66 +98,125 @@ const ImageInput = (props) => {
           })
         ),
       ]);
+      setShowDrop(false);
     },
     [imageFiles]
   );
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const onDragEnter = useCallback(() => {
+    setShowDrop(true);
+  }, []);
+
+  const onDragLeave = useCallback(() => {
+    setShowDrop(false);
+  }, []);
+
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject,
+    open,
+  } = useDropzone({
     accept: "image/*",
+    noClick: true,
     onDrop,
+    onDragEnter,
+    onDragLeave,
   });
 
+  //not working
   const removeFile = (file) => () => {
     const newFiles = [...imageFiles];
     newFiles.splice(newFiles.indexOf(file), 1);
     setFiles(newFiles);
   };
 
-  const moveArray = (index) => {
-    let arrImg = [...imageFiles];
-    let arr = arrayMove(arrImg, index, 0);
-    setFiles(arr);
+  const getMainImage = (index) => {
+    setMainImgId(index);
   };
 
   const images = imageFiles.map((file, index) => (
-    <div style={thumb} key={file.id}>
-      <div style={thumbInner}>
-        <img
-          key={file.id}
-          src={file.preview}
-          style={img}
-          onClick={removeFile(file)}
-        />
+    <div style={wrapper} key={file.id}>
+      <div style={thumb}>
+        <div style={thumbInner}>
+          <img
+            alt="img"
+            key={file.id}
+            src={file.preview}
+            style={img}
+            onClick={removeFile(file)}
+          />
+        </div>
       </div>
-      <div>
-        <input
-          key={file.id}
-          type="radio"
-          name="frequency"
-          onChange={() => moveArray(index)}
-        />
-      </div>
+      <input
+        style={checkbox}
+        key={file.id}
+        type="radio"
+        name="frequency"
+        onChange={() => getMainImage(file.id)}
+      />
     </div>
   ));
 
+  const imgCallback = useCallback(() => {
+    let imgArr = [...imageFiles];
+    if (mainImgId) {
+      let index = imgArr.findIndex((i) => i.id === mainImgId);
+      let newArr = arrayMove(imgArr, index, 0);
+      imgArr = newArr;
+    }
+    callback("image", imgArr);
+  }, [mainImgId, imageFiles]);
+
   useEffect(() => {
-    props.callback("image", imageFiles);
+    imgCallback();
+  }, [imgCallback]);
+
+  useEffect(() => {
+    if (imageFiles.length > 1) {
+      setOpen(true);
+      let newArr = imageFiles.slice(0, 1);
+      setFiles(newArr);
+    }
   }, [imageFiles]);
 
   return (
-    <div>
-      <section className="container">
-        <div
-          {...getRootProps({ className: "dropzone" })}
-          style={{ height: imageFiles.length == 0 ? "530px" : "130px" }}
+    <div className="image-upload-container">
+      {showDrop ? (
+        <Container
+          {...getRootProps({ isDragActive, isDragAccept, isDragReject })}
         >
-          <input {...getInputProps()} />
-          <p>Drop bicycle photos here, or click to select it</p>
+          <div style={thumbsContainer}>
+            <ul>{images}</ul>
+          </div>
+        </Container>
+      ) : (
+        <div {...getRootProps({ className: "dropzone" })}>
+          <div className="text-wrapper">
+            <input {...getInputProps()} />
+            <span className="image-text">Images</span>
+            <button className="upload-text" type="button" onClick={open}>
+              Upload Images
+            </button>
+          </div>
+          <aside style={thumbsContainer}>
+            <ul>{images}</ul>
+          </aside>
+          {openSnack && (
+            <CustomSnack
+              open={openSnack}
+              handleClick={handleClick}
+              name="small"
+              text="Add up to 6 images"
+            />
+          )}
+          {errors.image && (
+            <span className="form-error">{Object.values(errors.image)}</span>
+          )}
         </div>
-        <aside style={thumbsContainer}>
-          <ul>{images}</ul>
-        </aside>
-      </section>
+      )}
     </div>
   );
 };

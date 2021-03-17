@@ -13,7 +13,6 @@ function AddDescription({
   title,
   description,
 }) {
-  console.log(description);
   return (
     <div>
       {itemData.map(({ item, idx, value }) => (
@@ -24,6 +23,7 @@ function AddDescription({
             name={item}
             value={value}
             type="text"
+            max="32"
             handleChange={(e) => handleChange(e, idx)}
           />
         </div>

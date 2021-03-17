@@ -12,9 +12,11 @@ const FormSteps = ({
   setStep,
   onRadioChange,
   callback,
+  errors,
 }) => [
   {
     title: "Bicycle information",
+    id: "general",
     content: (
       <GeneralInfo
         step={step}
@@ -26,32 +28,34 @@ const FormSteps = ({
         bicycleType={data.bicycleType}
         gender={data.gender}
         price={data.price}
+        phone={data.phone}
         callback={callback}
+        errors={errors}
       />
     ),
   },
   {
     title: "Bicycle location",
+    id: "location",
     content: (
       <ContactInformation
         step={step}
         setStep={setStep}
         handleChange={handleChange}
-        phone={data.phone}
         callback={callback}
+        errors={errors}
       />
     ),
   },
   {
-    title: "Upload bicycle",
-    content: <ImageInput step={step} setStep={setStep} callback={callback} />,
+    id: "image",
+    content: <ImageInput errors={errors} callback={callback} />,
   },
   {
-    title: "Bicycle specifications",
+    id: "specs",
     content: (
       <SpecForm
-        step={step}
-        setStep={setStep}
+        errors={errors}
         description={data.description}
         size={data.size}
         info={data.info}

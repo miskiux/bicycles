@@ -5,6 +5,7 @@ import { Hint } from "react-autocomplete-hint";
 
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 
 import intlTelInput from "intl-tel-input";
 
@@ -43,7 +44,7 @@ const otherSubList = [
 
 const GeneralInfo = (props) => {
   //categories
-  const [selectedType, setSelectedType] = useState([]);
+
   const [selectedGender, setSelectedGender] = useState("");
   const [selectSubType, setSubType] = useState("");
 
@@ -87,7 +88,17 @@ const GeneralInfo = (props) => {
 
   useEffect(() => {
     let input = document.querySelector("#phone");
-    intlTelInput(input);
+    const iti = intlTelInput(input);
+    input.addEventListener("countrychange", function () {
+      let val = iti.getSelectedCountryData();
+      let dial = "+" + val.dialCode;
+      props.callback("phone", dial);
+    });
+    return () =>
+      input.removeEventListener("countrychange", function () {
+        let val = iti.getSelectedCountryData();
+        props.callback("phone", val.dialCode);
+      });
   }, []);
 
   const genderChange = (event) => {
@@ -137,6 +148,8 @@ const GeneralInfo = (props) => {
     props.callback("year", event.target.value);
   };
 
+  //size on hover tooltip
+
   return (
     <Form className="form-bootstrap">
       <Form.Row>
@@ -149,10 +162,16 @@ const GeneralInfo = (props) => {
               autoComplete="off"
               value={props.manufacturer}
               onChange={props.handleChange}
+              required
             />
           </Hint>
+          {props.errors.manufacturer && (
+            <span className="form-error">
+              {Object.values(props.errors.manufacturer)}
+            </span>
+          )}
         </Col>
-        <Col>
+        <Col className="form-col">
           <Form.Label>Model</Form.Label>
           <Form.Control
             type="text"
@@ -160,15 +179,22 @@ const GeneralInfo = (props) => {
             autoComplete="off"
             value={props.model}
             onChange={props.handleChange}
+            required
           />
+          {props.errors.model && (
+            <span className="form-error">
+              {Object.values(props.errors.model)}
+            </span>
+          )}
         </Col>
-        <Col>
+        <Col className="form-col">
           <Form.Label>Bicycle Type</Form.Label>
           <Form.Control
             as="select"
             value={bicycleType}
             onChange={handleType}
             custom
+            required
           >
             {bicycleList.map(({ key, label, value }) => (
               <option key={key} value={value}>
@@ -176,6 +202,11 @@ const GeneralInfo = (props) => {
               </option>
             ))}
           </Form.Control>
+          {props.errors.bicycleType && (
+            <span className="form-error">
+              {Object.values(props.errors.bicycleType)}
+            </span>
+          )}
         </Col>
         <Col>
           <Form.Label>Sub Type</Form.Label>
@@ -222,9 +253,51 @@ const GeneralInfo = (props) => {
             ))}
           </Form.Control>
         </Col>
+        <Col>
+          <Form.Label>Size</Form.Label>
+          <Form.Control
+            type="text"
+            name="size"
+            size="sm"
+            value={props.size}
+            onChange={props.handleChange}
+          ></Form.Control>
+        </Col>
+        <Col>
+          <Form.Label>Condition</Form.Label>
+          <div className="mb">
+            <Form.Check
+              inline
+              label="New"
+              name="condition"
+              type="radio"
+              value="New"
+              onChange={props.handleChange}
+            />
+            <Form.Check
+              inline
+              label="Used"
+              name="condition"
+              type="radio"
+              value="Used"
+              onChange={props.handleChange}
+            />
+          </div>
+        </Col>
       </Form.Row>
       <Form.Row>
         <Col>
+          <Form.Label>Additional Information</Form.Label>
+          <Form.Control
+            as="textarea"
+            style={{ height: "80px" }}
+            className="info-input"
+            type="text"
+            value={props.info}
+            onChange={props.handleChange}
+          />
+        </Col>
+        <Col className="form-col">
           <Form.Label>Price</Form.Label>
           <Form.Control
             name="price"
@@ -232,26 +305,23 @@ const GeneralInfo = (props) => {
             type="text"
             value={props.price}
             onChange={props.handleChange}
+            required
           />
+          {props.errors.price && (
+            <span className="form-error">
+              {Object.values(props.errors.price)}
+            </span>
+          )}
         </Col>
         <Col className="form-col">
           <Form.Label>Phone</Form.Label>
           <Form.Control
             name="phone"
+            autoplaceholder="aggressive"
             type="tel"
             autoComplete="off"
             id="phone"
             value={props.phone}
-            onChange={props.handleChange}
-          />
-        </Col>
-        <Col className="form-col">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            name="email"
-            type="text"
-            autoComplete="off"
-            value={props.email}
             onChange={props.handleChange}
           />
         </Col>

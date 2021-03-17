@@ -7,12 +7,14 @@ const FormInput = ({
   register,
   label,
   inputStyle,
+  max,
   ...otherProps
 }) => (
   <div className="group">
     <input
       className={inputStyle}
       onChange={handleChange}
+      maxLength={max}
       ref={register}
       {...otherProps}
     />

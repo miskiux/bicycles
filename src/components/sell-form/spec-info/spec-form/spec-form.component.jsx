@@ -17,6 +17,7 @@ import { ReactComponent as SaddleClip } from "../../../../assets/clip-paths/sadd
 import { ReactComponent as WheelClip } from "../../../../assets/clip-paths/wheel.svg";
 
 import Edit from "../../../../assets/bi.jpeg";
+import { ReactComponent as Test } from "../../../../assets/test.svg";
 
 import AdditionalInfo from "../size-condition/size-condition.component";
 
@@ -27,33 +28,23 @@ const SpecForm = (props) => {
   const [toggleVal, setToggleVal] = useState("");
   const [listenDocument, setListenDocument] = useState(true);
 
-  const [bottomData] = useState([
+  const [specsData, setSpecsData] = useState([
     { idx: 0, item: "Cassette", value: "" },
     { idx: 1, item: "Chain", value: "" },
     { idx: 2, item: "Crankset", value: "" },
     { idx: 3, item: "Pedals", value: "" },
-  ]);
-
-  const [frameData] = useState([
-    { idx: 0, item: "Frame Type", value: "" },
-    { idx: 1, item: "Frame Material", value: "" },
-  ]);
-
-  const [handlerData] = useState([
-    { idx: 0, item: "Headset", value: "" },
-    { idx: 1, item: "Handlebars", value: "" },
-    { idx: 2, item: "Stem", value: "" },
-    { idx: 3, item: "Gear/Brake Lever", value: "" },
-  ]);
-
-  const [saddleData] = useState([{ idx: 0, item: "Saddle", value: "" }]);
-
-  const [wheelData] = useState([
-    { idx: 0, item: "Fork", value: "" },
-    { idx: 1, item: "Brakes", value: "" },
-    { idx: 2, item: "Rim", value: "" },
-    { idx: 3, item: "Tyre", value: "" },
-    { idx: 4, item: "Wheel Size", value: "" },
+    { idx: 4, item: "Frame Type", value: "" },
+    { idx: 5, item: "Frame Material", value: "" },
+    { idx: 6, item: "Headset", value: "" },
+    { idx: 7, item: "Handlebars", value: "" },
+    { idx: 8, item: "Stem", value: "" },
+    { idx: 9, item: "Gear/Brake Lever", value: "" },
+    { idx: 10, item: "Saddle", value: "" },
+    { idx: 11, item: "Fork", value: "" },
+    { idx: 12, item: "Brakes", value: "" },
+    { idx: 13, item: "Rim", value: "" },
+    { idx: 14, item: "Tyre", value: "" },
+    { idx: 15, item: "Wheel Size", value: "" },
   ]);
 
   const [viewSelection, setViewSelection] = useState([]);
@@ -88,11 +79,11 @@ const SpecForm = (props) => {
   };
 
   const partsInfo = {
-    bottom: bottomData,
-    frame: frameData,
-    handler: handlerData,
-    saddle: saddleData,
-    wheel: wheelData,
+    bottom: specsData.slice(0, 4),
+    frame: specsData.slice(4, 6),
+    handler: specsData.slice(6, 10),
+    saddle: specsData.slice(10, 11),
+    wheel: specsData.slice(11, 16),
   };
 
   const addClickListener = useCallback(() => {
@@ -123,6 +114,13 @@ const SpecForm = (props) => {
     return () => removeClickListener();
   }, []);
 
+  useEffect(() => {
+    if (specsData) {
+      let specsArr = specsData.filter((i) => i.value.length);
+      props.callback("description", specsArr);
+    }
+  }, [specsData]);
+
   const handleShow = useCallback((label) => {
     let value = myStateRef.current;
     if (value === label) {
@@ -136,28 +134,26 @@ const SpecForm = (props) => {
     dispatch(label);
   }, []);
 
-  const handleChange = (e, idx) => {
-    console.log(idx);
-    let values = [...partsInfo[toggleVal]];
-    values[idx].value = e.target.value;
-    props.callback("description", values);
+  const handleChange = (e, id) => {
+    e.preventDefault();
+    let inputVals = [...specsData];
+    let index = specsData.findIndex((row) => row.idx === id);
+    inputVals[index].value = e.target.value;
+    setSpecsData(inputVals);
+    //setBottomData({ ...bottomData, values });
   };
 
+  //unneccesarrloty
   const getTypedSpecs = () => {
-    let typed = [];
-    let bottomspec = bottomData.filter((i) => i.value.length);
-    let saddlespec = saddleData.filter((i) => i.value.length);
-    let framespec = frameData.filter((i) => i.value.length);
-    let handlerspec = handlerData.filter((i) => i.value.length);
-    let wheelspec = wheelData.filter((i) => i.value.length);
-    typed.push(bottomspec, saddlespec, framespec, handlerspec, wheelspec);
-    let result = typed.filter((e) => e.length).flat();
-    setViewSelection(result);
+    let specsArr = specsData.filter((i) => i.value.length);
+    setViewSelection(specsArr);
   };
 
   return (
     <div class="spec-container">
-      {console.log(viewSelection)}
+      <h1 className="step-name side" style={{ textAlign: "right" }}>
+        Bicycle specifications
+      </h1>
       <div className="image-spec-wrapper">
         {toggleVal && (
           <div className="description-wrapper">
@@ -168,7 +164,7 @@ const SpecForm = (props) => {
             />
           </div>
         )}
-        <svg width="800" height="800">
+        <svg width="800" height="533">
           <defs>
             <clipPath id="parts">{clipping && figures[clipping]}</clipPath>
           </defs>
@@ -198,7 +194,6 @@ const SpecForm = (props) => {
             ))}
         </div>
       </div>
-      <AdditionalInfo />
     </div>
   );
 };
