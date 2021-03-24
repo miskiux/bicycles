@@ -1,89 +1,71 @@
 .sell-form-container {
-  @import "~bootstrap/scss/bootstrap.scss";
-  background: rgba(228, 233, 237, 0.2);
-  margin-top: 40px;
-  width: 100%;
+  position: relative;
+  box-shadow: none !important;
+  border-radius: 0px !important;
+}
+.ui.inverted.dimmer {
+  background-color: rgba(51, 51, 51, 0.55) !important;
+}
+
+.sell-form-nav {
+  display: flex;
+  flex-direction: column;
   height: auto;
+  outline: none;
+  list-style-type: none;
+}
 
-  .sellform-snackbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
+.form-step-wrapper {
+  min-width: 800px;
+  height: 800px;
+}
 
-  .sell-form {
-    padding: 30px;
-    margin-top: 40px;
-  }
-  .row {
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .nav-col {
-    border-right: solid 1px;
-    border-color: rgba(236, 236, 236, 1);
-  }
+.nav-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  list-style-type: none;
+  height: 100%;
+  width: 110px;
+  margin-right: 5px;
+  text-align: right;
+}
+.nav-item {
+  align-self: flex-end;
+  font-size: 12px;
+  padding-bottom: 5px;
+  cursor: default;
+  color: rgba(0, 0, 0, 0.2);
+}
+.nav-text {
+  padding-bottom: 3px;
+}
+.active-step {
+  width: 100%;
+  color: rgba(0, 0, 0, 1);
+  font-size: 17px;
+}
+.submit-nav {
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  width: 100%;
+}
+.submit-button {
+  font-weight: bold;
+}
+.MuiButton-textPrimary {
+  color: #4183d7;
+}
+.MuiButton-textPrimary:hover {
+  background-color: rgba(61, 120, 172, 0);
+}
 
-  .step-name {
-    text-align: right;
-    font-weight: 100;
-    font-size: 18px;
-    letter-spacing: 1px;
-    margin-bottom: -4px;
-    z-index: 100;
-  }
-  .form-step-wrapper {
-    max-width: 1000px;
-    width: 100%;
-  }
-  .form-step {
-    margin-bottom: 200px;
-  }
-  .sell-form-nav {
-    position: fixed;
-    padding-left: 0px;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 15%;
-    text-align: center;
-    margin-top: 85px;
-    outline: none;
-    list-style-type: none;
-  }
-
-  .nav-text {
-    font-size: 24px;
-    letter-spacing: 1px;
-    padding-bottom: 30px;
-    cursor: default;
-  }
-
-  .submit-nav {
-    position: sticky;
-    top: 0;
-    display: flex;
-    justify-content: center;
-    z-index: 100;
-    height: 50px;
-    width: 100%;
-  }
-  .submit-button {
-    font-weight: bold;
-  }
-  .MuiButton-textPrimary {
-    color: #4183d7;
-  }
-  .MuiButton-textPrimary:hover {
-    background-color: rgba(61, 120, 172, 0);
-  }
-
-  .MuiButtonBase-root {
-    width: 80%;
-    border-radius: 6px;
-  }
-  .form-error {
-    font-size: 10px;
-    color: #cc0000;
-  }
+.MuiButtonBase-root {
+  width: 80%;
+  border-radius: 6px;
+}
+.form-error {
+  font-size: 10px;
+  color: #cc0000;
 }

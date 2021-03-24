@@ -11,7 +11,6 @@ function AddDescription({
   removeInput,
   removeOption,
   title,
-  description,
 }) {
   return (
     <div>

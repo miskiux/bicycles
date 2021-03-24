@@ -10,13 +10,18 @@ const FormSteps = ({
   handleChange,
   step,
   setStep,
-  onRadioChange,
   callback,
   errors,
+  specsData,
+  specsCallback,
+  locationCallback,
+  viewport,
+  showMarker,
+  setMarker,
 }) => [
   {
-    title: "Bicycle information",
-    id: "general",
+    title: "General",
+    id: 0,
     content: (
       <GeneralInfo
         step={step}
@@ -26,17 +31,21 @@ const FormSteps = ({
         year={data.year}
         model={data.model}
         bicycleType={data.bicycleType}
+        subCategory={data.subCategory}
         gender={data.gender}
         price={data.price}
         phone={data.phone}
         callback={callback}
         errors={errors}
+        size={data.size}
+        condition={data.condition}
+        info={data.info}
       />
     ),
   },
   {
-    title: "Bicycle location",
-    id: "location",
+    title: "Location",
+    id: 1,
     content: (
       <ContactInformation
         step={step}
@@ -44,15 +53,25 @@ const FormSteps = ({
         handleChange={handleChange}
         callback={callback}
         errors={errors}
+        address={data.address}
+        coordinates={data.coordinates}
+        locationCallback={locationCallback}
+        viewport={viewport}
+        showMarker={showMarker}
+        setMarker={setMarker}
       />
     ),
   },
   {
-    id: "image",
-    content: <ImageInput errors={errors} callback={callback} />,
+    title: "Images",
+    id: 2,
+    content: (
+      <ImageInput errors={errors} callback={callback} images={data.image} />
+    ),
   },
   {
-    id: "specs",
+    title: "Specifications",
+    id: 3,
     content: (
       <SpecForm
         errors={errors}
@@ -61,8 +80,9 @@ const FormSteps = ({
         info={data.info}
         condition={data.condition}
         handleChange={handleChange}
-        onRadioChange={onRadioChange}
         callback={callback}
+        specsData={specsData}
+        specsCallback={specsCallback}
       />
     ),
   },

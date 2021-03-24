@@ -17,39 +17,14 @@ import { ReactComponent as SaddleClip } from "../../../../assets/clip-paths/sadd
 import { ReactComponent as WheelClip } from "../../../../assets/clip-paths/wheel.svg";
 
 import Edit from "../../../../assets/bi.jpeg";
-import { ReactComponent as Test } from "../../../../assets/test.svg";
 
-import AdditionalInfo from "../size-condition/size-condition.component";
-
-import { Button } from "semantic-ui-react";
 import "./spec-form.styles.css";
 
-const SpecForm = (props) => {
+const SpecForm = ({ callback, description, specsData, specsCallback }) => {
   const [toggleVal, setToggleVal] = useState("");
   const [listenDocument, setListenDocument] = useState(true);
 
-  const [specsData, setSpecsData] = useState([
-    { idx: 0, item: "Cassette", value: "" },
-    { idx: 1, item: "Chain", value: "" },
-    { idx: 2, item: "Crankset", value: "" },
-    { idx: 3, item: "Pedals", value: "" },
-    { idx: 4, item: "Frame Type", value: "" },
-    { idx: 5, item: "Frame Material", value: "" },
-    { idx: 6, item: "Headset", value: "" },
-    { idx: 7, item: "Handlebars", value: "" },
-    { idx: 8, item: "Stem", value: "" },
-    { idx: 9, item: "Gear/Brake Lever", value: "" },
-    { idx: 10, item: "Saddle", value: "" },
-    { idx: 11, item: "Fork", value: "" },
-    { idx: 12, item: "Brakes", value: "" },
-    { idx: 13, item: "Rim", value: "" },
-    { idx: 14, item: "Tyre", value: "" },
-    { idx: 15, item: "Wheel Size", value: "" },
-  ]);
-
   const [viewSelection, setViewSelection] = useState([]);
-
-  //reducer
   const [clipping, dispatch] = useReducer((state, action) => {
     return action;
   });
@@ -115,10 +90,8 @@ const SpecForm = (props) => {
   }, []);
 
   useEffect(() => {
-    if (specsData) {
-      let specsArr = specsData.filter((i) => i.value.length);
-      props.callback("description", specsArr);
-    }
+    let specArr = specsData.filter((i) => i.value.length);
+    callback("description", specArr);
   }, [specsData]);
 
   const handleShow = useCallback((label) => {
@@ -139,8 +112,7 @@ const SpecForm = (props) => {
     let inputVals = [...specsData];
     let index = specsData.findIndex((row) => row.idx === id);
     inputVals[index].value = e.target.value;
-    setSpecsData(inputVals);
-    //setBottomData({ ...bottomData, values });
+    specsCallback(inputVals);
   };
 
   //unneccesarrloty
@@ -151,15 +123,11 @@ const SpecForm = (props) => {
 
   return (
     <div class="spec-container">
-      <h1 className="step-name side" style={{ textAlign: "right" }}>
-        Bicycle specifications
-      </h1>
       <div className="image-spec-wrapper">
         {toggleVal && (
           <div className="description-wrapper">
             <AddDescription
               itemData={partsInfo[toggleVal]}
-              description={props.description}
               handleChange={handleChange}
             />
           </div>

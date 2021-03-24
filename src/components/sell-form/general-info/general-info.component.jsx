@@ -1,90 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
-import axios from "axios";
+import { useManufacturerHint } from "../../../hooks/useManufacturerHint";
+
 import { Hint } from "react-autocomplete-hint";
 
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 
 import intlTelInput from "intl-tel-input";
 
-import { bicycleList } from "../../../assets/additional/bicycle-list.js";
-import { genderList } from "../../../assets/additional/gender-list";
+import {
+  offroadSubList,
+  roadSubList,
+  otherSubList,
+  bicycleList,
+  genderList,
+} from "../../../assets/additional/form-helpers.js";
+
 import "intl-tel-input/build/css/intlTelInput.css";
 
 import "./general-info.styles.scss";
 
-const offroadSubList = [
-  "Choose..",
-  "Cross Country",
-  "Dirtjump",
-  "Downhill",
-  "Enduro",
-  "Fat Bike",
-  "Trail",
-];
-const roadSubList = [
-  "Choose..",
-  "Cyclocross",
-  "Hybrid/Commuter",
-  "Touring",
-  "Track",
-  "Triathlon",
-];
-const otherSubList = [
-  "Choose..",
-  "BMX",
-  "Childrens",
-  "Electric",
-  "Folding",
-  "Tandem",
-  "Unicycle",
-];
-
 const GeneralInfo = (props) => {
-  //categories
-
-  const [selectedGender, setSelectedGender] = useState("");
-  const [selectSubType, setSubType] = useState("");
-
-  const [hintData, setHintData] = useState([]);
-  const [bicycleType, setBicycleType] = useState("");
-  const [date, setDate] = useState("");
-
   const year = new Date().getFullYear();
   const years = Array.from(new Array(50), (val, index) => year - index);
 
-  const getManufacturerData = () => {
-    let page = 1;
-    let hintArray = [];
-    let maxItter = 15;
-
-    do {
-      try {
-        axios
-          .get(
-            `https://bikeindex.org/api/v3/manufacturers?page=${page}&per_page=100`
-          )
-          .then((response) => {
-            let manufacturerNames = Object.values(response.data).map((res) =>
-              res.map((manufacturer) => manufacturer.name)
-            );
-            let unnestedNames = manufacturerNames.flat();
-            hintArray.push(...unnestedNames);
-          });
-        page++;
-        maxItter--;
-      } catch (err) {
-        console.error(`Oeps, something is wrong ${err}`);
-      }
-    } while (maxItter > 0);
-    setHintData(hintArray);
-  };
-
-  useEffect(() => {
-    getManufacturerData();
-  }, []);
+  const { hintData } = useManufacturerHint();
 
   useEffect(() => {
     let input = document.querySelector("#phone");
@@ -102,7 +43,6 @@ const GeneralInfo = (props) => {
   }, []);
 
   const genderChange = (event) => {
-    setSelectedGender(event.target.value);
     props.callback("gender", event.target.value);
   };
 
@@ -110,15 +50,15 @@ const GeneralInfo = (props) => {
   let type = null;
   let options = null;
 
-  if (bicycleType === "Off-Road") {
+  if (props.bicycleType === "Off-Road") {
     type = offroadSubList;
-  } else if (bicycleType === "Road Bicycle") {
+  } else if (props.bicycleType === "Road Bicycle") {
     type = roadSubList;
-  } else if (bicycleType === "Other") {
+  } else if (props.bicycleType === "Other") {
     type = otherSubList;
   } else if (
     new RegExp(["City Bicycle", "Vintage", "Custom"].join("|")).test(
-      bicycleType
+      props.bicycleType
     )
   ) {
     type = ["None"];
@@ -134,17 +74,14 @@ const GeneralInfo = (props) => {
 
   //make into one
   const handleType = (event) => {
-    setBicycleType(event.target.value);
     props.callback("bicycleType", event.target.value);
   };
 
   const handleSubCategory = (event) => {
-    setSubType(event.target.value);
     props.callback("subCategory", event.target.value);
   };
 
   const handleYear = (event) => {
-    setDate(event.target.value);
     props.callback("year", event.target.value);
   };
 
@@ -191,7 +128,7 @@ const GeneralInfo = (props) => {
           <Form.Label>Bicycle Type</Form.Label>
           <Form.Control
             as="select"
-            value={bicycleType}
+            value={props.bicycleType}
             onChange={handleType}
             custom
             required
@@ -212,7 +149,7 @@ const GeneralInfo = (props) => {
           <Form.Label>Sub Type</Form.Label>
           <Form.Control
             as="select"
-            value={selectSubType}
+            value={props.subCategory}
             onChange={handleSubCategory}
             custom
           >
@@ -226,7 +163,7 @@ const GeneralInfo = (props) => {
           <Form.Control
             as="select"
             size="sm"
-            value={date}
+            value={props.year}
             onChange={handleYear}
             custom
           >
@@ -242,7 +179,7 @@ const GeneralInfo = (props) => {
           <Form.Control
             as="select"
             size="sm"
-            value={selectedGender}
+            value={props.gender}
             onChange={genderChange}
             custom
           >
@@ -254,7 +191,7 @@ const GeneralInfo = (props) => {
           </Form.Control>
         </Col>
         <Col>
-          <Form.Label>Size</Form.Label>
+          <Form.Label>Size (cm)</Form.Label>
           <Form.Control
             type="text"
             name="size"
@@ -272,6 +209,7 @@ const GeneralInfo = (props) => {
               name="condition"
               type="radio"
               value="New"
+              checked={props.condition === "New"}
               onChange={props.handleChange}
             />
             <Form.Check
@@ -280,6 +218,7 @@ const GeneralInfo = (props) => {
               name="condition"
               type="radio"
               value="Used"
+              checked={props.condition === "Used"}
               onChange={props.handleChange}
             />
           </div>
@@ -290,6 +229,7 @@ const GeneralInfo = (props) => {
           <Form.Label>Additional Information</Form.Label>
           <Form.Control
             as="textarea"
+            name="info"
             style={{ height: "80px" }}
             className="info-input"
             type="text"

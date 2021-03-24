@@ -77,20 +77,38 @@ const Container = styled.div`
   transition: border 0.24s ease-in-out;
 `;
 
-const ImageInput = ({ callback, errors }) => {
-  const [imageFiles, setFiles] = useState([]);
+const ImageInput = ({ callback, errors, images }) => {
   const [showDrop, setShowDrop] = useState(false);
   const [mainImgId, setMainImgId] = useState("");
   const [openSnack, setOpen] = useState(false);
   const arrayMove = require("array-move");
+
+  useEffect(() => {
+    let imgArr = [...images];
+    if (mainImgId) {
+      let index = imgArr.findIndex((i) => i.id === mainImgId);
+      let newArr = arrayMove(imgArr, index, 0);
+      imgArr = newArr;
+    }
+    callback("image", imgArr);
+  }, [mainImgId]);
+
+  useEffect(() => {
+    if (images.length > 6) {
+      let imgArr = [...images];
+      setOpen(true);
+      let newArr = imgArr.slice(0, 6);
+      callback("image", newArr);
+    }
+  }, [images]);
 
   const handleClick = () => {
     setOpen((c) => !c);
   };
   const onDrop = useCallback(
     (acceptedFiles) => {
-      setFiles([
-        ...imageFiles,
+      callback("image", [
+        ...images,
         ...acceptedFiles.map((file) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
@@ -100,7 +118,7 @@ const ImageInput = ({ callback, errors }) => {
       ]);
       setShowDrop(false);
     },
-    [imageFiles]
+    [images]
   );
 
   const onDragEnter = useCallback(() => {
@@ -128,16 +146,16 @@ const ImageInput = ({ callback, errors }) => {
 
   //not working
   const removeFile = (file) => () => {
-    const newFiles = [...imageFiles];
+    const newFiles = [...images];
     newFiles.splice(newFiles.indexOf(file), 1);
-    setFiles(newFiles);
+    callback("image", newFiles);
   };
 
   const getMainImage = (index) => {
     setMainImgId(index);
   };
 
-  const images = imageFiles.map((file, index) => (
+  const imagePrewiew = images.map((file, index) => (
     <div style={wrapper} key={file.id}>
       <div style={thumb}>
         <div style={thumbInner}>
@@ -160,28 +178,6 @@ const ImageInput = ({ callback, errors }) => {
     </div>
   ));
 
-  const imgCallback = useCallback(() => {
-    let imgArr = [...imageFiles];
-    if (mainImgId) {
-      let index = imgArr.findIndex((i) => i.id === mainImgId);
-      let newArr = arrayMove(imgArr, index, 0);
-      imgArr = newArr;
-    }
-    callback("image", imgArr);
-  }, [mainImgId, imageFiles]);
-
-  useEffect(() => {
-    imgCallback();
-  }, [imgCallback]);
-
-  useEffect(() => {
-    if (imageFiles.length > 1) {
-      setOpen(true);
-      let newArr = imageFiles.slice(0, 1);
-      setFiles(newArr);
-    }
-  }, [imageFiles]);
-
   return (
     <div className="image-upload-container">
       {showDrop ? (
@@ -189,7 +185,7 @@ const ImageInput = ({ callback, errors }) => {
           {...getRootProps({ isDragActive, isDragAccept, isDragReject })}
         >
           <div style={thumbsContainer}>
-            <ul>{images}</ul>
+            <ul>{imagePrewiew}</ul>
           </div>
         </Container>
       ) : (
@@ -202,7 +198,7 @@ const ImageInput = ({ callback, errors }) => {
             </button>
           </div>
           <aside style={thumbsContainer}>
-            <ul>{images}</ul>
+            <ul>{imagePrewiew}</ul>
           </aside>
           {openSnack && (
             <CustomSnack

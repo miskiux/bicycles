@@ -1,261 +1,201 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import { useManufacturerHint } from "../../../hooks/useManufacturerHint";
+import { BicycleSpecs } from "../../../assets/additional/form-helpers";
+import { GeneralUpdate } from "./update-forms/general-updated.component";
+import { DescriptionUpdate } from "./update-forms/description-updated.component";
 
-import {DotsOverlay ,Dots} from '../../with-spinner/dots-spinner.styles.jsx' 
+import {
+  offroadSubList,
+  roadSubList,
+  otherSubList,
+} from "../../../assets/additional/form-helpers.js";
 
-import { bicycleUpdateStart } from '../../../redux/shop/shop.actions'
-import FormInput from '../../form-input/form-input.component';
-import {Container, Row, Col} from 'react-bootstrap';
+import { bicycleUpdateStart } from "../../../redux/shop/shop.actions";
 
-import './form-update.styles.scss'
-function FormUpdate ({inputData, edit, toggleEdit}) {
+import { Form } from "react-bootstrap";
 
-const { register, handleSubmit } = useForm();
-const dispatch = useDispatch()
-const isBicycleUpdating = useSelector(state => state.shop.isUpdating) 
+import "./form-update.styles.scss";
 
-const {item, id} = inputData
+function FormUpdate({ inputData, edit, toggleEdit }) {
+  //prev values
+  const { item, id, bicycleType, subCategory, phone } = inputData;
 
-const [update, setUpdate] = useState({
-       manufacturer: item.manufacturer,
-       model: item.model,
-       price: item.price,
-       year: item.year,
-       size: item.size,
-       condition: item.condition,
-       info: item.info,
-       address: item.address,
-       phone: inputData.phone
-   });
+  //new values
+  const [update, setUpdate] = useState({
+    manufacturer: item.manufacturer,
+    model: item.model,
+    bicycleType: bicycleType,
+    subCategory: subCategory,
+    gender: item.gender,
+    price: item.price,
+    year: item.year,
+    size: item.size,
+    condition: item.condition,
+    info: item.info,
+    address: item.address,
+    phone: inputData.phone,
+    description: item.description,
+  });
 
-const {manufacturer, model, price, year, size, condition, info, address, phone} = update
+  const [switchForm, setSwitchForm] = useState(0);
+  const [errors, setErrors] = useState([]);
 
-const handleChange = event => {
-    const {value, name} = event.target;
-    setUpdate({...update, [name]: value}) 
+  const { register, handleSubmit } = useForm();
+  const { hintData } = useManufacturerHint();
+  const dispatch = useDispatch();
+
+  const isBicycleUpdating = useSelector((state) => state.shop.isUpdating);
+
+  const {
+    manufacturer,
+    model,
+    price,
+    year,
+    size,
+    condition,
+    info,
+    address,
+    gender,
+    description,
+  } = update;
+
+  const handleChange = (event) => {
+    const { value, name } = event.target;
+    setUpdate({ ...update, [name]: value });
+  };
+
+  const descriptionChange = (e, id) => {
+    e.preventDefault();
+    let inputVals = [...description];
+    let index = description.findIndex((row) => row.idx === id);
+    inputVals[index].value = e.target.value;
+    setUpdate({ ...update, description: inputVals });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log(update);
+    //dispatch(bicycleUpdateStart({ data, id }));
+    //toggleEdit after success
+    //toggleEdit();
+  };
+
+  const changeForm = (key) => {
+    setSwitchForm(key);
+  };
+
+  const removeDescription = (id) => {
+    const values = description.filter((i) => i.idx !== id);
+    console.log(values);
+    setUpdate({ ...update, description: values });
+  };
+
+  const labelChange = (e, id) => {
+    e.preventDefault();
+    const values = [...description];
+    let checkPoint = description
+      .map(({ item }) => item)
+      .includes(e.target.value);
+    if (checkPoint) {
+      setErrors(true);
+      return;
+    } else {
+      const currentSpec = BicycleSpecs.filter(
+        (i) => [...i.item].sort() + "" === [...e.target.value].sort() + ""
+      );
+      const currentSpecIndex = currentSpec.map((i) => i.idx).join();
+      let newItemsIndex = values.findIndex((row) => row.idx === id);
+      values[newItemsIndex].idx = Number(currentSpecIndex);
+      values[newItemsIndex].item = e.target.value;
+      setUpdate({ ...update, description: values });
+      setErrors(false);
+    }
+  };
+
+  const valueChange = (e, id) => {
+    e.preventDefault();
+    const values = [...description];
+    let index = description.findIndex((row) => row.idx === id);
+    values[index].value = e.target.value;
+    setUpdate({ ...update, description: values });
+  };
+
+  const combineDescriptions = (data) => {
+    const values = [...description, ...data];
+    setUpdate({ ...update, description: values });
+  };
+
+  let type = null;
+  let options = null;
+
+  if (update.bicycleType === "Off-Road") {
+    type = offroadSubList;
+  } else if (update.bicycleType === "Road Bicycle") {
+    type = roadSubList;
+  } else if (update.bicycleType === "Other") {
+    type = otherSubList;
+  } else if (
+    new RegExp(["City Bicycle", "Vintage", "Custom"].join("|")).test(
+      update.bicycleType
+    )
+  ) {
+    type = ["None"];
   }
 
-const onSubmit = data => {
-  dispatch(bicycleUpdateStart({data, id}));
-  toggleEdit();
-};
+  if (type) {
+    options = type.map((el) => (
+      <option key={el} value={el}>
+        {el}
+      </option>
+    ));
+  }
 
-const renderView = () => {
-	return (
-		<Container className='details-container' fluid>
-    { isBicycleUpdating ?
-       <DotsOverlay>
-          <Dots />
-       </DotsOverlay>
-       :
-      <Row>
-        <Col>
-    		  <div className="form-group row">
-              <label className="form-label">Manufacturer</label>
-              <div className="input-label">
-                <label type="text" name="manufacturer" className="form-control">
-                  {item.manufacturer}
-                </label>
-                </div>
-            </div>
-            <div className="form-group row">
-              <label className="form-label">Model</label>
-              <div className="nput-label">
-                <label type="text" name="model" className="form-control"> 
-                  {item.model}
-                </label>
-              </div>
-            </div>
-            <div className="form-group row">
-              <label className="form-label">Price</label>
-              <div className="input-label">
-                <label type="text" name="Bicycle Type" className="form-control">
-                  {item.price}
-                </label>
-              </div>
-              </div>
-              <div className="form-group row">
-              <label className="form-label">Year</label>
-              <div className="input-label">
-                <label type="text" name="Bicycle Type" className="form-control">
-                  {item.year}
-                </label>
-                </div>
-              </div>
-              <div className="form-group row">
-              <label className="form-label">Price</label>
-              <div className="input-label">
-                <label type="text" name="Bicycle Type" className="form-control">
-                  {item.price}
-                </label>
-              </div>
-              </div>
-              <div className="form-group row">
-              <label className="form-label">Size</label>
-              <div className="input-label">
-                <label type="text" name="Bicycle Type" className="form-control">
-                  {item.size}
-                </label>
-                </div>
-              </div>
-              <div className="form-group row">
-              <label className="form-label">Condition</label>
-              <div className="input-label">
-                <label type="text" name="Bicycle Type" className="form-control">
-                  {item.condition}
-                </label>
-              </div>
-              </div>
-              <div className="form-group row">
-              <label className="form-label">Information</label>
-              <div className="input-label">
-                <label type="text" name="Bicycle Type" className="form-control">
-                  {item.info}
-                </label>
-              </div>
-              </div>
-              </Col>
-                <Col>
-                  <div className="form-group row">
-                    <label className="form-label">Address</label>
-                    <div className="input-label">
-                      <label type="text" name="Bicycle Type" className="form-control">
-                        {item.address}
-                      </label>
-                    </div>
-                    </div>
-                    <div className="form-group row">
-                    <label className="form-label">Phone</label>
-                    <div className="input-label">
-                      <label type="text" name="Bicycle Type" className="form-control">
-                        {inputData.phone}
-                      </label>
-                    </div>
-                    </div>
-                </Col>
-            </Row>
-          }
-       </Container>
-		)
-}
+  const currentYear = new Date().getFullYear();
+  const years = Array.from(new Array(50), (val, index) => currentYear - index);
 
-const renderInputs = () => {
   return (
-    <Container className='details-container' fluid>
-    <form id="hook-form" onSubmit={handleSubmit(onSubmit)}>
-      <Row>
-        <Col>
-          <div className="form-group row">
-              <FormInput
-                name='manufacturer' 
-                type='text' 
-                value={manufacturer} 
-                handleChange={handleChange}
-                label='manufacturer'
-                register={register}
-                />
-            </div>
-            <div className="form-group row">
-            <FormInput
-                name='model' 
-                type='text' 
-                value={model} 
-                handleChange={handleChange}
-                label='model'
-                register={register}
-                />
-            </div>
-            <div className="form-group row">
-              <FormInput
-                name='price' 
-                type='text' 
-                value={price} 
-                handleChange={handleChange}
-                label='price'
-                register={register}
-                />
-              </div>
-              <div className="form-group row">
-              <FormInput
-                name='year' 
-                type='text' 
-                value={year} 
-                handleChange={handleChange}
-                label='year'
-                register={register}
-                />
-              </div>
-               <div className="form-group row">
-                <FormInput
-                name='size' 
-                type='text' 
-                value={size} 
-                handleChange={handleChange}
-                label='size'
-                register={register}
-                />
-             </div>
-             <div className="form-group row">
-                <FormInput
-                name='condition' 
-                type='text' 
-                value={condition} 
-                handleChange={handleChange}
-                label='condition'
-                register={register}
-                />
-              </div>
-                 <div className="form-group row">
-              <FormInput
-                name='info' 
-                type='text' 
-                value={info} 
-                handleChange={handleChange}
-                label='information'
-                register={register}
-                />
-              </div>
-              </Col>
-                <Col>
-                  <div className="form-group row">
-                   <FormInput
-                name='address' 
-                type='text' 
-                value={address} 
-                handleChange={handleChange}
-                label='address'
-                register={register}
-                />
-                </div>
-                    <div className="form-group row">
-                     <FormInput
-                      name='phone' 
-                      type='text' 
-                      value={phone} 
-                      handleChange={handleChange}
-                      label='phone'
-                      register={register}
-                      />
-                    </div>
-                </Col>
-            </Row>
-            </form>
-       </Container>
-    )
-}
-
-	return (
-		<div className='form-update'>
-    { edit ?
-      renderInputs()
-      :
-      renderView()
-    }
-		</div>
-		)
+    <>
+      <div className="update-form-option-container">
+        <span className="select-form" onClick={() => changeForm(0)}>
+          General
+        </span>
+        <span className="select-form" onClick={() => changeForm(1)}>
+          Description
+        </span>
+      </div>
+      <Form id="hook-form" className="update-form" onSubmit={onSubmit}>
+        {switchForm === 0 ? (
+          <GeneralUpdate
+            phone={phone}
+            bicycleType={bicycleType}
+            subCategory={subCategory}
+            item={item}
+            edit={edit}
+            hintData={hintData}
+            update={update}
+            handleChange={handleChange}
+            options={options}
+            years={years}
+            register={register}
+          />
+        ) : (
+          <DescriptionUpdate
+            description={description}
+            edit={edit}
+            descriptionChange={descriptionChange}
+            removeDescription={removeDescription}
+            register={register}
+            combineDescriptions={combineDescriptions}
+            labelChange={labelChange}
+            valueChange={valueChange}
+          />
+        )}
+      </Form>
+    </>
+  );
 }
 
 export default FormUpdate;
-

@@ -1,12 +1,19 @@
-.favourites-dropdown {
-	height: 650px;
-	overflow: scroll;
-	overflow-x: hidden;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* IE 10+ */
+.favourite-items-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-right: 5px;
 
-  &::-webkit-scrollbar {
-    width: 0px;
-    background: transparent; /* Chrome/Safari/Webkit */
+  .empty-message {
+    margin: 0 auto;
+  }
+  .remove-icon {
+    font-size: 9px;
+  }
+
+  .favourite-item {
+    display: flex;
+    flex-direction: row;
+    padding-right: 5px;
   }
 }

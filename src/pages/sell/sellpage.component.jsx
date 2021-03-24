@@ -28,27 +28,19 @@ import {
   invalidForm,
 } from "../../redux/sell/sell.actions";
 
+import { FormUpdate } from "../../redux/form/form.actions";
+import { Modal } from "semantic-ui-react";
+
 import { useStorage } from "../../hooks/useStorage.js";
 import Button from "@material-ui/core/Button";
 import FormSteps from "../../components/sell-form/form-steps/FormSteps.component";
 import "./sellpage.styles.scss";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import Zoom from "@material-ui/core/Zoom";
-import Fade from "@material-ui/core/Fade";
-import { Link } from "react-scroll";
-import { makeStyles } from "@material-ui/core/styles";
+
 import {
   CustomSpinnerOverlay,
   SpinnerContainer,
 } from "../../components/with-spinner/with-spinner.styles";
 import CustomSnack from "../../components/snackbar/Snackbar.component";
-
-//validation => req: Man, model, bicycle type, price, location, images
-
-//validating at sellpage, pass validate to appr components
 
 function SellPage({
   submitDone,
@@ -64,10 +56,10 @@ function SellPage({
   snackbar,
   toggleSnackBar,
   invalidForm,
+  FormUpdate,
 }) {
-  const [open, setOpen] = useState(false);
-  const [errors, setErrors] = useState({});
   const [step, setStep] = useState(0);
+  const [errors, setErrors] = useState({});
   const [data, setData] = useState({
     userId: "",
     bicycleType: "",
@@ -87,6 +79,33 @@ function SellPage({
     email: "",
     coordinates: null,
   });
+  const [specsData, setSpecsData] = useState([
+    { idx: 0, item: "Cassette", value: "" },
+    { idx: 1, item: "Chain", value: "" },
+    { idx: 2, item: "Crankset", value: "" },
+    { idx: 3, item: "Pedals", value: "" },
+    { idx: 4, item: "Frame Type", value: "" },
+    { idx: 5, item: "Frame Material", value: "" },
+    { idx: 6, item: "Headset", value: "" },
+    { idx: 7, item: "Handlebars", value: "" },
+    { idx: 8, item: "Stem", value: "" },
+    { idx: 9, item: "Gear/Brake Lever", value: "" },
+    { idx: 10, item: "Saddle", value: "" },
+    { idx: 11, item: "Fork", value: "" },
+    { idx: 12, item: "Brakes", value: "" },
+    { idx: 13, item: "Rim", value: "" },
+    { idx: 14, item: "Tyre", value: "" },
+    { idx: 15, item: "Wheel Size", value: "" },
+  ]);
+  const [viewport, setViewport] = useState({
+    latitude: 54.526,
+    longitude: 15.2551,
+    zoom: 2,
+    bearing: 0,
+    pitch: 0,
+  });
+  const [showMarker, setShowMarker] = useState(false);
+
   const { bicycleType, manufacturer, model, price, address, image } = data;
 
   useEffect(() => {
@@ -110,33 +129,44 @@ function SellPage({
   const callback = (key, values) =>
     setData((prevData) => ({ ...prevData, [key]: values }));
 
-  const history = useHistory();
+  const specsCallback = (data) => {
+    setSpecsData(data);
+  };
 
-  // const handleClose = () => {
-  //   submitSuccess();
-  //   history.push(`/shop`);
-  // };
+  const locationCallback = (coords) => {
+    setViewport(coords);
+  };
+
+  const setMarker = () => {
+    setShowMarker(true);
+  };
+
+  const history = useHistory();
 
   let steps = FormSteps({
     data,
+    specsData,
     handleChange,
-    step,
-    setStep,
     callback,
     errors,
-  });
-
-  const trigger = useScrollTrigger({
-    target: window ? window() : undefined,
+    specsCallback,
+    locationCallback,
+    viewport,
+    showMarker,
+    setMarker,
   });
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
+    if (submitSuccess) {
+      history.push(`/shop`);
+    }
     toggleSnackBar();
   };
 
+  //creating an object nicely
   const validate = () => {
     let errorObj = {};
 
@@ -169,7 +199,6 @@ function SellPage({
       return;
     } else {
       imageUploadStart();
-      console.log("submit running");
     }
   };
 
@@ -185,70 +214,63 @@ function SellPage({
 
   //phone bug
   return (
-    <Container className="sell-form-container" fluid>
-      <Row>
-        <div className="sellform-snackbar">
-          <CustomSnack
-            name={currentSnackBar}
-            text={message}
-            open={snackbar}
-            handleClick={handleClose}
-          />
-        </div>
-        <Col className="nav-col">
+    <Modal
+      className="sell-form-container"
+      dimmer={"inverted"}
+      open={true}
+      onClose={false}
+    >
+      <Modal.Content
+        className="modal-content"
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          height: "533px",
+          padding: "0",
+          backgroundColor: "rgba(51, 51, 51, 0.55)",
+          borderRadius: "0px",
+          width: "100%",
+        }}
+      >
+        <CustomSnack
+          name={currentSnackBar}
+          text={message}
+          open={snackbar}
+          handleClick={handleClose}
+        />
+        <div className="nav-col">
+          {console.log(address)}
+          <ul className="sell-form-nav">
+            {steps.map(({ title, id }) => (
+              <li key={id} className="nav-item" onClick={() => setStep(id)}>
+                <span
+                  className={`${id === step ? "active-step" : ""} nav-text`}
+                >
+                  {title}
+                </span>
+              </li>
+            ))}
+          </ul>
           {isLoading ? (
             <CustomSpinnerOverlay>
               <SpinnerContainer size={"small"} />
             </CustomSpinnerOverlay>
           ) : (
-            <Fade appear={true} in={trigger}>
-              <div className="submit-nav">
-                <Button
-                  type="button"
-                  color="primary"
-                  className="submit-button"
-                  onClick={onFormSubmit}
-                >
-                  Submit
-                </Button>
-              </div>
-            </Fade>
+            <div className="submit-nav">
+              <Button
+                type="button"
+                color="primary"
+                className="submit-button"
+                onClick={onFormSubmit}
+              >
+                Submit
+              </Button>
+            </div>
           )}
-          <ul className="sell-form-nav">
-            <li className="nav-text">
-              <Link to="general" smooth={"easeInOutQuart"} duration={900}>
-                General
-              </Link>
-            </li>
-            <li className="nav-text">
-              <Link to="location" smooth={"easeInOutQuart"} duration={500}>
-                Location
-              </Link>
-            </li>
-            <li className="nav-text">
-              <Link to="image" smooth={"easeInOutQuart"} duration={500}>
-                Image
-              </Link>
-            </li>
-            <li className="nav-text">
-              <Link to="specs" smooth={"easeInOutQuart"} duration={500}>
-                Specs
-              </Link>
-            </li>
-          </ul>
-        </Col>
-        <Col xs={10}>
-          <div className="sell-form">
-            {steps.map(({ title, content, id }, i) => (
-              <div key={i} id={id} className="form-step-wrapper">
-                <h1 className="step-name">{title}</h1>
-                <div className="form-step">{content}</div>
-              </div>
-            ))}
-          </div>
-        </Col>
-      </Row>
-    </Container>
+        </div>
+        <div className="form-step-wrapper">{steps[`${step}`].content}</div>
+      </Modal.Content>
+    </Modal>
   );
 }
 
@@ -263,6 +285,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  FormUpdate: (data) => dispatch(FormUpdate(data)),
   bicycleUploadStart: (additionalData) =>
     dispatch(bicycleUploadStart(additionalData)),
   imageUploadStart: () => dispatch(imageUploadStart()),

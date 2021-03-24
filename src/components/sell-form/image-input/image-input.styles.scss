@@ -1,19 +1,15 @@
 .image-upload-container {
-  position: relative;
-
-.dropzone {
-  outline: none;
-  min-height: 500px;
+  min-height: 533px;
   background: white;
-  border-radius: 5px;
-  border: 0px solid;
   width: 100%;
-  max-width: 1000px;
-  margin-bottom: 200px;
-  -webkit-box-shadow: 0 10px 6px -6px #777;
-  -moz-box-shadow: 0 10px 6px -6px #777;
-  box-shadow: 0 10px 6px -6px #777;
-}
+
+  .dropzone {
+    outline: none;
+    min-height: 500px;
+    background: white;
+    border: 0px solid;
+    width: 100%;
+  }
   .upload-text {
     text-align: right;
     color: rgba(65, 131, 215, 1);

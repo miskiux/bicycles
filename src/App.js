@@ -8,7 +8,7 @@ import "./App.css";
 
 import Header from "./components/header/header.component.jsx";
 import ProtectedRoute from "./components/protected-routes/protected-route.component";
-import UnauthenticatedRoute from "./components/protected-routes/unauthenticatedRoute";
+import UpdatePage from "./pages/update/update.component";
 
 import { checkUserSession } from "./redux/user/user.actions";
 import "semantic-ui-css/semantic.min.css";
@@ -35,7 +35,7 @@ function App({ checkUserSession }) {
   }, []);
 
   return (
-    <div>
+    <>
       <Header />
       <Switch>
         <ErrorBoundary>
@@ -50,11 +50,12 @@ function App({ checkUserSession }) {
             <ProtectedRoute path="/sell" user={user} component={SellPage} />
             <Route path="/shop" component={ShopPage} />
             <Route path="/signin" component={SignInAndSignUp} />
+            <Route path="/update" component={UpdatePage} />
             <Route exact path="/item/:bicycleId" component={ItemView} />
           </Suspense>
         </ErrorBoundary>
       </Switch>
-    </div>
+    </>
   );
 }
 

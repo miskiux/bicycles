@@ -1,0 +1,72 @@
+.select-form {
+  padding: 10px;
+  letter-spacing: 1px;
+  width: 0;
+
+  &:hover {
+    width: 100%;
+    transition: width 0.3s;
+  }
+}
+
+.update-form {
+  @import "~bootstrap/scss/bootstrap.scss";
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+  margin-bottom: 30px;
+
+  .form-row {
+    width: 50%;
+    margin-left: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .general-update-col {
+    display: flex;
+    flex-direction: column;
+  }
+  .description-update-form {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .add-spec-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 142px;
+    height: 53.3px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  }
+
+  .add-restricred-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 142px;
+    height: 53.3px;
+    box-shadow: rgba(172, 30, 30, 0.5) 0px 0px 0px 1px;
+  }
+  .spec-select {
+    border: none;
+    outline: none;
+  }
+  .description-label-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .remove-old {
+    position: relative;
+    font-size: 9px;
+  }
+  .spec-select {
+    width: 90%;
+    outline: none;
+  }
+}

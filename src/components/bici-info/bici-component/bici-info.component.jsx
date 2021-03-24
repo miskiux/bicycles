@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
-import { Link } from "react-router-dom";
-
 import {
   SpinnerContainer,
   SpinnerOverlay,
@@ -23,20 +21,12 @@ import { Button, Icon } from "semantic-ui-react";
 
 import "./bici-info.styles.scss";
 
-// Go Sign In => sidenav toggle
-
-//adding spinner
-
-//redirect
-
 const BiciInfo = ({
-  currentUser,
-  bicycles,
+  data,
   deleteBicycleStart,
   hasBicycleDeleted,
   toggleModal,
 }) => {
-  const [userBicycles, setUserBicycles] = useState([]);
   const [biciInfo, setBiciInfo] = useState({});
   const [proceed, setProceed] = useState(false);
   const [listingId, setListingId] = useState("");
@@ -50,25 +40,16 @@ const BiciInfo = ({
   const deleteStatus = useSelector((state) => state.shop.isDeleting);
   const hasDeleted = useSelector((state) => state.shop.hasDeleted);
 
+  const { userBicycles, id } = data;
   //receiving bicycles based on userID
-  useEffect(() => {
-    if (currentUser) {
-      let userBicycles = bicycles.filter(
-        (bicycle) => bicycle.userId === currentUser.id
-      );
-      setUserBicycles(userBicycles);
-    }
-  }, [currentUser, bicycles]);
 
   //getting current
   useEffect(() => {
-    if (userBicycles) {
-      userBicycles.map((item, index) => {
-        if (index == current) {
-          setBiciInfo(item);
-        }
-      });
-    }
+    userBicycles.map((item, index) => {
+      if (index === current) {
+        setBiciInfo(item);
+      }
+    });
   }, [userBicycles, current]);
 
   useEffect(() => {
@@ -137,82 +118,45 @@ const BiciInfo = ({
   //shaking // when back dissapears, it leaves the previous text
   return (
     <div className="bicycle-page">
-      {currentUser && Object.entries(biciInfo).length !== 0 ? (
-        <div className="bici-info">
-          <BiciItem biciInfo={biciInfo} edit={edit} toggleEdit={toggleEdit} />
-
-          {proceed === false || listingId !== biciInfo.id ? (
-            <div className="bici-deletion">
+      <BiciItem biciInfo={biciInfo} edit={edit} toggleEdit={toggleEdit} />
+      {/* {proceed === false || listingId !== biciInfo.id ? (
+          <div className="bici-deletion">
+            <Button
+              className="bici-remove"
+              onClick={() => {
+                setProceed(!proceed);
+                handleId(biciInfo.id);
+              }}
+            >
+              {" "}
+              remove{" "}
+            </Button>
+          </div>
+        ) : deleteStatus ? (
+          <SpinnerOverlay>
+            <SpinnerContainer />
+          </SpinnerOverlay>
+        ) : (
+          <div className="bici-deletion">
+            <span> you sure, son ?</span>
+            <div className="bici-deletion-selection">
               <Button
                 className="bici-remove"
-                onClick={() => {
-                  setProceed(!proceed);
-                  handleId(biciInfo.id);
-                }}
+                onClick={() => deleteBicycleStart(biciInfo.id, biciInfo.imgKey)}
               >
                 {" "}
-                remove{" "}
+                Yes{" "}
+              </Button>
+              <Button
+                className="bici-remove"
+                onClick={() => setProceed(!proceed)}
+              >
+                {" "}
+                No{" "}
               </Button>
             </div>
-          ) : deleteStatus ? (
-            <SpinnerOverlay>
-              <SpinnerContainer />
-            </SpinnerOverlay>
-          ) : (
-            <div className="bici-deletion">
-              <span> you sure, son ?</span>
-              <div className="bici-deletion-selection">
-                <Button
-                  className="bici-remove"
-                  onClick={() =>
-                    deleteBicycleStart(biciInfo.id, biciInfo.imgKey)
-                  }
-                >
-                  {" "}
-                  Yes{" "}
-                </Button>
-                <Button
-                  className="bici-remove"
-                  onClick={() => setProceed(!proceed)}
-                >
-                  {" "}
-                  No{" "}
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="go-sign">
-          <h3 className="go-sign-text">You have not signed in</h3>
-          <Link onClick={() => toggleModal(false)} to={"/signin"}>
-            {" "}
-            Go sign in{" "}
-          </Link>
-        </div>
-      )}
-      <div className="navigation">
-        <div
-          onMouseLeave={() => setHover(false)}
-          onMouseEnter={() => setHover(true)}
-        >
-          {previousButton()}
-        </div>
-        <div>
-          {Object.entries(hoverBiciInfo).length !== 0 && inHover ? (
-            <span className="navigation-title">{`${hoverBiciInfo.item.manufacturer} ${hoverBiciInfo.item.model}`}</span>
-          ) : (
-            ""
-          )}
-        </div>
-        <div
-          className="right-click"
-          onMouseLeave={() => setHover(false)}
-          onMouseEnter={() => setHover(true)}
-        >
-          {nextButton()}
-        </div>
-      </div>
+          </div>
+        )} */}
     </div>
   );
 };

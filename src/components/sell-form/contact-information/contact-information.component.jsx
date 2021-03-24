@@ -1,18 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 
 import axios from "axios";
-
-import ReactMapGL from "react-map-gl";
+import RoomSharpIcon from "@material-ui/icons/RoomSharp";
+import ReactMapGL, { Marker } from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
-import { Popup } from "semantic-ui-react";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
+
 import "./contact-information.scss";
-
-//toggle contribution triggering the form upload
-
-//input value is not keeping state
 
 const mapStyle = {
   width: "100%",
@@ -20,28 +16,31 @@ const mapStyle = {
   zIndex: 1,
 };
 
-function ContactInformation(props) {
-  const [viewport, setViewport] = useState({
-    latitude: 54.526,
-    longitude: 15.2551,
-    zoom: 2,
-    bearing: 0,
-    pitch: 0,
-  });
-
+function ContactInformation({
+  locationCallback,
+  viewport,
+  callback,
+  errors,
+  coordinates,
+  address,
+  showMarker,
+  setMarker,
+}) {
   const [location, setLocation] = useState("");
+
+  const mapRef = useRef();
+  const geocoderContainerRef = useRef();
 
   useEffect(() => {
     if (location) {
-      props.callback("address", location);
-      props.callback("coordinates", [viewport.latitude, viewport.longitude]);
+      console.log(mapRef.current);
+      callback("address", location);
+      callback("coordinates", [viewport.latitude, viewport.longitude]);
     }
   }, [location]);
 
-  const mapRef = useRef();
-
   const handleViewportChange = useCallback(
-    (newViewport) => setViewport(newViewport),
+    (newViewport) => locationCallback(newViewport),
     []
   );
 
@@ -71,30 +70,43 @@ function ContactInformation(props) {
     [handleViewportChange]
   );
 
+  //double clicks on map
   return (
-    <React.Fragment>
+    <div style={{ height: "100vh" }}>
+      <div
+        ref={geocoderContainerRef}
+        style={{ position: "absolute", top: 20, left: 20, zIndex: 1 }}
+      />
       <ReactMapGL
         ref={mapRef}
         scrollZoom={false}
+        attributionControl={false}
         {...viewport}
         {...mapStyle}
         onViewportChange={handleViewportChange}
         mapboxApiAccessToken={process.env.REACT_APP_API_KEY}
       >
+        {showMarker && (
+          <Marker longitude={viewport.longitude} latitude={viewport.latitude}>
+            <RoomSharpIcon style={{ color: "#FF8C00" }} fontSize="large" />
+          </Marker>
+        )}
         <Geocoder
           mapRef={mapRef}
-          reverseGeocode={true}
+          inputValue={address}
+          marker={false}
+          onResult={setMarker}
           onViewportChange={handleGeocoderViewportChange}
           mapboxApiAccessToken={process.env.REACT_APP_API_KEY}
           position="top-left"
         />
-        {props.errors.address && (
+        {errors.address && (
           <span className="location-error">
-            {Object.values(props.errors.address)}
+            {Object.values(errors.address)}
           </span>
         )}
       </ReactMapGL>
-    </React.Fragment>
+    </div>
   );
 }
 

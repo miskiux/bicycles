@@ -2,7 +2,6 @@ import React from "react";
 import { Snackbar, SnackbarContent } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
-import clsx from "clsx";
 
 const small = {
   position: "absolute",
@@ -41,12 +40,7 @@ const large = {
 
 function CustomSnack({ open, handleClick, name, text }) {
   return (
-    <Snackbar
-      className={clsx({ MuiSnackbarRoot: "" })}
-      open={open}
-      //autoHideDuration={000}
-      onClose={handleClick}
-    >
+    <Snackbar open={open} autoHideDuration={6000} onClose={handleClick}>
       <SnackbarContent
         style={
           name === "small"

@@ -93,7 +93,7 @@ export const addBiciData = async (additionalData) => {
 
   const {
     bicycleType,
-    key,
+    imgKey,
     coordinates,
     email,
     description,
@@ -111,11 +111,11 @@ export const addBiciData = async (additionalData) => {
     condition,
     info,
   } = additionalData;
-  const createdAt = new Date();
+  const createdAt = new Date().toISOString();
 
   try {
     await batch.set(biciRef, {
-      key,
+      imgKey,
       phone,
       userId,
       bicycleType,
@@ -148,28 +148,31 @@ export const addBiciData = async (additionalData) => {
 export const getBiciDataForShop = (bicycle) => {
   const bicycleObj = bicycle.docs.map((doc) => {
     const {
+      createdAt,
       bicycleType,
       coordinates,
       item,
       address,
       email,
-      key,
+      imgKey,
       phone,
       userId,
       subCategory,
     } = doc.data();
-    //returning an object
+
     return {
       routeName: encodeURI(bicycleType.toLowerCase()).replace(/%20/g, " "),
       id: doc.id,
       bicycleType,
+      address,
       coordinates,
       item,
       phone,
       userId,
       email,
-      key,
+      imgKey,
       subCategory,
+      createdAt,
     };
   });
   return bicycleObj.reduce((accumulator, item) => {
