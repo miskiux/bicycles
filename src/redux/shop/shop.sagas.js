@@ -15,7 +15,6 @@ import {
   deleteUserBicycleImages,
   updateUserBicycle,
 } from "../../firebase/firebase.utils";
-import { storage } from "../../firebase/firebase.utils";
 
 import {
   fetchBicyclesSuccess,
@@ -51,8 +50,8 @@ export function* deleteBicycle({ payload: { imgKey, id } }) {
   }
 }
 
-export function* updateBicycle({ payload: { id, data } }) {
-  const update = yield call(updateUserBicycle, id, data);
+export function* updateBicycle({ payload: { id, update } }) {
+  yield call(updateUserBicycle, id, update);
   yield put(bicycleUpdateSuccess());
 }
 

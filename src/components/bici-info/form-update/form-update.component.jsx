@@ -78,9 +78,9 @@ function FormUpdate({ inputData, edit, toggleEdit }) {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(update);
-    //dispatch(bicycleUpdateStart({ data, id }));
-    //toggleEdit after success
-    //toggleEdit();
+    dispatch(bicycleUpdateStart({ id, update }));
+
+    toggleEdit();
   };
 
   const changeForm = (key) => {

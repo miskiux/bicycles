@@ -2,30 +2,26 @@ import { useState, useEffect } from "react";
 
 import { storage } from "../firebase/firebase.utils";
 
-import { v4 as uuidv4 } from "uuid";
-
 import { useSelector, useDispatch } from "react-redux";
 
 import { imageUploadSuccess } from "../redux/sell/sell.actions";
+import { imagesUpdatingSuccess } from "../redux/update/update.actions";
 
-export const useStorage = (image) => {
+export const useStorage = (image, imgKey) => {
   const [url, setUrl] = useState([]);
-  const imgKey = uuidv4();
 
   const isLoading = useSelector((state) => state.sell.imagesLoading);
+  const isUpdating = useSelector((state) => state.update.isImageUpdating);
 
   const dispatch = useDispatch();
 
-  //* Promise.all expects an array of promises | return Promise inside the map callback
-  // if there is no return value, will return an array with undefined values
-
   useEffect(() => {
-    if (isLoading === true && image) {
+    if (isLoading || isUpdating) {
+      console.log(image);
       const urlarray = [];
-      let result = Promise.all(
+      Promise.all(
         image.map((image) => {
           return new Promise((resolve, reject) => {
-            //storing image
             const uploadTask = storage
               .ref(`/images/${imgKey}/${image.name}`)
               .put(image);
@@ -55,8 +51,14 @@ export const useStorage = (image) => {
             );
           });
         })
-      ).then(() => dispatch(imageUploadSuccess()));
+      ).then(() => {
+        if (isLoading) {
+          dispatch(imageUploadSuccess());
+        } else {
+          dispatch(imagesUpdatingSuccess());
+        }
+      });
     }
-  }, [isLoading, image]);
-  return { url, imgKey };
+  }, [isLoading, isUpdating]);
+  return { url };
 };

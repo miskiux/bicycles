@@ -10,7 +10,6 @@ import BiciItem from "../bici-item/bici-item.component";
 
 import { selectCurrentUser } from "../../../redux/user/user.selectors";
 import { selectAll } from "../../../redux/shop/shop.selectors";
-
 import { toggleModal } from "../../../redux/side-nav/side-nav.actions";
 import { deleteBicycleStart } from "../../../redux/shop/shop.actions";
 import { hasBicycleDeleted } from "../../../redux/shop/shop.actions";
@@ -19,10 +18,10 @@ import { useSelector } from "react-redux";
 
 import { Button, Icon } from "semantic-ui-react";
 
-import "./bici-info.styles.scss";
+import "./bici-overview.styles.scss";
 
 const BiciInfo = ({
-  data,
+  currentBicycle,
   deleteBicycleStart,
   hasBicycleDeleted,
   toggleModal,
@@ -37,20 +36,11 @@ const BiciInfo = ({
   //
   const [edit, setEdit] = useState(false);
 
+  const [allImages, setImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const deleteStatus = useSelector((state) => state.shop.isDeleting);
   const hasDeleted = useSelector((state) => state.shop.hasDeleted);
-
-  const { userBicycles, id } = data;
-  //receiving bicycles based on userID
-
-  //getting current
-  useEffect(() => {
-    userBicycles.map((item, index) => {
-      if (index === current) {
-        setBiciInfo(item);
-      }
-    });
-  }, [userBicycles, current]);
 
   useEffect(() => {
     if (hasDeleted === true) {
@@ -74,27 +64,27 @@ const BiciInfo = ({
 
   //comparng current with userBicycles indices => onMouseOver
   const getNextBicycle = () => {
-    let next = userBicycles[current + 1];
-    setHoverBiciInfo(next);
+    // let next = userBicycles[current + 1];
+    // setHoverBiciInfo(next);
   };
 
   const getPreviousBicycle = () => {
-    let next = userBicycles[current - 1];
-    setHoverBiciInfo(next);
+    // let next = userBicycles[current - 1];
+    // setHoverBiciInfo(next);
   };
 
   const nextButton = () => {
-    if (userBicycles.length > current) {
-      return (
-        <Icon
-          name="angle right"
-          size={"large"}
-          onClick={next}
-          onMouseEnter={() => getNextBicycle()}
-        />
-      );
-    }
-    return null;
+    // if (userBicycles.length > current) {
+    //   return (
+    //     <Icon
+    //       name="angle right"
+    //       size={"large"}
+    //       onClick={next}
+    //       onMouseEnter={() => getNextBicycle()}
+    //     />
+    //   );
+    // }
+    // return null;
   };
 
   const previousButton = () => {
@@ -118,7 +108,11 @@ const BiciInfo = ({
   //shaking // when back dissapears, it leaves the previous text
   return (
     <div className="bicycle-page">
-      <BiciItem biciInfo={biciInfo} edit={edit} toggleEdit={toggleEdit} />
+      <BiciItem
+        currentBicycle={currentBicycle}
+        edit={edit}
+        toggleEdit={toggleEdit}
+      />
       {/* {proceed === false || listingId !== biciInfo.id ? (
           <div className="bici-deletion">
             <Button

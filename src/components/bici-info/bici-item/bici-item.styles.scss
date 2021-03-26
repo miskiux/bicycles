@@ -6,7 +6,8 @@
   .upload-item-image {
     background: white;
     padding: 10px;
-    height: 300px;
+    min-height: 300px;
+    height: auto;
     margin-left: 20px;
     margin-top: 20px;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;

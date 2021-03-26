@@ -1,11 +1,13 @@
 import React, { useState, useCallback, useEffect } from "react";
-
+import { useDispatch } from "react-redux";
+import { imagesUpdatingStart } from "../../../redux/update/update.actions";
+import { useStorage } from "../../../hooks/useStorage";
 import { useDropzone } from "react-dropzone";
-
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 import CustomSnack from "../../snackbar/Snackbar.component";
-import "./image-input.styles.scss";
+import "./Image-update.styles.scss";
+import Button from "@material-ui/core/Button";
 
 const thumbsContainer = {
   verticalAlign: "top",
@@ -19,8 +21,8 @@ const thumb = {
   border: "1px solid #eaeaea",
   marginBottom: 8,
   marginRight: 8,
-  width: 200,
-  height: 200,
+  width: 180,
+  height: 180,
   padding: 4,
   boxSizing: "border-box",
 };
@@ -35,7 +37,7 @@ const img = {
   display: "block",
   width: "auto",
   height: "100%",
-  minWidth: 190,
+  minWidth: "170px",
 };
 
 const wrapper = {
@@ -78,48 +80,51 @@ const Container = styled.div`
   transition: border 0.24s ease-in-out;
 `;
 
-const ImageInput = ({ callback, errors, images }) => {
+const ImageUpdate = ({ images, allImages, uploadImages }) => {
   const [showDrop, setShowDrop] = useState(false);
   const [mainImgId, setMainImgId] = useState("");
   const [openSnack, setOpen] = useState(false);
   const arrayMove = require("array-move");
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    let imgArr = [...images];
+    let imgArr = [...allImages];
     if (mainImgId) {
       let index = imgArr.findIndex((i) => i.id === mainImgId);
       let newArr = arrayMove(imgArr, index, 0);
       imgArr = newArr;
     }
-    callback("image", imgArr);
+    // callback("image", imgArr);
   }, [mainImgId]);
 
   useEffect(() => {
-    if (images.length > 6) {
-      let imgArr = [...images];
+    if (allImages.length > 6) {
+      let imgArr = [...allImages];
       setOpen(true);
       let newArr = imgArr.slice(0, 6);
-      callback("image", newArr);
+      uploadImages(newArr);
     }
-  }, [images]);
+  }, [allImages]);
 
   const handleClick = () => {
     setOpen((c) => !c);
   };
   const onDrop = useCallback(
     (acceptedFiles) => {
-      callback("image", [
-        ...images,
-        ...acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-            id: uuidv4(),
-          })
-        ),
-      ]);
+      uploadImages(
+        ...[
+          acceptedFiles.map((file) =>
+            Object.assign(file, {
+              preview: URL.createObjectURL(file),
+              id: uuidv4(),
+            })
+          ),
+        ]
+      );
       setShowDrop(false);
     },
-    [images]
+    [allImages]
   );
 
   const onDragEnter = useCallback(() => {
@@ -146,17 +151,15 @@ const ImageInput = ({ callback, errors, images }) => {
   });
 
   //not working
-  const removeFile = (file) => () => {
-    const newFiles = [...images];
-    newFiles.splice(newFiles.indexOf(file), 1);
-    callback("image", newFiles);
+  const removeFile = (idx) => {
+    const values = allImages.filter((item) => item.id !== idx);
   };
 
   const getMainImage = (index) => {
     setMainImgId(index);
   };
 
-  const imagePrewiew = images.map((file, index) => (
+  const imagePreview = allImages.map((file, index) => (
     <div style={wrapper} key={file.id}>
       <div style={thumb}>
         <div style={thumbInner}>
@@ -165,7 +168,7 @@ const ImageInput = ({ callback, errors, images }) => {
             key={file.id}
             src={file.preview}
             style={img}
-            onClick={removeFile(file)}
+            onClick={() => console.log(file.id)}
           />
         </div>
       </div>
@@ -181,13 +184,13 @@ const ImageInput = ({ callback, errors, images }) => {
 
   return (
     <div className="image-upload-container">
-      {console.log(images)}
+      {console.log(allImages)}
       {showDrop ? (
         <Container
           {...getRootProps({ isDragActive, isDragAccept, isDragReject })}
         >
           <div style={thumbsContainer}>
-            <ul>{imagePrewiew}</ul>
+            <ul>{imagePreview}</ul>
           </div>
         </Container>
       ) : (
@@ -200,7 +203,7 @@ const ImageInput = ({ callback, errors, images }) => {
             </button>
           </div>
           <aside style={thumbsContainer}>
-            <ul>{imagePrewiew}</ul>
+            <ul>{imagePreview}</ul>
           </aside>
           {openSnack && (
             <CustomSnack
@@ -210,13 +213,26 @@ const ImageInput = ({ callback, errors, images }) => {
               text="Add up to 6 images"
             />
           )}
-          {errors.image && (
+          <div className="confirmation-wrapper">
+            <Button type="button" color="primary" className="submit-button">
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              color="primary"
+              className="submit-button"
+              onClick={() => dispatch(imagesUpdatingStart())}
+            >
+              Done
+            </Button>
+          </div>
+          {/* {errors.image && (
             <span className="form-error">{Object.values(errors.image)}</span>
-          )}
+          )} */}
         </div>
       )}
     </div>
   );
 };
 
-export default ImageInput;
+export default ImageUpdate;

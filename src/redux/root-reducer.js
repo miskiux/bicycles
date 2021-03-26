@@ -7,6 +7,7 @@ import sideNavReducer from "./side-nav/side-nav.reducer";
 import directoryReducer from "./directory/directory.reducer";
 import shopReducer from "./shop/shop.reducer";
 import sellReducer from "./sell/sell.reducer";
+import updateReducer from "./update/update.reducer";
 
 const persistConfig = {
   key: "root",
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   directory: directoryReducer,
   shop: shopReducer,
   sell: sellReducer,
+  update: updateReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);

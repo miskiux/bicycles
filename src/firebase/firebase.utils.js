@@ -16,9 +16,11 @@ const config = {
 
 export const updateUserBicycle = async (id, values) => {
   const ref = firestore.doc(`bicycle/${id}`);
-
+  console.log(values);
   const {
+    bicycleType,
     manufacturer,
+    subCategory,
     model,
     price,
     year,
@@ -32,6 +34,8 @@ export const updateUserBicycle = async (id, values) => {
   try {
     await ref.set(
       {
+        bicycleType,
+        subCategory,
         phone,
         item: {
           manufacturer,
@@ -51,6 +55,23 @@ export const updateUserBicycle = async (id, values) => {
   }
 };
 
+export const updateUserBicycleImageUrl = async (id, data) => {
+  const ref = firestore.doc(`bicycle/${id}`);
+
+  try {
+    await ref.set(
+      {
+        item: {
+          url: data,
+        },
+      },
+      { merge: true }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const deleteUserBicycleImages = (imgKey) => {
   const storageRef = storage.ref(`images/${imgKey}`);
   storageRef.listAll().then((listResults) => {
@@ -59,6 +80,26 @@ export const deleteUserBicycleImages = (imgKey) => {
     });
     Promise.all(promises);
   });
+};
+
+export const getBicycleImage = async (imgKey) => {
+  const storageRef = storage.ref(`images/${imgKey}`);
+  let imgArr = [];
+  await storageRef.listAll().then(async (res) => {
+    let promises = res.items.map((ref) => {
+      return new Promise((resolve, reject) => {
+        ref
+          .getDownloadURL()
+          .then((url) => {
+            imgArr.push(url);
+            resolve(url);
+          })
+          .catch((error) => reject());
+      });
+    });
+    await Promise.all(promises);
+  });
+  return imgArr;
 };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
@@ -112,6 +153,7 @@ export const addBiciData = async (additionalData) => {
     info,
   } = additionalData;
   const createdAt = new Date().toISOString();
+  console.log("firebase", imgKey);
 
   try {
     await batch.set(biciRef, {
@@ -152,7 +194,6 @@ export const getBiciDataForShop = (bicycle) => {
       bicycleType,
       coordinates,
       item,
-      address,
       email,
       imgKey,
       phone,
@@ -164,7 +205,6 @@ export const getBiciDataForShop = (bicycle) => {
       routeName: encodeURI(bicycleType.toLowerCase()).replace(/%20/g, " "),
       id: doc.id,
       bicycleType,
-      address,
       coordinates,
       item,
       phone,

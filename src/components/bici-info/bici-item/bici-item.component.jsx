@@ -1,18 +1,87 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
+import { useStorage } from "../../../hooks/useStorage";
 import FormUpdate from "../form-update/form-update.component";
+import ImageUpdate from "../images-update/Image-update.component";
+import { imageUrlUpdateStart } from "../../../redux/update/update.actions";
 
 import "./bici-item.styles.scss";
 
-//refresing - make saga listen to changes
-//show date under the picture
+// add id, preview
+// useStorage
+// overwrite imgKey and url
 
-function BiciItem({ biciInfo, edit, toggleEdit }) {
-  const { item, createdAt } = biciInfo;
+// how to upload newOnes: 1.get the imgKey => useStorage =>
+//set new url (containing old ones)
+
+// how to keep oldOnes:
+
+// how to delete oldOnes:
+//retrieve images and check whether two arrays match, then filter
+
+// how to store a combination of old and new:
+
+// 1.Adding new files = onSubmit => useStorage only files| update url, update storage
+// 2. Deleting an existing image
+
+// removing old ones
+
+function BiciItem({ currentBicycle, edit, toggleEdit }) {
+  const [show, setShow] = useState(false);
+  const [allImages, setAllImages] = useState([]);
+
+  const dispatch = useDispatch();
+
+  const isUrlUpdating = useSelector((state) => state.update.isUrlUpdating);
+
+  const { item, createdAt, imgKey, id } = currentBicycle;
+
+  const imageFiles = allImages && allImages.filter((i) => i instanceof File);
+  const fileIds = imageFiles && imageFiles.map(({ id }) => id);
+
+  const oldArr =
+    fileIds &&
+    allImages
+      .filter(({ id }) => !fileIds.includes(id))
+      .map(({ preview }) => preview);
+
+  const { url } = useStorage(imageFiles, imgKey);
+
+  const uploadImages = (images) => {
+    setAllImages([...allImages, ...images]);
+  };
+
+  useEffect(() => {
+    if (item) {
+      const attachId = item.url.map((img) =>
+        Object.assign(
+          {},
+          {
+            id: uuidv4(),
+            preview: img,
+          }
+        )
+      );
+      setAllImages(attachId);
+    }
+  }, [item]);
+
+  useEffect(() => {
+    if (url && isUrlUpdating) {
+      const imageArr = [...oldArr, ...url];
+      console.log(imageArr);
+      dispatch(imageUrlUpdateStart({ id, url: imageArr }));
+    }
+  }, [url, isUrlUpdating]);
+
   return (
     <>
       {item && (
         <div className="upload-item">
+          {show && (
+            <ImageUpdate allImages={allImages} uploadImages={uploadImages} />
+          )}
           <div className="upload-item-image">
             <div className="upload-date">
               <span>Posted on </span>
@@ -29,6 +98,7 @@ function BiciItem({ biciInfo, edit, toggleEdit }) {
               <span
                 style={{ textAlign: "center", padding: "10px" }}
                 className="edit-images"
+                onClick={() => setShow(true)}
               >
                 Edit
               </span>
@@ -60,7 +130,7 @@ function BiciItem({ biciInfo, edit, toggleEdit }) {
               )}
             </div>
             <FormUpdate
-              inputData={biciInfo}
+              inputData={currentBicycle}
               edit={edit}
               toggleEdit={toggleEdit}
             />

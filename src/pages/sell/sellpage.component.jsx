@@ -9,7 +9,7 @@ import {
   phoneValidation,
   typeValidation,
 } from "./validate";
-
+import { v4 as uuidv4 } from "uuid";
 import {
   SelectMessage,
   SelectSubmitSuccess,
@@ -61,6 +61,7 @@ function SellPage({
   const [step, setStep] = useState(0);
   const [errors, setErrors] = useState({});
   const [data, setData] = useState({
+    imgKey: `${uuidv4()}`,
     userId: "",
     bicycleType: "",
     subCategory: "",
@@ -105,19 +106,27 @@ function SellPage({
     pitch: 0,
   });
   const [showMarker, setShowMarker] = useState(false);
-
-  const { bicycleType, manufacturer, model, price, address, image } = data;
+  const {
+    bicycleType,
+    manufacturer,
+    model,
+    price,
+    address,
+    image,
+    imgKey,
+  } = data;
+  //const [imgKey, setImgKey] = useState(`${uuidv4()}`);
 
   useEffect(() => {
     setData({ ...data, userId: currentUser.id, email: currentUser.email });
   }, [currentUser]);
 
-  const { url, imgKey } = useStorage(image);
+  const { url } = useStorage(image, imgKey);
 
   //upload data
   useEffect(() => {
     if (hasImagesLoaded === true) {
-      bicycleUploadStart({ ...data, url, imgKey });
+      bicycleUploadStart({ ...data, url });
     }
   }, [hasImagesLoaded]);
 
@@ -239,7 +248,6 @@ function SellPage({
           handleClick={handleClose}
         />
         <div className="nav-col">
-          {console.log(address)}
           <ul className="sell-form-nav">
             {steps.map(({ title, id }) => (
               <li key={id} className="nav-item" onClick={() => setStep(id)}>

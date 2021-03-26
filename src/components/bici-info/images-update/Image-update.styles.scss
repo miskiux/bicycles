@@ -1,0 +1,45 @@
+.image-upload-container {
+  position: fixed;
+  min-height: 633px;
+  left: 25%;
+  width: 800px;
+  z-index: 999;
+  background: rgba(228, 233, 237, 1);
+
+  .dropzone {
+    outline: none;
+    min-height: 533px;
+    border: 0px solid;
+    width: 100%;
+  }
+  .upload-text {
+    text-align: right;
+    color: rgba(65, 131, 215, 1);
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background: none;
+  }
+
+  .text-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
+
+  .image-text {
+    font-size: 20px;
+  }
+
+  .image-upload {
+    z-index: 100;
+  }
+  .confirmation-wrapper {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 64px;
+    width: 100%;
+    border-top: 1px solid;
+  }
+}
