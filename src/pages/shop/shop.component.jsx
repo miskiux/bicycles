@@ -7,11 +7,15 @@ import CategoryPageContainer from "../category/category.container";
 import { linkSelector } from "../../redux/shop/shop.selectors";
 import { fetchBicyclesStart } from "../../redux/shop/shop.actions";
 import Filter from "../../components/filter/filter.component";
+import UseAnimations from "react-useanimations";
 import {
   SpinnerContainer,
   SpinnerOverlay,
 } from "../../components/with-spinner/with-spinner.styles";
-
+import menu2 from "react-useanimations/lib/menu2";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import "./shop.styles.scss";
 
 // links.state => uneccessary
@@ -59,7 +63,7 @@ function ShopPage({ fetchBicyclesStart, match, activeLink }) {
       },
     },
   ]);
-
+  const [filterOpen, setFilterOpen] = useState(true);
   const [queryParams, setQueryParams] = useState({});
   const location = useLocation();
 
@@ -77,56 +81,76 @@ function ShopPage({ fetchBicyclesStart, match, activeLink }) {
     }
   }, [location.search]);
 
+  const toggleFilter = () => {
+    setFilterOpen((i) => !i);
+  };
+
   return (
-    <div className="shop-page-container">
-      <div className="list-container">
-        {links.map((link) => {
-          return (
-            <div key={link.id} className="list-wrapper">
-              <ul className="category-wrapper">
-                <li className="category-list">
-                  <Link
-                    className={`${
-                      link.name === activeLink ? "active_item" : ""
-                    } category-option`}
-                    to={link.to}
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          );
-        })}
-      </div>
-      <div className="data-filter-content">
-        <Filter data={queryParams} />
-      </div>
-      <div className="shop-page">
-        <Suspense
-          fallback={
-            <SpinnerOverlay>
-              <SpinnerContainer />
-            </SpinnerOverlay>
-          }
-        >
-          <Route
-            exact
-            path={`${match.path}`}
-            render={(props) => (
-              <CollectionsOverviewContainer
-                filterData={queryParams}
-                {...props}
+    <Container className="shop-page-wrapper" fluid>
+      <Row>
+        {filterOpen && (
+          <Col className="filter-options-wrapper" xs={2}>
+            <Filter data={queryParams} />
+          </Col>
+        )}
+        <div className="filter-trigger">
+          <UseAnimations
+            reverse={filterOpen}
+            animation={menu2}
+            size={56}
+            onClick={toggleFilter}
+            wrapperStyle={{ alignSelf: "flex-start" }}
+          />
+          <span style={{ fontSize: "9px" }}>filter</span>
+        </div>
+        <Col xs={10} className="shop-page-container">
+          <div className="list-container">
+            {links.map((link) => {
+              return (
+                <div key={link.id} className="list-wrapper">
+                  <ul className="category-wrapper">
+                    <li className="category-list">
+                      <Link
+                        className={`${
+                          link.name === activeLink ? "active_item" : ""
+                        } category-option`}
+                        to={link.to}
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+          <div className="shop-page">
+            <Suspense
+              fallback={
+                <SpinnerOverlay>
+                  <SpinnerContainer />
+                </SpinnerOverlay>
+              }
+            >
+              <Route
+                exact
+                path={`${match.path}`}
+                render={(props) => (
+                  <CollectionsOverviewContainer
+                    filterData={queryParams}
+                    {...props}
+                  />
+                )}
               />
-            )}
-          />
-          <Route
-            path={`${match.path}/:categoryId`}
-            component={CategoryPageContainer}
-          />
-        </Suspense>
-      </div>
-    </div>
+              <Route
+                path={`${match.path}/:categoryId`}
+                component={CategoryPageContainer}
+              />
+            </Suspense>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

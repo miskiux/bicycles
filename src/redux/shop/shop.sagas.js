@@ -25,6 +25,7 @@ import {
 } from "./shop.actions";
 
 import ShopActionTypes from "./shop.types";
+import UpdateActionTypes from "../update/update.types";
 
 export function* fetchBicyclesStartAsync() {
   try {
@@ -77,11 +78,19 @@ export function* onBicycleUpdateSuccess() {
   );
 }
 
+export function* onImageUpdateFinish() {
+  yield takeLatest(
+    UpdateActionTypes.IMAGE_URL_UPDATE_SUCCESS,
+    fetchBicyclesStartAsync
+  );
+}
+
 export function* shopSagas() {
   yield all([
     call(fetchBicyclesStart),
     call(onBicycleDelete),
     call(onBicycleUpdate),
     call(onBicycleUpdateSuccess),
+    call(onImageUpdateFinish),
   ]);
 }

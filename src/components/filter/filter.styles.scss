@@ -1,0 +1,40 @@
+.filter-container {
+  position: absolute;
+  top: 100px;
+  .filter-options {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px;
+    text-align: center;
+  }
+  .filter-selection {
+    text-align: center;
+  }
+
+  .filter-option {
+    height: 150px;
+  }
+  .ui.dropdown {
+    border: 0px;
+    border-color: rgb(51, 51, 51);
+    height: auto;
+    width: 100%;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 0px;
+    margin-bottom: 160px;
+  }
+  .ui.dropdown .menu > .item {
+    width: 100%;
+  }
+
+  .menu {
+    border: 0px;
+    border-radius: 0px;
+  }
+
+  .dropdown.icon {
+    display: none;
+  }
+}

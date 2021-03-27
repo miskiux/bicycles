@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { selectAll } from "../../redux/shop/shop.selectors";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
+import { selectCurrent } from "../../redux/update/update.actions";
 import "./Bici-info-preview.styles.scss";
 
 function BiciPreview({ bicycles, user }) {
@@ -18,12 +20,13 @@ function BiciPreview({ bicycles, user }) {
   }, [user, bicycles]);
 
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const redirectToUpdate = (id) => {
     history.push({
       pathname: "/update",
-      state: { userBicycles: userBicycles, id: id },
     });
+    dispatch(selectCurrent(id));
   };
 
   return (

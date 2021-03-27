@@ -10,11 +10,9 @@ import LocationItem from "./location/location-item.component";
 
 import { Dropdown, Button, Icon } from "semantic-ui-react";
 
-import "./filter.styles.css";
+import "./filter.styles.scss";
 
 const Filter = ({ data }) => {
-  const [visibleManufacturer, setVisibleManufacturer] = useState(true);
-
   const { price_range, manufacturer, locations } = data;
 
   const history = useHistory();
@@ -68,54 +66,45 @@ const Filter = ({ data }) => {
   };
 
   return (
-    <>
-      <div className="filter-container">
-        <div className="filter-options">
-          <Dropdown
-            className="filter-selection"
-            placeholder="Price"
-            selectOnBlur={false}
-            closeOnBlur={false}
-          >
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={(e) => e.stopPropagation()}>
-                <div className="filter-option">
-                  <PriceItem updateQuery={updateQueryStringParameter} />
-                </div>
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-          <Dropdown
-            className="filter-selection"
-            placeholder="Manufacturer"
-            selectOnBlur={false}
-            closeOnBlur={false}
-          >
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={(e) => e.stopPropagation()}>
-                <div className="filter-option">
-                  <ManufacturerCheckBox
-                    updateQuery={updateQueryStringParameter}
-                  />
-                </div>
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-          <Dropdown
-            className="filter-selection"
-            placeholder="Location"
-            selectOnBlur={false}
-            closeOnBlur={false}
-          >
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={(e) => e.stopPropagation()}>
-                <div className="filter-option">
-                  <LocationItem updateQuery={updateQueryStringParameter} />
-                </div>
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
+    <div className="filter-container">
+      <div className="filter-options">
+        <Dropdown className="filter-selection" placeholder="Price" open={true}>
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={(e) => e.stopPropagation()}>
+              <div className="filter-option">
+                <PriceItem updateQuery={updateQueryStringParameter} />
+              </div>
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+        <Dropdown
+          className="filter-selection"
+          placeholder="Manufacturer"
+          open={true}
+        >
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={(e) => e.stopPropagation()}>
+              <div className="filter-option">
+                <ManufacturerCheckBox
+                  updateQuery={updateQueryStringParameter}
+                />
+              </div>
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+        <Dropdown
+          className="filter-selection"
+          placeholder="Location"
+          open={true}
+        >
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={(e) => e.stopPropagation()}>
+              <div className="filter-option">
+                <LocationItem updateQuery={updateQueryStringParameter} />
+              </div>
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </div>
       {price || manu || loc ? (
         <div class="ui animated button" tabIndex="0">
@@ -189,7 +178,7 @@ const Filter = ({ data }) => {
       ) : (
         ""
       )}
-    </>
+    </div>
   );
 };
 

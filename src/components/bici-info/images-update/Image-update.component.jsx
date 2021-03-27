@@ -1,13 +1,16 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { imagesUpdatingStart } from "../../../redux/update/update.actions";
-import { useStorage } from "../../../hooks/useStorage";
 import { useDropzone } from "react-dropzone";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 import CustomSnack from "../../snackbar/Snackbar.component";
 import "./Image-update.styles.scss";
 import Button from "@material-ui/core/Button";
+import {
+  CustomSpinnerOverlay,
+  SpinnerContainer,
+} from "../../with-spinner/with-spinner.styles";
 
 const thumbsContainer = {
   verticalAlign: "top",
@@ -18,7 +21,7 @@ const thumbsContainer = {
 const thumb = {
   display: "inline-flex",
   borderRadius: 1,
-  border: "1px solid #eaeaea",
+  border: "1px solid rgba(232, 236, 241, 1)",
   marginBottom: 8,
   marginRight: 8,
   width: 180,
@@ -79,23 +82,35 @@ const Container = styled.div`
   outline: none;
   transition: border 0.24s ease-in-out;
 `;
-
-const ImageUpdate = ({ images, allImages, uploadImages }) => {
+const ImageUpdate = ({
+  images,
+  allImages,
+  populateImages,
+  removeFile,
+  imgKey,
+  url,
+  toRemove,
+  closeEdit,
+  setImageOrder,
+}) => {
   const [showDrop, setShowDrop] = useState(false);
   const [mainImgId, setMainImgId] = useState("");
   const [openSnack, setOpen] = useState(false);
   const arrayMove = require("array-move");
 
   const dispatch = useDispatch();
+  const hasToDelete = useSelector((state) => state.update.hasToDelete);
+  const isLoading = useSelector((state) => state.update.isLoading);
+  const isFetching = useSelector((state) => state.shop.isFetching);
 
   useEffect(() => {
-    let imgArr = [...allImages];
     if (mainImgId) {
+      let imgArr = [...allImages];
       let index = imgArr.findIndex((i) => i.id === mainImgId);
       let newArr = arrayMove(imgArr, index, 0);
       imgArr = newArr;
+      setImageOrder(imgArr);
     }
-    // callback("image", imgArr);
   }, [mainImgId]);
 
   useEffect(() => {
@@ -103,7 +118,7 @@ const ImageUpdate = ({ images, allImages, uploadImages }) => {
       let imgArr = [...allImages];
       setOpen(true);
       let newArr = imgArr.slice(0, 6);
-      uploadImages(newArr);
+      populateImages(newArr);
     }
   }, [allImages]);
 
@@ -112,7 +127,7 @@ const ImageUpdate = ({ images, allImages, uploadImages }) => {
   };
   const onDrop = useCallback(
     (acceptedFiles) => {
-      uploadImages(
+      populateImages(
         ...[
           acceptedFiles.map((file) =>
             Object.assign(file, {
@@ -151,12 +166,15 @@ const ImageUpdate = ({ images, allImages, uploadImages }) => {
   });
 
   //not working
-  const removeFile = (idx) => {
-    const values = allImages.filter((item) => item.id !== idx);
-  };
 
   const getMainImage = (index) => {
     setMainImgId(index);
+  };
+
+  //must have at least one image
+  const submitImages = () => {
+    console.log(imgKey, url, toRemove);
+    dispatch(imagesUpdatingStart({ imgKey, url, toRemove }));
   };
 
   const imagePreview = allImages.map((file, index) => (
@@ -168,7 +186,7 @@ const ImageUpdate = ({ images, allImages, uploadImages }) => {
             key={file.id}
             src={file.preview}
             style={img}
-            onClick={() => console.log(file.id)}
+            onClick={() => removeFile(file.id)}
           />
         </div>
       </div>
@@ -183,8 +201,7 @@ const ImageUpdate = ({ images, allImages, uploadImages }) => {
   ));
 
   return (
-    <div className="image-upload-container">
-      {console.log(allImages)}
+    <div className="image-update-container">
       {showDrop ? (
         <Container
           {...getRootProps({ isDragActive, isDragAccept, isDragReject })}
@@ -214,17 +231,30 @@ const ImageUpdate = ({ images, allImages, uploadImages }) => {
             />
           )}
           <div className="confirmation-wrapper">
-            <Button type="button" color="primary" className="submit-button">
-              Cancel
-            </Button>
-            <Button
-              type="button"
-              color="primary"
-              className="submit-button"
-              onClick={() => dispatch(imagesUpdatingStart())}
-            >
-              Done
-            </Button>
+            {isLoading || isFetching ? (
+              <CustomSpinnerOverlay>
+                <SpinnerContainer />
+              </CustomSpinnerOverlay>
+            ) : (
+              <>
+                <Button
+                  type="button"
+                  color="primary"
+                  className="submit-button"
+                  onClick={closeEdit}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="button"
+                  color="primary"
+                  className="submit-button"
+                  onClick={submitImages}
+                >
+                  Done
+                </Button>
+              </>
+            )}
           </div>
           {/* {errors.image && (
             <span className="form-error">{Object.values(errors.image)}</span>

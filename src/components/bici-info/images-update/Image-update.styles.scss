@@ -1,10 +1,16 @@
-.image-upload-container {
-  position: fixed;
-  min-height: 633px;
-  left: 25%;
+.image-update-container {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 650px;
   width: 800px;
   z-index: 999;
-  background: rgba(228, 233, 237, 1);
+  background: white;
+  border: 1px solid;
+  border-color: rgba(232, 236, 241, 1);
 
   .dropzone {
     outline: none;
@@ -36,10 +42,16 @@
   }
   .confirmation-wrapper {
     position: absolute;
+    text-align: right;
     left: 0;
     bottom: 0;
     height: 64px;
     width: 100%;
     border-top: 1px solid;
+    border-color: rgba(232, 236, 241, 1);
+  }
+  .submit-button {
+    padding: 0;
+    margin: 0;
   }
 }

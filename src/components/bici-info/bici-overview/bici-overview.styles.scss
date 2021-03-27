@@ -1,9 +1,15 @@
 .bicycle-page {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 670px;
+  justify-content: flex-start;
+  height: 100vh;
   background: rgba(228, 233, 237, 0.2);
+
+  .bicycle-page-selection {
+    position: absolute;
+    top: 780px;
+    left: 700px;
+  }
 
   .navigation {
     display: flex;

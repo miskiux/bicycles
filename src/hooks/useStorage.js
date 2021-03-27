@@ -12,11 +12,11 @@ export const useStorage = (image, imgKey) => {
 
   const isLoading = useSelector((state) => state.sell.imagesLoading);
   const isUpdating = useSelector((state) => state.update.isImageUpdating);
-
+  const hasToDelete = useSelector((state) => state.update.hasToDelete);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isLoading || isUpdating) {
+    if ((isLoading || isUpdating) && hasToDelete === false && image.length) {
       console.log(image);
       const urlarray = [];
       Promise.all(

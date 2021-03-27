@@ -82,6 +82,14 @@ export const deleteUserBicycleImages = (imgKey) => {
   });
 };
 
+export const deleteSpecificImage = (imgKey, url) => {
+  let pictureRef = url.map((i) => {
+    const promises = storage.refFromURL(i);
+    return promises.delete();
+  });
+  Promise.all(pictureRef);
+};
+
 export const getBicycleImage = async (imgKey) => {
   const storageRef = storage.ref(`images/${imgKey}`);
   let imgArr = [];
@@ -152,6 +160,7 @@ export const addBiciData = async (additionalData) => {
     condition,
     info,
   } = additionalData;
+
   const createdAt = new Date().toISOString();
   console.log("firebase", imgKey);
 

@@ -8,31 +8,13 @@ import { imageUrlUpdateStart } from "../../../redux/update/update.actions";
 
 import "./bici-item.styles.scss";
 
-// add id, preview
-// useStorage
-// overwrite imgKey and url
-
-// how to upload newOnes: 1.get the imgKey => useStorage =>
-//set new url (containing old ones)
-
-// how to keep oldOnes:
-
-// how to delete oldOnes:
-//retrieve images and check whether two arrays match, then filter
-
-// how to store a combination of old and new:
-
-// 1.Adding new files = onSubmit => useStorage only files| update url, update storage
-// 2. Deleting an existing image
-
-// removing old ones
-
 function BiciItem({ currentBicycle, edit, toggleEdit }) {
   const [show, setShow] = useState(false);
   const [allImages, setAllImages] = useState([]);
+  const [deleteArr, setDeleteArr] = useState([]);
+  const [toRemove, setToRemove] = useState(false);
 
   const dispatch = useDispatch();
-
   const isUrlUpdating = useSelector((state) => state.update.isUrlUpdating);
 
   const { item, createdAt, imgKey, id } = currentBicycle;
@@ -48,9 +30,7 @@ function BiciItem({ currentBicycle, edit, toggleEdit }) {
 
   const { url } = useStorage(imageFiles, imgKey);
 
-  const uploadImages = (images) => {
-    setAllImages([...allImages, ...images]);
-  };
+  //get the diff to delete the i in storage
 
   useEffect(() => {
     if (item) {
@@ -68,19 +48,60 @@ function BiciItem({ currentBicycle, edit, toggleEdit }) {
   }, [item]);
 
   useEffect(() => {
-    if (url && isUrlUpdating) {
-      const imageArr = [...oldArr, ...url];
-      console.log(imageArr);
+    if (item && allImages) {
+      const imageSource = item.url;
+      const allUrls = allImages.map(({ preview }) => preview);
+      const diff = imageSource.filter((x) => !allUrls.includes(x));
+      setDeleteArr(diff);
+      if (diff.length) {
+        setToRemove(true);
+      } else {
+        setToRemove(false);
+      }
+    }
+  }, [item, allImages]);
+
+  useEffect(() => {
+    const imageArr = [...oldArr, ...url];
+    if (isUrlUpdating && !imageFiles.length) {
+      console.log("1 at biciItem");
+      dispatch(imageUrlUpdateStart({ id, url: imageArr }));
+    } else if (isUrlUpdating && url.length) {
+      console.log("2 at biciItem");
       dispatch(imageUrlUpdateStart({ id, url: imageArr }));
     }
-  }, [url, isUrlUpdating]);
+  }, [isUrlUpdating, url, imageFiles]);
 
+  const closeEdit = () => {
+    setShow((i) => !i);
+  };
+  const populateImages = (images) => {
+    setAllImages([...allImages, ...images]);
+  };
+
+  const removeFile = (idx) => {
+    const values = allImages.filter((item) => item.id !== idx);
+    setAllImages(values);
+  };
+
+  const setImageOrder = (order) => {
+    setAllImages(order);
+  };
   return (
     <>
       {item && (
         <div className="upload-item">
           {show && (
-            <ImageUpdate allImages={allImages} uploadImages={uploadImages} />
+            <ImageUpdate
+              allImages={allImages}
+              populateImages={populateImages}
+              removeFile={removeFile}
+              url={deleteArr}
+              imgKey={imgKey}
+              toRemove={toRemove}
+              closeEdit={closeEdit}
+              setImageOrder={setImageOrder}
+            />
           )}
           <div className="upload-item-image">
             <div className="upload-date">
@@ -106,7 +127,9 @@ function BiciItem({ currentBicycle, edit, toggleEdit }) {
           </div>
           <div className="update-bicycle-form-container">
             <div className="update-bicycle-title">
-              <h3>Update bicycle</h3>
+              <h3 style={{ fontWeight: "normal", margin: 0, padding: "10px" }}>
+                Update bicycle
+              </h3>
               {edit ? (
                 <div className="update-options">
                   <span className="bici-update-text" onClick={toggleEdit}>

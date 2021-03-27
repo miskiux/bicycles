@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
+import FiberManualRecordOutlinedIcon from "@material-ui/icons/FiberManualRecordOutlined";
 import {
   SpinnerContainer,
   SpinnerOverlay,
@@ -9,27 +12,27 @@ import {
 import BiciItem from "../bici-item/bici-item.component";
 
 import { selectCurrentUser } from "../../../redux/user/user.selectors";
-import { selectAll } from "../../../redux/shop/shop.selectors";
+import { selectAll, selectBicycles } from "../../../redux/shop/shop.selectors";
 import { toggleModal } from "../../../redux/side-nav/side-nav.actions";
 import { deleteBicycleStart } from "../../../redux/shop/shop.actions";
 import { hasBicycleDeleted } from "../../../redux/shop/shop.actions";
-
-import { useSelector } from "react-redux";
-
-import { Button, Icon } from "semantic-ui-react";
+import { selectCurrent } from "../../../redux/update/update.actions";
+import { selectCurrentBicycle } from "../../../redux/update/update.selectors";
 
 import "./bici-overview.styles.scss";
 
+//does not stay after refresh
 const BiciInfo = ({
-  currentBicycle,
+  userBicycles,
+  currentId,
   deleteBicycleStart,
   hasBicycleDeleted,
   toggleModal,
+  selectCurrent,
 }) => {
-  const [biciInfo, setBiciInfo] = useState({});
+  const [currentBicycle, setCurrentBicycle] = useState({});
   const [proceed, setProceed] = useState(false);
   const [listingId, setListingId] = useState("");
-  const [current, setCurrent] = useState(0);
   //hover
   const [hoverBiciInfo, setHoverBiciInfo] = useState({});
   const [inHover, setHover] = useState(false);
@@ -43,6 +46,17 @@ const BiciInfo = ({
   const hasDeleted = useSelector((state) => state.shop.hasDeleted);
 
   useEffect(() => {
+    if (userBicycles) {
+      userBicycles.map((item, index) => {
+        if (item.id === currentId) {
+          console.log(item);
+          setCurrentBicycle(item);
+        }
+      });
+    }
+  }, [userBicycles, currentId]);
+
+  useEffect(() => {
     if (hasDeleted === true) {
       setTimeout(() => console.log("Hello, World!"), 1000);
       hasBicycleDeleted();
@@ -51,15 +65,6 @@ const BiciInfo = ({
 
   const handleId = (id) => {
     setListingId(id);
-  };
-
-  //navigation
-  const next = () => {
-    setCurrent(current + 1);
-  };
-
-  const previous = () => {
-    setCurrent(current - 1);
   };
 
   //comparng current with userBicycles indices => onMouseOver
@@ -87,20 +92,6 @@ const BiciInfo = ({
     // return null;
   };
 
-  const previousButton = () => {
-    if (current !== 0) {
-      return (
-        <Icon
-          name="angle left"
-          size={"large"}
-          onClick={previous}
-          onMouseEnter={() => getPreviousBicycle()}
-        ></Icon>
-      );
-    }
-    return null;
-  };
-
   const toggleEdit = () => {
     setEdit(!edit);
   };
@@ -113,6 +104,21 @@ const BiciInfo = ({
         edit={edit}
         toggleEdit={toggleEdit}
       />
+      <div className="bicycle-page-selection">
+        {userBicycles.map(({ id }) => (
+          <div key={id} style={{ display: "inline-block" }}>
+            {currentId === id ? (
+              <FiberManualRecordIcon fontSize="small" />
+            ) : (
+              <FiberManualRecordOutlinedIcon
+                fontSize="small"
+                onClick={() => selectCurrent(id)}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+
       {/* {proceed === false || listingId !== biciInfo.id ? (
           <div className="bici-deletion">
             <Button
@@ -158,12 +164,14 @@ const BiciInfo = ({
 const mapStateToProps = (state) => ({
   currentUser: selectCurrentUser(state),
   bicycles: selectAll(state),
+  currentId: selectCurrentBicycle(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   deleteBicycleStart: (payload) => dispatch(deleteBicycleStart(payload)),
   hasBicycleDeleted: () => dispatch(hasBicycleDeleted()),
   toggleModal: (payload) => dispatch(toggleModal(payload)),
+  selectCurrent: (id) => dispatch(selectCurrent(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BiciInfo);

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import { Link, Route } from "react-router-dom";
-import { auth } from "../../firebase/firebase.utils";
-
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import AccountDropdown from "../account-dropdown/account-dropdown.component";
 
 import { createStructuredSelector } from "reselect";
@@ -25,7 +25,9 @@ const Header = ({
   toggleSideNav,
 }) => {
   const [visible, setVisible] = useState(false);
-
+  const [showSearch, setShowSearch] = useState(false);
+  const location = useLocation();
+  console.log(location);
   const openUserAccount = () => {
     setVisible((state) => !state);
   };
@@ -48,18 +50,19 @@ const Header = ({
             <Link className="option" to="/sell">
               sell
             </Link>
-            {currentUser ? (
-              <div className="option" onClick={signOutStart}>
-                sign out
-              </div>
-            ) : (
+            {!currentUser ? (
               <Link className="option" to="/signin">
                 sign in
               </Link>
+            ) : (
+              <div className="account-option" onClick={openUserAccount}>
+                <FiberManualRecordIcon
+                  className="user-account-logo"
+                  fontSize="large"
+                />
+                <span className="account-option-title">{`${currentUser.displayName}`}</span>
+              </div>
             )}
-            <div className="option" onClick={openUserAccount}>
-              user
-            </div>
           </div>
           {visible && <AccountDropdown />}
         </div>

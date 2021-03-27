@@ -1,21 +1,21 @@
 .manufacturer-wrapper {
-	display:flex;
-	height: 18vh;
-	flex-direction: column;
-	overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  width: 12vw;
 }
 .manufacturer-wrapper::-webkit-scrollbar {
   display: none;
 }
 
 .ui.input {
-	font-size: 0.8em;
-	margin-bottom: 8px;
+  font-size: 0.8em;
+  margin-bottom: 8px;
 }
 
 .manufacturer-checkbox {
-	padding: 5px;
-	margin-bottom: 4px;
+  padding: 5px;
+  margin-bottom: 4px;
 }
 
 button:disabled {
