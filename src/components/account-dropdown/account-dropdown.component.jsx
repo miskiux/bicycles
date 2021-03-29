@@ -46,7 +46,6 @@ function AccountDropdown() {
         <Accordion.Content active={activeIndex === 1}>
           <BiciPreview />
         </Accordion.Content>
-
         <Accordion.Title
           className="accordion-title-last"
           active={activeIndex === 2}

@@ -22,9 +22,12 @@ export const DescriptionUpdate = (props) => {
   }, [props.description]);
 
   const addNewItem = () => {
-    let lastItem = props.description[props.description.length - 1];
+    const lastItem = props.description.length
+      ? props.description[props.description.length - 1]
+      : [{ item: "a" }];
     const values = [...newItems];
     console.log(lastItem);
+    console.log(props.description);
     if (lastItem.item !== "") {
       values.push({ idx: uuidv4(), item: "", value: "" });
       props.combineDescriptions(values);

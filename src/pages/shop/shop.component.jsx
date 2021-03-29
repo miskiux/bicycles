@@ -93,17 +93,7 @@ function ShopPage({ fetchBicyclesStart, match, activeLink }) {
             <Filter data={queryParams} />
           </Col>
         )}
-        <div className="filter-trigger">
-          <UseAnimations
-            reverse={filterOpen}
-            animation={menu2}
-            size={56}
-            onClick={toggleFilter}
-            wrapperStyle={{ alignSelf: "flex-start" }}
-          />
-          <span style={{ fontSize: "9px" }}>filter</span>
-        </div>
-        <Col xs={10} className="shop-page-container">
+        <Col xs={filterOpen ? 10 : 12} className="shop-page-container">
           <div className="list-container">
             {links.map((link) => {
               return (

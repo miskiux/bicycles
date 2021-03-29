@@ -30,3 +30,7 @@ export const invalidForm = (errorMessage) => ({
   type: SellActionTypes.INVALID_FORM,
   payload: errorMessage,
 });
+
+export const openSell = () => ({
+  type: SellActionTypes.OPEN_SELL,
+});

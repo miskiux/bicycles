@@ -1,40 +1,32 @@
 .price-filter {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   text-align: center;
-  outline: none;
-  width: 12vw;
+  height: 180px;
 }
 
 .confirm {
-  padding: 9px;
   color: white;
   font-size: 16px;
-  height: 40px;
-  width: 100%;
-  background-color: rgb(51, 51, 51);
+  background-color: rgba(51, 51, 51);
   outline: none;
   border: none;
   width: 100%;
-  left: 0;
-  bottom: 0px;
-  position: absolute;
+  height: 40px;
 }
 
 .price-menu {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 8vh;
-  padding: 6px;
-  margin: 15px;
+  margin-top: 30px;
+  width: 67%;
 }
 
 .price-labels {
-  width: 100%;
-  padding-bottom: 10px;
+  width: 70%;
   display: flex;
   justify-content: space-between;
 }

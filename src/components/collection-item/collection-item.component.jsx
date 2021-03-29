@@ -14,7 +14,8 @@ import { ViewShow } from "@styled-icons/zondicons/ViewShow";
 import { addItem } from "../../redux/side-nav/side-nav.actions";
 
 import { LazyLoadImage } from "react-lazy-load-image-component";
-
+import UseAnimations from "react-useanimations";
+import bookmark from "react-useanimations/lib/bookmark";
 import {
   SpinnerContainer,
   SpinnerOverlay,
@@ -33,7 +34,7 @@ const CollectionItem = ({ item, addItem, id, match }) => {
   const { manufacturer, model, price } = item;
 
   const imageStyle = didLoad
-    ? { maxWidth: 80 + "%", height: "auto" }
+    ? { maxWidth: 100 + "%", height: "auto" }
     : { visibility: "hidden" };
 
   //image directions
@@ -59,54 +60,47 @@ const CollectionItem = ({ item, addItem, id, match }) => {
     });
   };
 
-  //transition
-
-  //onhover shadow
-
-  //transitions to display on render, lazy load pagination
+  //if checked remove it
 
   return (
-    <div className="collection-item">
-      <Suspense
-        fallback={
-          <SpinnerOverlay>
-            <SpinnerContainer />
-          </SpinnerOverlay>
-        }
-      >
-        <LazyLoadImage
-          alt="err"
-          style={imageStyle}
-          src={images[index]}
-          afterLoad={() => setLoad(true)}
-        />
-      </Suspense>
-      {didLoad ? (
-        <div className="collection-menu">
-          <div className="addcircle">
-            <FavoriteBorderIcon onClick={() => addItem({ item, id })} />
-          </div>
-          <div className="navigation-arrows">
-            <ChevronLeftIcon
-              onClick={onClickBackwards}
-              className="image-arrow-left"
-            />
-            <ChevronRightIcon
-              onClick={onClickForward}
-              className="image-arrow-right"
-            />
-          </div>
-          <div className="collection-footer">
-            <div className="model-manufacturer" onClick={NavigateToView}>
-              <span className="manufacturer-name">{manufacturer}</span>
-              <span className="model-name">{model}</span>
+    <div className="collection-item-wrapper">
+      <div className="collection-item">
+        <Suspense
+          fallback={
+            <SpinnerOverlay>
+              <SpinnerContainer />
+            </SpinnerOverlay>
+          }
+        >
+          <LazyLoadImage
+            alt="err"
+            style={imageStyle}
+            src={images[index]}
+            afterLoad={() => setLoad(true)}
+          />
+        </Suspense>
+        {didLoad ? (
+          <div className="collection-menu">
+            <div className="collection-footer">
+              <div className="model-manufacturer" onClick={NavigateToView}>
+                <span className="manufacturer-name">{manufacturer}</span>
+                <span className="model-name">{model}</span>
+              </div>
+              <span className="price">${price}</span>
             </div>
-            <span className="price">${price}</span>
+            <div className="addcircle">
+              <UseAnimations
+                animation={bookmark}
+                onClick={() => addItem({ item, id })}
+                size={24}
+                style={{ cursor: "pointer", padding: 100 }}
+              />
+            </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
+        ) : (
+          ""
+        )}
+      </div>
     </div>
   );
 };

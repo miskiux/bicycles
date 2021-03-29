@@ -102,12 +102,10 @@ const CollectionsOverview = ({
   }
 
   return (
-    <div className="collections-overview">
-      <div className="preview">
-        {filteredBicycles.map(({ id, ...otherCollectionProps }) => (
-          <CollectionItem key={id} id={id} {...otherCollectionProps} />
-        ))}
-      </div>
+    <div className="preview">
+      {filteredBicycles.map(({ id, ...otherCollectionProps }) => (
+        <CollectionItem key={id} id={id} {...otherCollectionProps} />
+      ))}
     </div>
   );
 };

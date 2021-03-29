@@ -1,5 +1,5 @@
 const FormActionTypes = {
-  UPDATE_FORM: "UPDATE_FORM",
+  VALIDATE_FORM: "VALIDATE_FORM",
 };
 
 export default FormActionTypes;

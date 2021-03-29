@@ -11,6 +11,7 @@
   background: white;
   border: 1px solid;
   border-color: rgba(232, 236, 241, 1);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 
   .dropzone {
     outline: none;
@@ -48,6 +49,7 @@
     height: 64px;
     width: 100%;
     border-top: 1px solid;
+
     border-color: rgba(232, 236, 241, 1);
   }
   .submit-button {

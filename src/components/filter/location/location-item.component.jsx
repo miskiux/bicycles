@@ -25,7 +25,7 @@ const PrettoSlider = withStyles({
     height: 24,
     width: 24,
     backgroundColor: "#fff",
-    border: "2px solid currentColor",
+    border: "1px solid currentColor",
     marginTop: -10,
     marginLeft: -12,
     "&:focus, &:hover, &$active": {
@@ -131,17 +131,15 @@ function LocationItem({ reduxBicycles, filterByLocation, updateQuery }) {
           defaultValue={20}
         />
       </div>
-      <div className="confirm-selection">
-        <button
-          className="confirm"
-          onClick={() => {
-            findLocation();
-            updateQuery(search, "locations", addressCount);
-          }}
-        >
-          confirm
-        </button>
-      </div>
+      <button
+        className="confirm"
+        onClick={() => {
+          findLocation();
+          updateQuery(search, "locations", addressCount);
+        }}
+      >
+        confirm
+      </button>
     </div>
   );
 }

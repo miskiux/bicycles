@@ -9,7 +9,9 @@ import ManufacturerCheckBox from "./manufacturer/manufacturer-filter.component";
 import LocationItem from "./location/location-item.component";
 
 import { Dropdown, Button, Icon } from "semantic-ui-react";
-
+import { Accordion } from "semantic-ui-react";
+import UseAnimations from "react-useanimations";
+import menu2 from "react-useanimations/lib/menu2";
 import "./filter.styles.scss";
 
 const Filter = ({ data }) => {
@@ -17,6 +19,9 @@ const Filter = ({ data }) => {
 
   const history = useHistory();
   const { search } = useLocation();
+
+  const [activeIndex, setActiveIndex] = useState(true);
+  const [subIndex, setSubIndex] = useState(1);
 
   const price = price_range ? price_range.split(",") : "";
   const manu = manufacturer ? manufacturer.split(",") : "";
@@ -37,6 +42,11 @@ const Filter = ({ data }) => {
       search: `${result}`,
     });
   };
+
+  const level2Panels = [
+    { key: "panel-2a", title: "Level 2A", content: "Level 2A Contents" },
+    { key: "panel-2b", title: "Level 2B", content: "Level 2B Contents" },
+  ];
 
   const removeQueryString = (uri, key, val) => {
     const queryValue = QueryString.parse(uri);
@@ -65,10 +75,80 @@ const Filter = ({ data }) => {
     });
   };
 
+  const handleClick = () => {
+    setActiveIndex((i) => !i);
+  };
+
+  const handleSubClick = (e, titleProps) => {
+    const { index } = titleProps;
+    const newIndex = subIndex === index ? -1 : index;
+
+    setSubIndex(newIndex);
+  };
+
   return (
     <div className="filter-container">
-      <div className="filter-options">
-        <Dropdown className="filter-selection" placeholder="Price" open={true}>
+      <Accordion fluid className="accordion-wrapper">
+        <Accordion.Title
+          className="accordion-title"
+          active={activeIndex === true}
+          index={true}
+          onClick={handleClick}
+        >
+          <div className="filter-trigger">
+            <UseAnimations
+              reverse={activeIndex}
+              animation={menu2}
+              size={56}
+              wrapperStyle={{ alignSelf: "flex-start" }}
+            />
+            <span>Filter</span>
+          </div>
+        </Accordion.Title>
+        <Accordion.Content active={activeIndex === true}>
+          <Accordion>
+            <Accordion.Title
+              className="sub-accordion-title"
+              active={subIndex === 1}
+              index={1}
+              onClick={handleSubClick}
+            >
+              Price
+            </Accordion.Title>
+            <Accordion.Content active={subIndex === 1}>
+              <PriceItem updateQuery={updateQueryStringParameter} />
+            </Accordion.Content>
+          </Accordion>
+          <Accordion>
+            <Accordion.Title
+              className="sub-accordion-title"
+              active={subIndex === 2}
+              index={2}
+              onClick={handleSubClick}
+            >
+              Manufacturer
+            </Accordion.Title>
+            <Accordion.Content active={subIndex === 2}>
+              <ManufacturerCheckBox updateQuery={updateQueryStringParameter} />
+            </Accordion.Content>
+          </Accordion>
+          <Accordion>
+            <Accordion.Title
+              className="sub-accordion-title"
+              active={subIndex === 3}
+              index={3}
+              onClick={handleSubClick}
+            >
+              Location
+            </Accordion.Title>
+            <Accordion.Content active={subIndex === 3}>
+              <LocationItem updateQuery={updateQueryStringParameter} />
+            </Accordion.Content>
+          </Accordion>
+        </Accordion.Content>
+      </Accordion>
+      {/* <div className="filter-options">
+        <Dropdown className="filter-selection" text="Price" open={true}>
           <Dropdown.Menu>
             <Dropdown.Item onClick={(e) => e.stopPropagation()}>
               <div className="filter-option">
@@ -177,7 +257,7 @@ const Filter = ({ data }) => {
         </div>
       ) : (
         ""
-      )}
+      )} */}
     </div>
   );
 };

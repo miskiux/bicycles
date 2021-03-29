@@ -20,7 +20,7 @@ import {
 } from "../../redux/sell/sell.selectors";
 
 import { selectCurrentUser } from "../../redux/user/user.selectors";
-
+import Sellbackground from "../../assets/sellform-back.jpg";
 import {
   imageUploadStart,
   bicycleUploadStart,
@@ -35,13 +35,14 @@ import { useStorage } from "../../hooks/useStorage.js";
 import Button from "@material-ui/core/Button";
 import FormSteps from "../../components/sell-form/form-steps/FormSteps.component";
 import "./sellpage.styles.scss";
-
 import {
   CustomSpinnerOverlay,
   SpinnerContainer,
 } from "../../components/with-spinner/with-spinner.styles";
 import CustomSnack from "../../components/snackbar/Snackbar.component";
 
+// bring component later
+//able on CHANGE to go to next bicycle - update form
 function SellPage({
   submitDone,
   currentUser,
@@ -223,62 +224,79 @@ function SellPage({
 
   //phone bug
   return (
-    <Modal
-      className="sell-form-container"
-      dimmer={"inverted"}
-      open={true}
-      onClose={false}
-    >
-      <Modal.Content
-        className="modal-content"
+    <div className="sellpage-container">
+      <div
+        className="sell-background-image"
         style={{
-          display: "flex",
-          flexDirection: "row",
-          height: "533px",
-          padding: "0",
-          backgroundColor: "rgba(51, 51, 51, 0.55)",
-          borderRadius: "0px",
-          width: "100%",
+          backgroundImage: `url(${Sellbackground})`,
         }}
+      />
+      <Modal
+        className="modal-form-container"
+        dimmer={"inverted"}
+        open={true}
+        onClose={false}
       >
-        <CustomSnack
-          name={currentSnackBar}
-          text={message}
-          open={snackbar}
-          handleClick={handleClose}
-        />
-        <div className="nav-col">
-          <ul className="sell-form-nav">
-            {steps.map(({ title, id }) => (
-              <li key={id} className="nav-item" onClick={() => setStep(id)}>
-                <span
-                  className={`${id === step ? "active-step" : ""} nav-text`}
-                >
-                  {title}
-                </span>
-              </li>
-            ))}
-          </ul>
-          {isLoading ? (
-            <CustomSpinnerOverlay>
-              <SpinnerContainer size={"small"} />
-            </CustomSpinnerOverlay>
-          ) : (
-            <div className="submit-nav">
-              <Button
-                type="button"
-                color="primary"
-                className="submit-button"
-                onClick={onFormSubmit}
-              >
-                Submit
-              </Button>
+        <Modal.Content
+          className="modal-content"
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            height: "533px",
+            padding: "0",
+            backgroundColor: "rgba(51, 51, 51, 0.55)",
+            borderRadius: "0px",
+            width: "100%",
+          }}
+        >
+          <CustomSnack
+            name={currentSnackBar}
+            text={message}
+            open={snackbar}
+            handleClick={handleClose}
+          />
+          <div className="sell-form-wrapper">
+            <div className="nav-col">
+              <ul className="sell-form-nav">
+                {steps.map(({ title, id }) => (
+                  <li key={id} className="nav-item" onClick={() => setStep(id)}>
+                    <span
+                      className={`${id === step ? "active-step" : ""} nav-text`}
+                    >
+                      {title}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              {isLoading ? (
+                <CustomSpinnerOverlay>
+                  <SpinnerContainer size={"small"} />
+                </CustomSpinnerOverlay>
+              ) : (
+                <div className="submit-nav">
+                  <Button
+                    type="button"
+                    color="primary"
+                    className="submit-button"
+                    onClick={onFormSubmit}
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    type="button"
+                    color="primary"
+                    className="submit-button"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-        <div className="form-step-wrapper">{steps[`${step}`].content}</div>
-      </Modal.Content>
-    </Modal>
+            <div className="form-step-wrapper">{steps[`${step}`].content}</div>
+          </div>
+        </Modal.Content>
+      </Modal>
+    </div>
   );
 }
 

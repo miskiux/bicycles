@@ -8,11 +8,17 @@ const INITIAL_STATE = {
   submitSuccess: false,
   submitFailure: false,
   snackbar: false,
+  openModal: false,
 };
 
 //on IMAGE_UPLOAD_ERRROR => isBicycleUploadFalse
 const sellReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case SellActionTypes.OPEN_SELL:
+      return {
+        ...state,
+        openModal: !state.openModal,
+      };
     case SellActionTypes.IMAGE_UPLOAD_SUCCESS:
       return {
         ...state,

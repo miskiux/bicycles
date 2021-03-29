@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   isUrlUpdating: false,
   hasToDelete: false,
   currentId: "",
+  success: false,
 };
 const updateReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -34,6 +35,7 @@ const updateReducer = (state = INITIAL_STATE, action) => {
         ...state,
         isUrlUpdating: false,
         isLoading: false,
+        success: true,
       };
     case UpdateActiontypes.SELECT_CURRENT:
       return {

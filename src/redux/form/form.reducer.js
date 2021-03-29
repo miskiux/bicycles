@@ -1,31 +1,15 @@
 import FormActionTypes from "./form.types";
 
 const INITIAL_STATE = {
-  userId: "",
-  bicycleType: "",
-  subCategory: "",
-  description: [],
-  info: "",
-  size: "",
-  condition: "",
-  gender: "",
-  manufacturer: "",
-  model: "",
-  price: "",
-  year: "",
-  phone: "",
-  address: "",
-  image: [],
-  email: "",
-  coordinates: null,
+  errorObj: {},
 };
 
 const formReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case FormActionTypes.UPDATE_FORM:
+    case FormActionTypes.VALIDATE_FORM:
       return {
         ...state,
-        [Object.keys(action.payload)]: Object.values(action.payload),
+        errorObj: action.payload,
       };
 
     default:

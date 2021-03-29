@@ -1,29 +1,49 @@
-.sell-form-container {
-  position: relative;
+.sellpage-container {
+  height: 100vh;
+  width: 100vw;
+}
+
+.modal-form-container {
   box-shadow: none !important;
   border-radius: 0px !important;
+  border-bottom: 1px solid;
+}
+.sell-form-wrapper {
+  height: 70px;
+  min-width: 800px;
+  background: white;
+}
+.sell-background-image {
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: 50% 100%;
 }
 .ui.inverted.dimmer {
   background-color: rgba(51, 51, 51, 0.55) !important;
 }
-
 .sell-form-nav {
   display: flex;
-  flex-direction: column;
-  height: auto;
+  flex-direction: row;
+  justify-content: center;
   outline: none;
   list-style-type: none;
+  margin: 0;
+  padding: 0;
+  z-index: 100000;
+  min-width: 800px;
+  border-bottom: 1px solid;
+  border-color: rgba(228, 233, 237, 1);
 }
 
 .form-step-wrapper {
   min-width: 800px;
   height: 800px;
+  border-top: 1px solid;
+  border-color: rgba(228, 233, 237, 1);
 }
-
 .nav-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  align-self: center;
   list-style-type: none;
   height: 100%;
   width: 110px;
@@ -31,11 +51,16 @@
   text-align: right;
 }
 .nav-item {
-  align-self: flex-end;
-  font-size: 12px;
+  font-size: 15px;
+  text-align: center;
+  height: auto;
+  width: 25%;
+  letter-spacing: 1px;
   padding-bottom: 5px;
   cursor: default;
   color: rgba(0, 0, 0, 0.2);
+  border-right: 1px solid;
+  border-color: rgba(228, 233, 237, 1);
 }
 .nav-text {
   padding-bottom: 3px;
@@ -43,13 +68,13 @@
 .active-step {
   width: 100%;
   color: rgba(0, 0, 0, 1);
-  font-size: 17px;
 }
 .submit-nav {
   display: flex;
   justify-content: center;
   height: 50px;
   width: 100%;
+  margin-left: 10px;
 }
 .submit-button {
   font-weight: bold;
