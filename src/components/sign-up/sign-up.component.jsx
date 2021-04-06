@@ -1,95 +1,88 @@
-import React, {useState} from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from "react";
+import { connect } from "react-redux";
 
-import FormInput from '../form-input/form-input.component';
-import CustomButton from '../custom-button/custom-button.component';
+import FormInput from "../form-input/form-input.component";
+import CustomButton from "../custom-button/custom-button.component";
 
-import {auth, createUserProfileDocument} from '../../firebase/firebase.utils';
-import {signUpStart} from '../../redux/user/user.actions'
+import { signUpStart } from "../../redux/user/user.actions";
 
-import './sign-up.styles.scss';
+import "./sign-up.styles.scss";
 
+function SignUp({ signUpStart }) {
+  const [signUpInfo, setSignUpInfo] = useState({
+    displayName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-function SignUp({signUpStart, currentStep}) {
+  const { displayName, email, password, confirmPassword } = signUpInfo;
 
-	const [signUpInfo, setSignUpInfo] = useState({
-			displayName: '',
-			email: '',
-			password: '',
-			confirmPassword: ''
-	})
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-	const { displayName, email, password, confirmPassword } = signUpInfo
-	
-	const handleSubmit = event => {
-		event.preventDefault();
+    if (password !== confirmPassword) {
+      alert("passwords don't match");
+      return;
+    }
+    signUpStart({ displayName, email, password });
+  };
 
-		if(password !== confirmPassword ) {
-			alert("passwords don't match");
-			return
-		} 
-			signUpStart({displayName, email, password})
-	}
+  const handleChange = (event) => {
+    const { name, value } = event.target;
 
-	const handleChange = event => {
-		const {name, value} = event.target;
+    setSignUpInfo({ ...signUpInfo, [name]: value });
+  };
 
-		setSignUpInfo({...signUpInfo, [name]: value}) 
-	}
+  return (
+    <div className="sign-up">
+      <form onSubmit={handleSubmit}>
+        <FormInput
+          inputStyle="form-input"
+          type="text"
+          name="displayName"
+          value={displayName}
+          onChange={handleChange}
+          label="Display Name"
+          required
+        />
+        <FormInput
+          inputStyle="form-input"
+          type="email"
+          name="email"
+          value={email}
+          onChange={handleChange}
+          label="Email"
+          required
+        />
+        <FormInput
+          inputStyle="form-input"
+          type="password"
+          name="password"
+          value={password}
+          onChange={handleChange}
+          label="Password"
+          required
+        />
+        <FormInput
+          inputStyle="form-input"
+          type="password"
+          name="confirmPassword"
+          value={confirmPassword}
+          onChange={handleChange}
+          label="Confirm Password"
+          required
+        />
+        <div className="sign-up-buttons">
+          <CustomButton type="submit">Sign Up</CustomButton>
+        </div>
+      </form>
+    </div>
+  );
+}
 
-
-		return(
-			<div className='user-sign-options'>
-			{
-				currentStep === 2 ?
-					<div className='sign-up'>
-					<form className='sign-up-form' onSubmit={handleSubmit}>
-						<FormInput
-						type='text'
-						name='displayName'
-						value={displayName}
-						onChange={handleChange}
-						label='Display Name'
-						required
-						/>
-					<FormInput
-						type='email'
-						name='email'
-						value={email}
-						onChange={handleChange}
-						label='Email'
-						required
-						/>
-						<FormInput
-						type='password'
-						name='password'
-						value={password}
-						onChange={handleChange}
-						label='Password'
-						required
-						/>
-						<FormInput
-						type='password'
-						name='confirmPassword'
-						value={confirmPassword}
-						onChange={handleChange}
-						label='Confirm Password'
-						required
-						/>
-						<div className='sign-up-button'>
-							<CustomButton type='submit'>Sign Up</CustomButton>
-						</div>
-					</form>
-				</div>
-				: ""	
-			}
-		</div>
-			)
-	}
-
-	const mapDispatchToProps = dispatch => ({
-		signUpStart: (userInfo) => dispatch(signUpStart(userInfo))
-	})
+const mapDispatchToProps = (dispatch) => ({
+  signUpStart: (userInfo) => dispatch(signUpStart(userInfo)),
+});
 
 export default connect(null, mapDispatchToProps)(SignUp);
-

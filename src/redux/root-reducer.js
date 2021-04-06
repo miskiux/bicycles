@@ -12,7 +12,7 @@ import updateReducer from "./update/update.reducer";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user", "shop", "sidenav", "update"],
+  whitelist: ["shop", "user", "sidenav", "update"],
 };
 
 const rootReducer = combineReducers({

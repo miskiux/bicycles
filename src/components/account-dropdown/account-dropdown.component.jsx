@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import FavouriteDropdown from "../favourites-dropdown/favourites-dropdown.component";
 import BiciPreview from "../bici-info/Bici-info-preview.component";
-import { toggleModal } from "../../redux/side-nav/side-nav.actions";
-import { Dropdown } from "semantic-ui-react";
+import { toggleAccount } from "../../redux/side-nav/side-nav.actions";
+import { signOutStart } from "../../redux/user/user.actions";
 import { Accordion, Icon } from "semantic-ui-react";
 import "./account-dropdown.styles.scss";
 
@@ -11,11 +13,18 @@ import "./account-dropdown.styles.scss";
 function AccountDropdown() {
   const [activeIndex, setActiveIndex] = useState(null);
 
+  const dispatch = useDispatch();
+  const history = useHistory();
   const handleClick = (e, titleProps) => {
     const { index } = titleProps;
     const newIndex = activeIndex === index ? -1 : index;
-
     setActiveIndex(newIndex);
+  };
+
+  const signOut = () => {
+    dispatch(signOutStart());
+    dispatch(toggleAccount());
+    history.push("/");
   };
 
   return (
@@ -50,23 +59,10 @@ function AccountDropdown() {
           className="accordion-title-last"
           active={activeIndex === 2}
           index={2}
-          onClick={handleClick}
+          onClick={signOut}
         >
           Sign Out
         </Accordion.Title>
-        <Accordion.Content active={activeIndex === 2}>
-          <p>
-            Three common ways for a prospective owner to acquire a dog is from
-            pet shops, private owners, or shelters.
-          </p>
-          <p>
-            A pet shop may be the most convenient way to buy a dog. Buying a dog
-            from a private owner allows you to assess the pedigree and
-            upbringing of your dog before choosing to take it home. Lastly,
-            finding your dog from a shelter, helps give a good home to a dog who
-            may not find one so readily.
-          </p>
-        </Accordion.Content>
       </Accordion>
     </div>
   );

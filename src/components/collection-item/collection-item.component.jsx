@@ -1,41 +1,61 @@
 import React, { useState, useEffect, Suspense } from "react";
-import { useImage, Img } from "react-image";
 import { connect } from "react-redux";
-import { compose } from "redux";
 
-import { withRouter, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-import CustomButton from "../custom-button/custom-button.component";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import { ViewShow } from "@styled-icons/zondicons/ViewShow";
-
-import { addItem } from "../../redux/side-nav/side-nav.actions";
-
+import {
+  addItem,
+  clearItemFromFavourites,
+} from "../../redux/side-nav/side-nav.actions";
+import { selectFavouriteItems } from "../../redux/side-nav/side-nav.selectors";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import UseAnimations from "react-useanimations";
-import bookmark from "react-useanimations/lib/bookmark";
+
+import { Icon } from "semantic-ui-react";
 import {
   SpinnerContainer,
   SpinnerOverlay,
 } from "../with-spinner/with-spinner.styles";
 
-import "../item/styles.scss";
-
 import "./collection-item.styles.scss";
 
-const CollectionItem = ({ item, addItem, id, match }) => {
+const CollectionItem = ({
+  item,
+  addItem,
+  id,
+  favourites,
+  clearItemFromFavourites,
+}) => {
   const [index, setIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
   const [didLoad, setLoad] = useState(false);
+  const [bookmarked, setBookMarked] = useState([]);
+  const [itemSpecs, setItemSpecs] = useState([]);
 
   const images = item.url;
-  const { manufacturer, model, price } = item;
+  const {
+    manufacturer,
+    model,
+    price,
+    year,
+    size,
+    condition,
+    description,
+  } = item;
 
   const imageStyle = didLoad
-    ? { maxWidth: 100 + "%", height: "auto" }
+    ? { maxWidth: 100 + "%", maxHeight: "80%", minHeight: "250px" }
     : { visibility: "hidden" };
+
+  useEffect(() => {
+    const existingIds = favourites.map(({ id }) => id);
+    setBookMarked(existingIds);
+  }, [favourites, id]);
+
+  useEffect(() => {
+    let values = description.map(({ value }) => value);
+    values.sort(() => 0.5 - Math.random());
+    let twoValues = values.slice(0, 2);
+    setItemSpecs(twoValues);
+  }, [description]);
 
   //image directions
   const onClickForward = () => {
@@ -60,56 +80,114 @@ const CollectionItem = ({ item, addItem, id, match }) => {
     });
   };
 
-  //if checked remove it
+  const addingToList = (id, item) => {
+    const existingIds = favourites.map(({ id }) => id);
+    console.log(existingIds);
+    console.log(id);
+    if (!existingIds.includes(id)) {
+      addItem({ id, item });
+    } else {
+      clearItemFromFavourites(id);
+    }
+  };
+
+  //adding a border beetween two
+  //frame type, frame material, Wheel Size, groupset
 
   return (
-    <div className="collection-item-wrapper">
-      <div className="collection-item">
-        <Suspense
-          fallback={
-            <SpinnerOverlay>
-              <SpinnerContainer />
-            </SpinnerOverlay>
-          }
-        >
-          <LazyLoadImage
-            alt="err"
-            style={imageStyle}
-            src={images[index]}
-            afterLoad={() => setLoad(true)}
-          />
-        </Suspense>
-        {didLoad ? (
-          <div className="collection-menu">
-            <div className="collection-footer">
-              <div className="model-manufacturer" onClick={NavigateToView}>
-                <span className="manufacturer-name">{manufacturer}</span>
-                <span className="model-name">{model}</span>
-              </div>
-              <span className="price">${price}</span>
-            </div>
-            <div className="addcircle">
-              <UseAnimations
-                animation={bookmark}
-                onClick={() => addItem({ item, id })}
-                size={24}
-                style={{ cursor: "pointer", padding: 100 }}
+    <div className="collection-item">
+      {didLoad && (
+        <>
+          <div className="bookmark-wrapper">
+            {bookmarked.includes(id) ? (
+              <Icon
+                className="bookmark"
+                name="bookmark"
+                onClick={() => addingToList(id, item)}
               />
+            ) : (
+              <Icon
+                className="bookmark"
+                name="bookmark outline"
+                onClick={() => addingToList(id, item)}
+              />
+            )}
+          </div>
+
+          <div className="arrow-container">
+            <div className="image-arrows">
+              <Icon name="arrow left" onClick={onClickBackwards} />
+              <Icon name="arrow right" onClick={onClickForward} />
             </div>
           </div>
-        ) : (
-          ""
-        )}
-      </div>
+          <div className="collection-item-condition">
+            <span style={{ fontSize: "0.75rem" }}>{condition}</span>
+          </div>
+        </>
+      )}
+      <Suspense
+        fallback={
+          <SpinnerOverlay>
+            <SpinnerContainer />
+          </SpinnerOverlay>
+        }
+      >
+        <LazyLoadImage
+          alt="err"
+          style={imageStyle}
+          src={images[index]}
+          afterLoad={() => setLoad(true)}
+        />
+      </Suspense>
+      {didLoad ? (
+        <div className="collection-menu" onClick={NavigateToView}>
+          <div className="collection-footer">
+            <div className="model-manufacturer">
+              <span className="manufacturer-name">{manufacturer}</span>
+              <span className="model-name">{model}</span>
+            </div>
+            <span className="price">${price}</span>
+          </div>
+          <div>
+            {description.length !== 0 && (
+              <ul className="description-items">
+                {itemSpecs.map((i, index) => (
+                  <li className="description-items-title" key={index}>
+                    {i.toUpperCase()}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div className="collection-menu-icons">
+            {size && (
+              <div className="collection-item-circle">
+                <span className="collection-menu-item-title">{size}</span>
+                <span style={{ fontSize: "0.5rem", margin: "-9px" }}>cm</span>
+              </div>
+            )}
+            {year && (
+              <div className="collection-item-date">
+                <Icon name="calendar alternate outline" />
+                <span className="collection-menu-item-title">{year}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  addItem: (item) => dispatch(addItem(item)),
+const mapStateToProps = (state) => ({
+  favourites: selectFavouriteItems(state),
 });
 
-export default compose(
-  withRouter,
-  connect(null, mapDispatchToProps)
-)(CollectionItem);
+const mapDispatchToProps = (dispatch) => ({
+  addItem: (item) => dispatch(addItem(item)),
+  clearItemFromFavourites: (id) => dispatch(clearItemFromFavourites(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionItem);

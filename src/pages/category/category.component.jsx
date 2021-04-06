@@ -1,64 +1,75 @@
-import React, { useState, useEffect } from 'react';
-import {connect} from 'react-redux'
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 
-import CollectionItem from '../../components/collection-item/collection-item.component'
+import CollectionItem from "../../components/collection-item/collection-item.component";
 
-import { updateLink } from '../../redux/shop/shop.actions'
-import { selectCategory } from '../../redux/shop/shop.selectors';
+import { updateLink } from "../../redux/shop/shop.actions";
+import {
+  selectCategory,
+  selectFilteredByLocation,
+} from "../../redux/shop/shop.selectors";
 
-import './category.styles.scss';
+import "./category.styles.scss";
 
-const CategoryPage = ({ category, match, location, updateLink}) => {
+const CategoryPage = ({
+  category,
+  match,
+  updateLink,
+  filterData,
+  locationId,
+}) => {
+  const [bicycleCategory, setBicycleCategory] = useState([]);
 
-const [bicycleCategory, setBicycleCategory] = useState([]);
- 
-console.log(location)
-console.log(match.params.categoryId)
+  const { price_range, manufacturer, locations } = filterData;
 
-//active link to redux
-useEffect(() => {
-	if(match.params.categoryId) {
-		updateLink(match.params.categoryId)
-	}
-}, [match.params.categoryId])
-// useEffect(() => {
-// 	let result = [...category]''
-// 	if (priceFilter) {
-// 			result = result
-// 						.filter(bicycle => bicycle.item.price
-// 						>= priceFilter[0] && bicycle.item.price <= priceFilter[1])			
-// 		}
-// 	if(manufacturerFilter) {
-// 				result = result.filter(bicycle => bicycle.item.manufacturer
-// 					.split(",")
-// 						.some(key => manufacturerFilter.includes(key)))	
-// 			}
-			
-// 		setBicycleCategory(result)
+  const filterprice = price_range ? price_range.split(",") : "";
+  const filtermanufacturer = manufacturer ? manufacturer.split(",") : "";
+  const filterlocation = locations ? locations : "";
 
-// }, [category, priceFilter, manufacturerFilter])
+  useEffect(() => {
+    if (match.params.categoryId) {
+      updateLink(match.params.categoryId);
+    }
+  }, [match.params.categoryId]);
 
-	return (
-		<div className='category'>
+  useEffect(() => {
+    let result = [...category];
+    if (filterprice) {
+      result = result.filter(
+        (bicycle) =>
+          bicycle.item.price >= Number(filterprice[0]) &&
+          bicycle.item.price <= Number(filterprice[1])
+      );
+    }
+    if (filtermanufacturer) {
+      result = result.filter((bicycle) =>
+        bicycle.item.manufacturer
+          .toLowerCase()
+          .includes(filtermanufacturer.join().toLowerCase())
+      );
+    }
+    if (filterlocation) {
+      result = locationId;
+    }
+    setBicycleCategory(result);
+  }, [category, filterData]);
 
-				<div>
-				{
-					category.map(({id, ...otherCollectionProps}) =>
-						<CollectionItem id={id} key={id} {...otherCollectionProps} />
-						)
-				}
-				</div>
-		</div>
-	)
-}
+  return (
+    <div className="preview">
+      {bicycleCategory.map(({ id, ...otherCollectionProps }) => (
+        <CollectionItem id={id} key={id} {...otherCollectionProps} />
+      ))}
+    </div>
+  );
+};
 
 const mapStateToProps = (state, ownProps) => ({
-	category: selectCategory(ownProps.match.params.categoryId)(state),
-})
+  category: selectCategory(ownProps.match.params.categoryId)(state),
+  locationId: selectFilteredByLocation(state),
+});
 
-const mapDispatchToProps = dispatch => ({
-	updateLink: (link) => dispatch(updateLink(link))
-})
-
+const mapDispatchToProps = (dispatch) => ({
+  updateLink: (link) => dispatch(updateLink(link)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryPage);

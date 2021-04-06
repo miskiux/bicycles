@@ -1,33 +1,37 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { connect } from "react-redux";
 import { Route, Link, useLocation } from "react-router-dom";
 import * as QueryString from "query-string";
 import CollectionsOverviewContainer from "../../components/collections-overview/collections-overview.container";
 import CategoryPageContainer from "../category/category.container";
-import { linkSelector } from "../../redux/shop/shop.selectors";
+import {
+  linkSelector,
+  selectIsBicyclesFetching,
+} from "../../redux/shop/shop.selectors";
 import { fetchBicyclesStart } from "../../redux/shop/shop.actions";
 import Filter from "../../components/filter/filter.component";
+import SideMenu from "../../components/side-menu/Side-menu.component";
 import UseAnimations from "react-useanimations";
 import {
   SpinnerContainer,
   SpinnerOverlay,
 } from "../../components/with-spinner/with-spinner.styles";
 import menu2 from "react-useanimations/lib/menu2";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Transition } from "react-transition-group";
+import FilterModal from "../../components/filter/filter-modal.component";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
+
 import "./shop.styles.scss";
 
-// links.state => uneccessary
+//small screen refresh sliding
 
-function ShopPage({ fetchBicyclesStart, match, activeLink }) {
+function ShopPage({ fetchBicyclesStart, match, activeLink, isFetching }) {
   const [links, setLinks] = useState([
     {
       id: 1,
       name: "all",
       to: {
         pathname: "/shop",
-        state: { active: 1 },
       },
     },
     {
@@ -35,7 +39,6 @@ function ShopPage({ fetchBicyclesStart, match, activeLink }) {
       name: "city bicycle",
       to: {
         pathname: `${match.path}/city bicycle`,
-        state: { active: "city bicycle" },
       },
     },
     {
@@ -43,7 +46,6 @@ function ShopPage({ fetchBicyclesStart, match, activeLink }) {
       name: "road bicycle",
       to: {
         pathname: `${match.path}/road bicycle`,
-        state: { active: "road bicycle" },
       },
     },
     {
@@ -51,7 +53,6 @@ function ShopPage({ fetchBicyclesStart, match, activeLink }) {
       name: "vintage",
       to: {
         pathname: `${match.path}/vintage`,
-        state: { active: "vintage" },
       },
     },
     {
@@ -59,16 +60,28 @@ function ShopPage({ fetchBicyclesStart, match, activeLink }) {
       name: "off-road",
       to: {
         pathname: `${match.path}/off-road`,
-        state: { active: "off-road" },
       },
     },
   ]);
+
   const [filterOpen, setFilterOpen] = useState(true);
   const [queryParams, setQueryParams] = useState({});
+  const [breakPoint, setBreakPoint] = useState(false);
   const location = useLocation();
+  const isBreakPoint = useMediaQuery(915);
 
   useEffect(() => {
     fetchBicyclesStart();
+  }, []);
+
+  useEffect(() => {
+    setBreakPoint(true);
+  }, [isBreakPoint]);
+
+  useEffect(() => {
+    if (isBreakPoint) {
+      setBreakPoint(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -85,36 +98,63 @@ function ShopPage({ fetchBicyclesStart, match, activeLink }) {
     setFilterOpen((i) => !i);
   };
 
-  return (
-    <Container className="shop-page-wrapper" fluid>
-      <Row>
-        {filterOpen && (
-          <Col className="filter-options-wrapper" xs={2}>
-            <Filter data={queryParams} />
-          </Col>
-        )}
-        <Col xs={filterOpen ? 10 : 12} className="shop-page-container">
-          <div className="list-container">
-            {links.map((link) => {
-              return (
-                <div key={link.id} className="list-wrapper">
-                  <ul className="category-wrapper">
-                    <li className="category-list">
-                      <Link
-                        className={`${
-                          link.name === activeLink ? "active_item" : ""
-                        } category-option`}
-                        to={link.to}
-                      >
-                        {link.name}
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              );
-            })}
-          </div>
-          <div className="shop-page">
+  const duration = 550;
+
+  const widthStyle = {
+    transition: isFetching ? null : `width ${duration}ms ease-in-out`,
+  };
+
+  const defaultStyle = {
+    transition: isFetching ? null : `transform ${duration}ms ease-in-out`,
+  };
+
+  const shopPageTransitionStyles = {
+    entering: {
+      width: "83.33333%",
+      flex: "0 0 83.33333%",
+    },
+    entered: {
+      transform: "none",
+      width: "100%",
+      flex: "0 0 100%",
+    },
+    exiting: {
+      transform: "none",
+      width: "100%",
+      flex: "0 0 100%",
+    },
+    exited: {
+      width: "83.33333%",
+      flex: "0 0 83.33333%",
+    },
+  };
+
+  const shopTransitionStyles = {
+    entering: {
+      transform: "translate3d(20%, 0%, 1rem)",
+    },
+    entered: {
+      transform: "none",
+    },
+    exiting: {
+      transform: "none",
+    },
+    exited: {
+      transform: "translate3d(20%, 0%, 1rem)",
+    },
+  };
+
+  const renderShopPage = () => {
+    return (
+      <Transition in={!filterOpen || isBreakPoint} enter={false} timeout={300}>
+        {(state) => (
+          <div
+            style={{
+              ...defaultStyle,
+              ...shopTransitionStyles[state],
+            }}
+            className="shop-page"
+          >
             <Suspense
               fallback={
                 <SpinnerOverlay>
@@ -134,13 +174,132 @@ function ShopPage({ fetchBicyclesStart, match, activeLink }) {
               />
               <Route
                 path={`${match.path}/:categoryId`}
-                component={CategoryPageContainer}
+                render={(props) => (
+                  <CategoryPageContainer filterData={queryParams} {...props} />
+                )}
               />
             </Suspense>
           </div>
-        </Col>
-      </Row>
-    </Container>
+        )}
+      </Transition>
+    );
+  };
+
+  //transition for SideMenu also
+  const sideduration = 550;
+
+  const sidebarStyle = {
+    transition: `transform ${sideduration}ms`,
+  };
+
+  const SideMenuTransitionStyles = {
+    entering: {
+      transform: "translate3d(0%, 0%, 0)",
+    },
+    entered: {
+      transform: "translate3d(-100%, 0, 0)",
+    },
+    exiting: {
+      transform: "translate3d(-100%, 0, 0)",
+    },
+    exited: {
+      transform: "translate3d(0%, 0%, 0)",
+    },
+  };
+
+  return (
+    <div className="shop-page-wrapper">
+      {breakPoint && (
+        <Transition in={isBreakPoint || !filterOpen} timeout={sideduration}>
+          {(state) => (
+            <div
+              className="side-menu-wrapper"
+              style={{
+                ...sidebarStyle,
+                ...SideMenuTransitionStyles[state],
+              }}
+            >
+              <div className="side-menu-container">
+                <Filter
+                  data={queryParams}
+                  filterOpen={filterOpen}
+                  toggleFilter={toggleFilter}
+                  isBreakPoint={isBreakPoint}
+                />
+              </div>
+            </div>
+          )}
+        </Transition>
+      )}
+      <Transition in={!filterOpen || isBreakPoint} timeout={300} enter={false}>
+        {(state) => (
+          <div
+            style={{
+              ...widthStyle,
+              ...shopPageTransitionStyles[state],
+            }}
+            className="shop-page-container"
+          >
+            <div>
+              {!isBreakPoint && (
+                <UseAnimations
+                  reverse={filterOpen || isBreakPoint}
+                  onClick={toggleFilter}
+                  animation={menu2}
+                  size={56}
+                  speed={1.4}
+                  render={(eventProps, animationProps) => (
+                    <button
+                      style={{
+                        padding: "20px",
+                        position: "absolute",
+                        top: "-10px",
+                        left: "-20px",
+                        background: "none",
+                        border: "none",
+                        outline: "none",
+                      }}
+                      type="button"
+                      {...eventProps}
+                    >
+                      <div {...animationProps} />
+                    </button>
+                  )}
+                />
+              )}
+              <div className="list-container">
+                {links.map((link) => {
+                  return (
+                    <div key={link.id} className="list-wrapper">
+                      <ul className="category-wrapper">
+                        <li className="category-list">
+                          <Link
+                            className={`${
+                              link.name === activeLink ? "active_item" : ""
+                            } category-option`}
+                            to={link.to}
+                          >
+                            {link.name}
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  );
+                })}
+              </div>
+              {isBreakPoint && (
+                <FilterModal
+                  data={queryParams}
+                  filterOpen={filterOpen}
+                  toggleFilter={toggleFilter}
+                />
+              )}
+            </div>
+            {renderShopPage()}
+          </div>
+        )}
+      </Transition>
+    </div>
   );
 }
 
@@ -150,6 +309,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   activeLink: linkSelector(state),
+  isFetching: selectIsBicyclesFetching(state),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);

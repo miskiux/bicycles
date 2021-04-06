@@ -1,19 +1,12 @@
-.user-sign-options {
-	display: flex;
-	justify-content: center;
-	border: solid 1px;
-	border-color: rgba(128,128,128, 0.1);
-
 .sign-up {
-	display: flex;
-	flex-direction: column;
-	width:380px;
-}
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 
-
-.sign-up-button {
-	display: flex;
-	justify-content: center;
-	padding: 20px;
-	}
+  .sign-up-buttons {
+    display: flex;
+    flex-direction: column;
+  }
 }

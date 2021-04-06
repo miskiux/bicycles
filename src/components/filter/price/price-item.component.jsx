@@ -41,11 +41,10 @@ const PrettoSlider = withStyles({
   },
 })(Slider);
 
-const PriceItem = ({ updateQuery }) => {
+const PriceItem = ({ updateQuery, onModalClose }) => {
   const [value, setValue] = useState([0, 30000]);
 
   const { search } = useLocation();
-  const history = useHistory();
 
   const useStyles = makeStyles({
     root: {
@@ -62,6 +61,13 @@ const PriceItem = ({ updateQuery }) => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const confirmSubmit = () => {
+    if (onModalClose) {
+      onModalClose();
+    }
+    updateQuery(search, "price_range", value);
   };
 
   return (
@@ -84,10 +90,7 @@ const PriceItem = ({ updateQuery }) => {
           />
         </div>
       </div>
-      <button
-        className="confirm"
-        onClick={() => updateQuery(search, "price_range", value)}
-      >
+      <button className="confirm" onClick={confirmSubmit}>
         {" "}
         confirm{" "}
       </button>

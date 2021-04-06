@@ -29,6 +29,7 @@ export const updateUserBicycle = async (id, values) => {
     info,
     address,
     phone,
+    description,
   } = values;
 
   try {
@@ -39,6 +40,7 @@ export const updateUserBicycle = async (id, values) => {
         phone,
         item: {
           manufacturer,
+          description,
           model,
           price,
           year,
@@ -73,6 +75,7 @@ export const updateUserBicycleImageUrl = async (id, data) => {
 };
 
 export const deleteUserBicycleImages = (imgKey) => {
+  console.log(imgKey);
   const storageRef = storage.ref(`images/${imgKey}`);
   storageRef.listAll().then((listResults) => {
     const promises = listResults.items.map((img) => {
@@ -82,7 +85,8 @@ export const deleteUserBicycleImages = (imgKey) => {
   });
 };
 
-export const deleteSpecificImage = (imgKey, url) => {
+//is this even used ?
+export const deleteSpecificImage = (url) => {
   let pictureRef = url.map((i) => {
     const promises = storage.refFromURL(i);
     return promises.delete();
@@ -215,7 +219,13 @@ export const getBiciDataForShop = (bicycle) => {
       id: doc.id,
       bicycleType,
       coordinates,
-      item,
+      item: {
+        ...item,
+        model: item.model.charAt(0).toUpperCase() + item.model.slice(1),
+        manufacturer:
+          item.manufacturer.charAt(0).toUpperCase() +
+          item.manufacturer.slice(1),
+      },
       phone,
       userId,
       email,

@@ -62,11 +62,39 @@
   }
 
   .remove-old {
-    position: relative;
+    padding: 4px;
     font-size: 9px;
+    text-align: center;
   }
   .spec-select {
-    width: 90%;
+    width: 84%;
     outline: none;
   }
+}
+.update-form-option-container {
+  margin-left: 15px;
+  padding-top: 8.5px;
+  cursor: default;
+
+  .select-form {
+    padding: 10px;
+    //background-color: white;
+
+    &:hover {
+      transition: background-color 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+      background-color: rgba(211, 207, 207, 0.12);
+    }
+  }
+}
+
+.input-field-error {
+  border-color: #cc0000 !important;
+}
+
+.error-text {
+  padding: 10px;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  color: #cc0000;
 }

@@ -1,95 +1,108 @@
 .sellpage-container {
-  height: 100vh;
+  @import "~bootstrap/scss/bootstrap.scss";
+  min-height: 100vh;
   width: 100vw;
-}
-
-.modal-form-container {
-  box-shadow: none !important;
-  border-radius: 0px !important;
-  border-bottom: 1px solid;
-}
-.sell-form-wrapper {
-  height: 70px;
-  min-width: 800px;
-  background: white;
-}
-.sell-background-image {
-  width: 100%;
-  height: 100%;
-  background-repeat: no-repeat;
-  background-position: 50% 100%;
-}
-.ui.inverted.dimmer {
-  background-color: rgba(51, 51, 51, 0.55) !important;
-}
-.sell-form-nav {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  outline: none;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  z-index: 100000;
-  min-width: 800px;
-  border-bottom: 1px solid;
-  border-color: rgba(228, 233, 237, 1);
-}
-
-.form-step-wrapper {
-  min-width: 800px;
-  height: 800px;
-  border-top: 1px solid;
-  border-color: rgba(228, 233, 237, 1);
-}
-.nav-col {
-  align-self: center;
-  list-style-type: none;
-  height: 100%;
-  width: 110px;
-  margin-right: 5px;
-  text-align: right;
-}
-.nav-item {
-  font-size: 15px;
-  text-align: center;
-  height: auto;
-  width: 25%;
-  letter-spacing: 1px;
-  padding-bottom: 5px;
-  cursor: default;
-  color: rgba(0, 0, 0, 0.2);
+  width: 1300px;
+  min-width: 1300px;
+  background: rgba(228, 233, 237, 0.2);
+  margin: 0 auto;
+  z-index: 2;
+  border-left: 1px solid;
   border-right: 1px solid;
-  border-color: rgba(228, 233, 237, 1);
-}
-.nav-text {
-  padding-bottom: 3px;
-}
-.active-step {
-  width: 100%;
-  color: rgba(0, 0, 0, 1);
-}
-.submit-nav {
-  display: flex;
-  justify-content: center;
-  height: 50px;
-  width: 100%;
-  margin-left: 10px;
-}
-.submit-button {
-  font-weight: bold;
-}
-.MuiButton-textPrimary {
-  color: #4183d7;
-}
-.MuiButton-textPrimary:hover {
-  background-color: rgba(61, 120, 172, 0);
+  border-color: rgba(228, 233, 237, 0.8);
+
+  .sellpage-name {
+    position: absolute;
+    color: black;
+    top: 0;
+    right: 0;
+    background-color: rgb(51, 51, 51);
+    color: #f8f8f8;
+    font-size: 2.75rem;
+    padding: 5px;
+  }
+
+  .sellpage-row {
+    position: relative;
+    width: 100vw;
+    max-width: 1300px;
+    margin: 0;
+    align-items: flex-end;
+    padding-left: 46px;
+    padding-right: 46px;
+    z-index: 2;
+  }
+
+  .sellpage-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    min-height: 700px;
+    padding-left: 0;
+
+    .sellpage-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 50px;
+      width: 100%;
+      padding: 2px;
+      margin-bottom: 10px;
+      background: white;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+        rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+    }
+    .sellpage-item-title {
+      display: flex;
+      justify-content: flex-start;
+      width: 100%;
+    }
+    .sellpage-control {
+      display: flex;
+      flex-direction: column;
+      height: auto;
+      width: auto;
+
+      .sellpage-control-options {
+        display: flex;
+        align-items: center;
+        align-self: center;
+        cursor: default;
+      }
+      .sellpage-goback {
+        margin-right: 20px;
+      }
+      .submit-wrapper {
+        position: relative;
+        .submit-button {
+          width: auto !important;
+          min-width: 140px !important;
+          z-index: 2;
+          background-color: #6a93cb;
+          color: white;
+          padding: 8px;
+          margin: 10px;
+          outline: none;
+          border: none;
+          border-radius: 3px;
+        }
+      }
+    }
+  }
+  .form-steps-col {
+    padding: 0;
+  }
+  .form-steps {
+    padding: 30px;
+    align-self: center;
+    border-color: rgba(228, 233, 237, 0.8);
+    height: 100%;
+    width: auto;
+    max-width: 912px;
+  }
 }
 
-.MuiButtonBase-root {
-  width: 80%;
-  border-radius: 6px;
-}
 .form-error {
   font-size: 10px;
   color: #cc0000;

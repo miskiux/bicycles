@@ -3,9 +3,14 @@ import { takeLatest, call, put, all } from "redux-saga/effects";
 import {
   updateUserBicycleImageUrl,
   deleteSpecificImage,
+  updateUserBicycle,
 } from "../../firebase/firebase.utils";
 
-import { imageUrlUpdateSuccess, imagesDeleteSuccess } from "./update.actions";
+import {
+  imageUrlUpdateSuccess,
+  imagesDeleteSuccess,
+  bicycleUpdateSuccess,
+} from "./update.actions";
 
 import UpdateActionTypes from "./update.types";
 
@@ -17,18 +22,27 @@ export function* updateImageUrls({ payload: { id, url } }) {
     console.log(error);
   }
 }
+//removed imgKey, remove it also from the action
 
-//image_update_start runs this even if uneccessary, add extra control
-export function* deleteImage({ payload: { imgKey, url, toRemove } }) {
+export function* deleteImage({ payload: { url, toRemove } }) {
   if (toRemove) {
     try {
-      yield call(deleteSpecificImage, imgKey, url);
-      // run this to start uploading images if needed
+      yield call(deleteSpecificImage, url);
+
       yield put(imagesDeleteSuccess());
     } catch (error) {
       console.log(error);
     }
   }
+}
+
+export function* updateBicycle({ payload: { id, update } }) {
+  yield call(updateUserBicycle, id, update);
+  yield put(bicycleUpdateSuccess("Update Success"));
+}
+
+export function* onBicycleUpdate() {
+  yield takeLatest(UpdateActionTypes.BICYCLE_UPDATE_START, updateBicycle);
 }
 
 export function* onImageUrlUpdate() {
@@ -39,5 +53,9 @@ export function* onImageDeleteStart() {
 }
 
 export function* updateSagas() {
-  yield all([call(onImageUrlUpdate), call(onImageDeleteStart)]);
+  yield all([
+    call(onImageUrlUpdate),
+    call(onImageDeleteStart),
+    call(onBicycleUpdate),
+  ]);
 }

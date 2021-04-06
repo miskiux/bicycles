@@ -1,0 +1,68 @@
+.filter-modal-trigger {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  width: 65%;
+  text-align: center;
+  height: 2.5rem;
+  border: 1px solid #2e2e2d;
+  text-align: center;
+  margin-top: 10px;
+  line-height: 2.5rem;
+  cursor: pointer;
+}
+.modal-filter-container {
+  background-color: #f8f8f8;
+  border: 1px solid #2e2e2d;
+  border-radius: 0px;
+
+  .accordion-title {
+    text-align: center;
+    font-size: 2.5rem;
+    border-bottom: 1px solid #2e2e2d;
+    height: 40px;
+
+    .title-items {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+
+      .filter-title-close {
+        position: absolute;
+        right: 0;
+      }
+    }
+  }
+  .sub-accordion-title {
+    border-bottom: 1px solid #2e2e2d;
+    text-align: center;
+  }
+  .ui.accordion:not(.styled) .title ~ .content:not(.ui) {
+    padding: 0;
+  }
+}
+
+.filter-clear-all {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: 150px;
+  text-align: center;
+  height: 20px;
+  color: white;
+  margin-top: 10px;
+}
+.ui.dimmer {
+  background-color: rgba(51, 51, 51, 0.3);
+}
+.ui.modal > :first-child:not(.icon) {
+  border-radius: 0;
+}
+.ui.modal {
+  border-radius: 0;
+}

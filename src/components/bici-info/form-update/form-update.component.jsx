@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -6,13 +6,14 @@ import { useManufacturerHint } from "../../../hooks/useManufacturerHint";
 import { BicycleSpecs } from "../../../assets/additional/form-helpers";
 import { GeneralUpdate } from "./update-forms/general-updated.component";
 import { DescriptionUpdate } from "./update-forms/description-updated.component";
-import { invalidForm } from "../../../redux/sell/sell.actions";
+import { invalidUpdateForm } from "../../../redux/update/update.actions";
 import {
   nameValidation,
   typeValidation,
   priceValidation,
   imageValidation,
   phoneValidation,
+  descriptionValidation,
 } from "../../../pages/sell/validate";
 import CustomSnack from "../../snackbar/Snackbar.component";
 import {
@@ -21,7 +22,11 @@ import {
   otherSubList,
 } from "../../../assets/additional/form-helpers.js";
 
-import { bicycleUpdateStart } from "../../../redux/shop/shop.actions";
+import {
+  bicycleUpdateStart,
+  getDefault,
+  toggleSnackBar,
+} from "../../../redux/update/update.actions";
 
 import { Form } from "react-bootstrap";
 
@@ -30,7 +35,6 @@ import "./form-update.styles.scss";
 function FormUpdate({ inputData, edit, toggleEdit }) {
   //prev values
   const { item, id, bicycleType, subCategory, phone } = inputData;
-
   //new values
   const [update, setUpdate] = useState({
     manufacturer: item.manufacturer,
@@ -48,30 +52,37 @@ function FormUpdate({ inputData, edit, toggleEdit }) {
     description: item.description,
   });
 
+  useEffect(() => {
+    setUpdate({
+      manufacturer: item.manufacturer,
+      model: item.model,
+      bicycleType: bicycleType,
+      subCategory: subCategory,
+      gender: item.gender,
+      price: item.price,
+      year: item.year,
+      size: item.size,
+      condition: item.condition,
+      info: item.info,
+      address: item.address,
+      phone: inputData.phone,
+      description: item.description,
+    });
+  }, [inputData]);
+
   const [switchForm, setSwitchForm] = useState(0);
+
   const [errors, setErrors] = useState({});
 
-  const { register, handleSubmit } = useForm();
+  const { register } = useForm();
   const { hintData } = useManufacturerHint();
   const dispatch = useDispatch();
 
-  const isBicycleUpdating = useSelector((state) => state.shop.isUpdating);
-  const snackbar = useSelector((state) => state.sell.snackbar);
-  const message = useSelector((state) => state.sell.message);
+  const snackbar = useSelector((state) => state.update.snackbar);
+  const message = useSelector((state) => state.update.message);
   const success = useSelector((state) => state.update.success);
 
-  const {
-    manufacturer,
-    model,
-    price,
-    year,
-    size,
-    condition,
-    info,
-    address,
-    gender,
-    description,
-  } = update;
+  const { manufacturer, model, price, address, description } = update;
 
   const handleChange = (event) => {
     const { value, name } = event.target;
@@ -92,7 +103,6 @@ function FormUpdate({ inputData, edit, toggleEdit }) {
 
   const removeDescription = (id) => {
     const values = description.filter((i) => i.idx !== id);
-    console.log(values);
     setUpdate({ ...update, description: values });
   };
 
@@ -162,11 +172,12 @@ function FormUpdate({ inputData, edit, toggleEdit }) {
   const validate = () => {
     let errorObj = {};
 
+    const descriptionErrors = descriptionValidation("Description", description);
     const manufacturerErrors = nameValidation("Manufacturer", manufacturer);
     const modelErrors = nameValidation("Model", model);
     const typeError = typeValidation("Bicycle Type", bicycleType);
     const priceError = priceValidation("Price", price);
-    const phoneError = phoneValidation("Phone", update.phone);
+    const phoneError = phoneValidation(update.phone);
     //const imageError = imageValidation(image);
     const locationError = nameValidation("Location", address);
     errorObj["address"] = locationError;
@@ -175,6 +186,7 @@ function FormUpdate({ inputData, edit, toggleEdit }) {
     errorObj["model"] = modelErrors;
     errorObj["bicycleType"] = typeError;
     errorObj["phone"] = phoneError;
+    errorObj["description"] = descriptionErrors;
     Object.keys(errorObj).forEach((key) => {
       if (errorObj[key] === null || errorObj[key] === undefined) {
         delete errorObj[key];
@@ -188,12 +200,17 @@ function FormUpdate({ inputData, edit, toggleEdit }) {
     e.preventDefault();
     const err = validate();
     if (Object.keys(err).length) {
-      dispatch(invalidForm("Invalid input values"));
+      dispatch(invalidUpdateForm("Invalid input values"));
       return;
     } else {
       dispatch(bicycleUpdateStart({ id, update }));
     }
     toggleEdit();
+  };
+
+  const handleClose = () => {
+    dispatch(toggleSnackBar());
+    dispatch(getDefault());
   };
 
   const y = {
@@ -202,18 +219,22 @@ function FormUpdate({ inputData, edit, toggleEdit }) {
   };
 
   const currentSnackBar = Object.keys(y)
-    .filter((k) => options[k] === true)
+    .filter((k) => y[k] === true)
     .toString();
 
-  //input values off
   return (
     <>
       <div className="update-form-option-container">
-        {console.log(currentSnackBar)}
-        <CustomSnack name={currentSnackBar} text={message} open={snackbar} />
+        <CustomSnack
+          color={currentSnackBar}
+          text={message}
+          open={snackbar}
+          handleClick={handleClose}
+        />
         <span className="select-form" onClick={() => changeForm(0)}>
           General
         </span>
+
         <span className="select-form" onClick={() => changeForm(1)}>
           Description
         </span>
@@ -244,6 +265,7 @@ function FormUpdate({ inputData, edit, toggleEdit }) {
             combineDescriptions={combineDescriptions}
             labelChange={labelChange}
             valueChange={valueChange}
+            errors={errors}
           />
         )}
       </Form>

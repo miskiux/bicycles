@@ -22,11 +22,11 @@
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
-  width: 67%;
+  width: 70%;
 }
 
 .price-labels {
-  width: 70%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
 }

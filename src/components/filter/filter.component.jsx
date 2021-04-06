@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
-
-import { useHistory, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import {
+  useHistory,
+  useLocation,
+  useRouteMatch,
+  useParams,
+} from "react-router-dom";
 
 import * as QueryString from "query-string";
 
@@ -8,20 +13,23 @@ import PriceItem from "./price/price-item.component";
 import ManufacturerCheckBox from "./manufacturer/manufacturer-filter.component";
 import LocationItem from "./location/location-item.component";
 
-import { Dropdown, Button, Icon } from "semantic-ui-react";
+import { Icon, Modal } from "semantic-ui-react";
 import { Accordion } from "semantic-ui-react";
 import UseAnimations from "react-useanimations";
 import menu2 from "react-useanimations/lib/menu2";
 import "./filter.styles.scss";
 
-const Filter = ({ data }) => {
+const Filter = ({ data, toggleFilter, isBreakPoint }) => {
   const { price_range, manufacturer, locations } = data;
+  const link = useSelector((state) => state.shop.activeLink);
+  const match = useRouteMatch("/shop/:categoryId");
+
+  const routeOption = match ? match.url : "/shop";
 
   const history = useHistory();
-  const { search } = useLocation();
 
   const [activeIndex, setActiveIndex] = useState(true);
-  const [subIndex, setSubIndex] = useState(1);
+  const [subIndex, setSubIndex] = useState(false);
 
   const price = price_range ? price_range.split(",") : "";
   const manu = manufacturer ? manufacturer.split(",") : "";
@@ -36,112 +44,94 @@ const Filter = ({ data }) => {
     } else {
       result = uri + separator + key + "=" + val;
     }
-
     history.push({
-      pathname: "/shop",
+      pathname: `${routeOption}`,
       search: `${result}`,
     });
   };
 
-  const level2Panels = [
-    { key: "panel-2a", title: "Level 2A", content: "Level 2A Contents" },
-    { key: "panel-2b", title: "Level 2B", content: "Level 2B Contents" },
-  ];
-
-  const removeQueryString = (uri, key, val) => {
-    const queryValue = QueryString.parse(uri);
-    const { manufacturer, price_range, location } = queryValue;
-    let modifiedObj = { ...queryValue };
-
-    if (key === "manufacturer") {
-      let manArr = manufacturer.split(",");
-      let newItems = manArr.filter((i) => !i.includes(val));
-      modifiedObj = { ...queryValue, [key]: newItems };
-      if (manArr.length === 1) {
-        delete modifiedObj[key];
-      }
-    }
-    if (key === "price_range") {
-      delete modifiedObj[key];
-    }
-    if (key === "locations") {
-      delete modifiedObj[key];
-    }
-    const queryString = QueryString.stringify(modifiedObj);
-
-    history.push({
-      pathname: "/shop",
-      search: `${queryString}`,
-    });
-  };
-
-  const handleClick = () => {
-    setActiveIndex((i) => !i);
-  };
-
-  const handleSubClick = (e, titleProps) => {
-    const { index } = titleProps;
-    const newIndex = subIndex === index ? -1 : index;
-
-    setSubIndex(newIndex);
+  const handleSubClick = () => {
+    setSubIndex((i) => !i);
   };
 
   return (
-    <div className="filter-container">
-      <Accordion fluid className="accordion-wrapper">
+    <div
+      className="filter-container"
+      // className={`${
+      //   isBreakPoint ? "modal-filter-container" : "filter-container"
+      // }`}
+    >
+      <Accordion fluid>
         <Accordion.Title
           className="accordion-title"
           active={activeIndex === true}
           index={true}
-          onClick={handleClick}
         >
-          <div className="filter-trigger">
-            <UseAnimations
-              reverse={activeIndex}
-              animation={menu2}
-              size={56}
-              wrapperStyle={{ alignSelf: "flex-start" }}
-            />
+          <div className="filter-trigger" onClick={handleSubClick}>
             <span>Filter</span>
+            {price || manu || loc ? (
+              <Icon
+                className="remove-icon"
+                name="remove"
+                onClick={() => history.push("/shop")}
+              />
+            ) : (
+              ""
+            )}
           </div>
         </Accordion.Title>
-        <Accordion.Content active={activeIndex === true}>
-          <Accordion>
+        <Accordion.Content className="filter-content" active={true}>
+          <Accordion
+            className="sub-accordion"
+            // className={`${
+            //   isBreakPoint ? "modal-filter-content" : "sub-accordion"
+            // }`}
+          >
             <Accordion.Title
               className="sub-accordion-title"
-              active={subIndex === 1}
+              active={true}
               index={1}
-              onClick={handleSubClick}
             >
               Price
             </Accordion.Title>
-            <Accordion.Content active={subIndex === 1}>
+            <Accordion.Content active={true}>
               <PriceItem updateQuery={updateQueryStringParameter} />
             </Accordion.Content>
           </Accordion>
-          <Accordion>
+          <Accordion
+            className="sub-accordion"
+            // className={`${
+            //   isBreakPoint ? "modal-filter-content" : "sub-accordion"
+            // }`}
+          >
             <Accordion.Title
               className="sub-accordion-title"
-              active={subIndex === 2}
+              active={true}
               index={2}
-              onClick={handleSubClick}
             >
               Manufacturer
             </Accordion.Title>
-            <Accordion.Content active={subIndex === 2}>
-              <ManufacturerCheckBox updateQuery={updateQueryStringParameter} />
+            <Accordion.Content active={true}>
+              <ManufacturerCheckBox
+                updateQuery={updateQueryStringParameter}
+                link={link}
+              />
             </Accordion.Content>
           </Accordion>
-          <Accordion>
+          <Accordion
+            className="sub-accordion"
+            // className={`${
+            //   isBreakPoint ? "modal-filter-content" : "sub-accordion"
+            // }`}
+          >
             <Accordion.Title
               className="sub-accordion-title"
-              active={subIndex === 3}
+              active={true}
               index={3}
-              onClick={handleSubClick}
             >
               Location
             </Accordion.Title>
-            <Accordion.Content active={subIndex === 3}>
+            <Accordion.Content active={true}>
               <LocationItem updateQuery={updateQueryStringParameter} />
             </Accordion.Content>
           </Accordion>

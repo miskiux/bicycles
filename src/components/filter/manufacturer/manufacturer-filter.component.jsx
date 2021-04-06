@@ -1,25 +1,31 @@
 import React, { useState, useEffect } from "react";
 
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation, useParams, useRouteMatch } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { selectAll } from "../../../redux/shop/shop.selectors";
-import { manufacturerSelector } from "../../../redux/shop/shop.selectors";
+import {
+  selectAll,
+  selectCategory,
+  manufacturerSelector,
+} from "../../../redux/shop/shop.selectors";
 
 import { getManufacturerLabel } from "../../../redux/shop/shop.actions";
 
 import * as QueryString from "query-string";
 
-import { Checkbox } from "semantic-ui-react";
+import { Checkbox, Item } from "semantic-ui-react";
 import { Input } from "semantic-ui-react";
 
 import "./manufacturer-filter.css";
 
 const ManufacturerCheckBox = ({
-  manufacturers,
+  bicycles,
   getManufacturerLabel,
   queryManufacturer,
   updateQuery,
+  category,
+  link,
+  onModalClose,
 }) => {
   const [
     manufacturersCheckBoxOptions,
@@ -39,14 +45,40 @@ const ManufacturerCheckBox = ({
   const [queryValues, setQueryValues] = useState([]);
 
   const { search } = useLocation();
-  const history = useHistory();
 
   useEffect(() => {
-    const manufacturersFilter = manufacturers.map(
-      (bicycles) => bicycles.item.manufacturer
-    );
-    setManufacturersCheckBoxOptions(manufacturersFilter);
-  }, [manufacturers]);
+    if (bicycles || category) {
+      let all = [];
+      if (link === "all") {
+        all = bicycles;
+      } else {
+        all = category;
+      }
+
+      const val = all
+        .map((bicycles) => bicycles.item.manufacturer)
+        .map((x) => (typeof x === "string" ? x.toLowerCase() : x));
+
+      const name = Array.from(new Set(val)).map(
+        (item) => item.charAt(0).toUpperCase() + item.slice(1)
+      );
+
+      //setting amount
+      //two different datasets
+      const arrLengths = [];
+      const uniqueNames = name.map((i) => i.toLowerCase());
+      uniqueNames.forEach((item) => {
+        arrLengths.push(getRepetitives(val, item));
+      });
+
+      const result = arrLengths.map((x, i) => ({
+        name: name[i],
+        value: x,
+      }));
+
+      setManufacturersCheckBoxOptions(result);
+    }
+  }, [bicycles, category, link]);
 
   useEffect(() => {
     if (search) {
@@ -66,22 +98,12 @@ const ManufacturerCheckBox = ({
     }
   }, [queryManufacturer, checkBoxValues]);
 
-  // on 0 - recharge on button remove
-
-  // useEffect(() => {
-  // 		const newChecked = []
-  // 		if (checkBoxValues.length == 0 && manufacturersCheckBoxOptions.length != 0) {
-  // 			let values = manufacturersCheckBoxOptions.map((item) => item)
-  // 				newChecked.push(...values)
-  // 				filterByManufacturer(newChecked)
-  // 		}
-  // }, [checkBoxValues])
-
+  //changing this also
   useEffect(() => {
     let filteredManufacturer = [...manufacturersCheckBoxOptions];
     if (searchValue) {
       filteredManufacturer = filteredManufacturer.filter((man) => {
-        return man.toLowerCase().includes(searchValue.toLowerCase());
+        return man.name.toLowerCase().includes(searchValue.toLowerCase());
       });
     }
     setFilteredSelection(filteredManufacturer);
@@ -98,7 +120,12 @@ const ManufacturerCheckBox = ({
     setQueryValues(result);
   }, [manQuery, newQuery]);
 
-  //currentIndex === -1, because indexOf outputs -1 when no such value exist
+  const getRepetitives = (array, value) => {
+    let count = 0;
+    array.forEach((v) => v === value && count++);
+    return count;
+  };
+
   const handleToggle = (label) => {
     const currentIndex = checkBoxValues.indexOf(label);
     const newChecked = [...checkBoxValues];
@@ -116,24 +143,36 @@ const ManufacturerCheckBox = ({
     setSearchValue(event.target.value);
   };
 
+  const confirmSubmit = () => {
+    if (onModalClose) {
+      onModalClose();
+    }
+    updateQuery(search, "manufacturer", queryValues);
+  };
+
   return (
     <div className="manufacturer-wrapper">
       <Input placeholder="Search..." onChange={onSearchChange} />
       <div className="manufacturer-checkbox-container">
         {filteredSelection.map((label, key) => {
           return (
-            <div className="manufacturer-checkbox">
-              <Checkbox key={key} onChange={() => handleToggle(label)} />
-              <span className="manufacturer-checkbox-title">{label}</span>
+            <div key={key} className="manufacturer-checkbox">
+              <div className="manufacturer-checkbox-selection">
+                <Checkbox key={key} onChange={() => handleToggle(label.name)} />
+                <span className="manufacturer-checkbox-title">
+                  {label.name}
+                </span>
+              </div>
+
+              <span className="manufacturer-checkbox-sum">{label.value}</span>
             </div>
           );
         })}
       </div>
-
       <button
         disabled={!checkBoxValues.length}
         className="confirm"
-        onClick={() => updateQuery(search, "manufacturer", queryValues)}
+        onClick={confirmSubmit}
       >
         {" "}
         confirm{" "}
@@ -142,8 +181,9 @@ const ManufacturerCheckBox = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  manufacturers: selectAll(state),
+const mapStateToProps = (state, ownProps) => ({
+  bicycles: selectAll(state),
+  category: selectCategory(ownProps.link)(state),
   queryManufacturer: manufacturerSelector(state),
 });
 

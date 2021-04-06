@@ -1,9 +1,6 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-
-import { useLocation } from "react-router-dom";
-
-import { LazyLoadComponent } from "react-lazy-load-image-component";
+import LazyLoad from "react-lazyload";
 import CollectionItem from "../collection-item/collection-item.component";
 
 import { selectAll } from "../../redux/shop/shop.selectors";
@@ -18,8 +15,6 @@ import {
   SpinnerOverlay,
 } from "../with-spinner/with-spinner.styles";
 import "./collections-overview.styles.scss";
-
-//filtering is not working properly
 
 const CollectionsOverview = ({
   match,
@@ -41,19 +36,18 @@ const CollectionsOverview = ({
 
   useEffect(() => {
     let result = [...bicycles];
-
     if (filterprice) {
       result = result.filter(
         (bicycle) =>
-          bicycle.item.price >= filterprice[1] &&
-          bicycle.item.price <= filterprice[0]
+          bicycle.item.price >= Number(filterprice[0]) &&
+          bicycle.item.price <= Number(filterprice[1])
       );
     }
     if (filtermanufacturer) {
       result = result.filter((bicycle) =>
         bicycle.item.manufacturer
-          .split(",")
-          .some((key) => filtermanufacturer.includes(key))
+          .toLowerCase()
+          .includes(filtermanufacturer.join().toLowerCase())
       );
     }
     if (filterlocation) {
@@ -69,7 +63,7 @@ const CollectionsOverview = ({
   }, []);
 
   useEffect(() => {
-    if (toggleHeader == false) {
+    if (toggleHeader === false) {
       toggleCarousel();
     }
   }, []);
@@ -104,8 +98,13 @@ const CollectionsOverview = ({
   return (
     <div className="preview">
       {filteredBicycles.map(({ id, ...otherCollectionProps }) => (
-        <CollectionItem key={id} id={id} {...otherCollectionProps} />
+        <LazyLoad height={200} offset={100} once>
+          <CollectionItem key={id} id={id} {...otherCollectionProps} />
+        </LazyLoad>
       ))}
+      {filteredBicycles.length === 0 && (
+        <h3 style={{ padding: "10px" }}>No bicycles to display</h3>
+      )}
     </div>
   );
 };

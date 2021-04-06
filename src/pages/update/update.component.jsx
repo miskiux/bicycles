@@ -13,10 +13,9 @@ function UpdatePage({ bicycles, user }) {
         (bicycle) => bicycle.userId === user.id
       );
       setUserBicycles(userBicycles);
-      console.log(userBicycles);
     }
   }, [user, bicycles]);
-
+  console.log(userBicycles);
   return <BiciInfo userBicycles={userBicycles} />;
 }
 

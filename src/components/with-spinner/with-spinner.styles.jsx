@@ -9,11 +9,15 @@ export const SpinnerOverlay = styled.div`
 `;
 
 export const CustomSpinnerOverlay = styled.div`
-  position: sticky;
+  position: absolute;
   top: 0;
   display: flex;
   justify-content: center;
-  z-index: 100;
+  z-index: ${(props) => (props.index === "front" ? 0 : -1)};
+  margin: auto;
+  left: 0;
+  bottom: 0;
+  right: 0;
   height: 50px;
   width: 100%;
   padding: 8px;

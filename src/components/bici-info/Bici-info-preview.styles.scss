@@ -1,31 +1,43 @@
 .bici-info-preview-list {
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  align-items: flex-start;
+  height: auto;
+  max-height: 150px;
+  overflow: scroll;
 
-  .bici-info-date {
-    font-size: 9px;
+  &::-webkit-scrollbar {
+    display: none;
   }
-  .preview-list-labels {
-    display: flex;
-    justify-content: space-between;
-    color: rgba(0, 0, 0, 0.15);
-    font-size: 10px;
-  }
-
-  .bici-info-title {
-    cursor: default;
-    display: flex;
+  .bici-info-label-container {
+    width: 100%;
+    display: grid;
     justify-content: space-between;
     align-items: center;
-    letter-spacing: 1px;
-    height: 40px;
+    grid-template-columns: repeat(3, 33.33%);
+    font-size: 0.75rem;
+    color: rgba(51, 51, 51, 0.3);
+    text-align: center;
+  }
+
+  .bici-info-overview {
     width: 100%;
-    padding: 5px;
+  }
+  .bici-info-item {
+    display: grid;
+    justify-content: space-between;
+    align-items: center;
+    grid-template-columns: repeat(3, 33.33%);
+    grid-template-rows: repeat(auto);
+    text-align: center;
+    height: auto;
+    min-height: 30px;
+    width: 100%;
+    margin-bottom: 7px;
+    cursor: pointer;
 
     &:hover {
-      box-shadow: rgba(228, 233, 237, 0.25) 0px 30px 60px -12px inset,
-        rgba(228, 233, 237, 0.3) 0px 18px 36px -18px inset;
+      background: rgba(51, 51, 51, 0.1);
     }
   }
 }

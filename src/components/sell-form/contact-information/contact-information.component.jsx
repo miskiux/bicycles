@@ -12,7 +12,7 @@ import "./contact-information.scss";
 
 const mapStyle = {
   width: "100%",
-  height: 600,
+  height: 533,
   zIndex: 1,
 };
 
@@ -29,13 +29,11 @@ function ContactInformation({
   const [location, setLocation] = useState("");
 
   const mapRef = useRef();
-  const geocoderContainerRef = useRef();
 
   useEffect(() => {
     if (location) {
       console.log(mapRef.current);
       callback("address", location);
-      callback("coordinates", [viewport.latitude, viewport.longitude]);
     }
   }, [location]);
 
@@ -72,11 +70,7 @@ function ContactInformation({
 
   //double clicks on map
   return (
-    <div style={{ height: "100vh" }}>
-      <div
-        ref={geocoderContainerRef}
-        style={{ position: "absolute", top: 20, left: 20, zIndex: 1 }}
-      />
+    <div className="map-container">
       <ReactMapGL
         ref={mapRef}
         scrollZoom={false}

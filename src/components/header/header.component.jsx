@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import AccountDropdown from "../account-dropdown/account-dropdown.component";
 
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
-
-import { toggleSideNav } from "../../redux/side-nav/side-nav.actions";
+import { selectAccount } from "../../redux/side-nav/side-nav.selectors";
+import { toggleAccount } from "../../redux/side-nav/side-nav.actions";
 import { selectToggleCarousel } from "../../redux/shop/shop.selectors";
 
 import { signOutStart } from "../../redux/user/user.actions";
@@ -22,16 +21,9 @@ const Header = ({
   hidden,
   toggleCarousel,
   signOutStart,
-  toggleSideNav,
+  toggleAccount,
+  selectAccount,
 }) => {
-  const [visible, setVisible] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
-  const location = useLocation();
-  console.log(location);
-  const openUserAccount = () => {
-    setVisible((state) => !state);
-  };
-
   return (
     <>
       {toggleCarousel ? (
@@ -55,7 +47,7 @@ const Header = ({
                 sign in
               </Link>
             ) : (
-              <div className="account-option" onClick={openUserAccount}>
+              <div className="account-option" onClick={toggleAccount}>
                 <FiberManualRecordIcon
                   className="user-account-logo"
                   fontSize="large"
@@ -64,21 +56,22 @@ const Header = ({
               </div>
             )}
           </div>
-          {visible && <AccountDropdown />}
+          {selectAccount && <AccountDropdown />}
         </div>
       ) : null}
     </>
   );
 };
-// for multiple selectors createStructureSelector
+
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
   toggleCarousel: selectToggleCarousel,
+  selectAccount: selectAccount,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   signOutStart: () => dispatch(signOutStart()),
-  toggleSideNav: () => dispatch(toggleSideNav()),
+  toggleAccount: () => dispatch(toggleAccount()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

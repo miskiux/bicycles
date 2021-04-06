@@ -8,7 +8,7 @@ import { uploadSuccess, submitError } from "./sell.actions";
 export function* uploadBicycle(action) {
   try {
     yield addBiciData(action.payload);
-    yield put(uploadSuccess("Your bicycle has been submitted"));
+    yield put(uploadSuccess("Bicycle submitted"));
   } catch (error) {
     yield put(submitError("Something went wrong... Try again"));
   }

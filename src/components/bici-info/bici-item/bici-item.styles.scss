@@ -1,35 +1,88 @@
 .upload-item {
   display: flex;
   flex-direction: row;
-  height: 600px;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: auto;
 
-  .upload-item-image {
+  .upload-item-image-container {
     display: flex;
     flex-direction: column;
-    background: white;
-    padding: 10px;
-    max-height: 310px;
-    height: auto;
-    margin-left: 20px;
-    margin-top: 20px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+    align-items: center;
+    text-align: center;
+    width: auto;
+    height: 500px;
+
+    .upload-item-image {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: white;
+      padding: 10px;
+      height: auto;
+      min-height: 400px;
+      min-width: 400px;
+      max-width: 400px;
+      margin-left: 20px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+    }
+    .delete-confirmation-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .delete-button {
+      position: absolute;
+      width: auto !important;
+      min-width: 140px !important;
+      z-index: 2;
+      background: rgba(246, 71, 71, 1);
+      color: white;
+      padding: 8px;
+      outline: none;
+      border: none;
+      border-radius: 3px;
+    }
+    .delete-confirmation {
+      position: absolute;
+      z-index: 1;
+      width: auto;
+      color: rgba(246, 71, 71, 1);
+
+      .delete-confirmation-text {
+        cursor: default;
+        &:hover {
+          border-bottom: 1px solid;
+        }
+      }
+    }
   }
+
   .main-upload-image {
     height: auto;
     max-height: 300px;
-    max-width: 300px;
+    max-width: 100%;
   }
   .upload-date {
     text-align: center;
     padding: 5px;
   }
+
   .update-bicycle-form-container {
+    position: relative;
     margin-top: 20px;
     margin-left: 40px;
     background: white;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
-    height: auto;
-    min-width: 700px;
+    height: 600px;
+    max-width: 700px;
+    width: 700px;
   }
 
   .update-bicycle-title {
@@ -38,6 +91,7 @@
     justify-content: space-between;
     align-items: center;
     height: 50px;
+    width: 100%;
     border-bottom: 1px solid;
     border-color: rgba(0, 0, 0, 0.05);
   }
@@ -72,8 +126,16 @@
     background: none;
     border: none;
     outline: none;
+    opacity: 0.7;
+    cursor: default;
+    &:hover {
+      opacity: 1;
+    }
   }
   .update-options {
     align-self: center;
+  }
+  .main-upload-image-hidden {
+    visibility: hidden;
   }
 }

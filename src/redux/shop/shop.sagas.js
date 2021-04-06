@@ -1,27 +1,16 @@
-//sagas listenting to actions
-
-// saga middleware to run sagas concurrently - to run them all together
-// takeEvery () => listens for every action of a specific type we pass to it. creates a non blocking code. to continue running other sagas
-// takeLatest () => issuing API call one time
-
-// call => invokes the method
-//put => dispatches an action
-
 import { takeLatest, call, put, all } from "redux-saga/effects";
 
 import {
   firestore,
   getBiciDataForShop,
   deleteUserBicycleImages,
-  updateUserBicycle,
 } from "../../firebase/firebase.utils";
 
 import {
+  fetchBicyclesStart,
   fetchBicyclesSuccess,
   fetchBicyclesFailure,
   deleteBicycleSuccess,
-  hasBicycleDeleted,
-  bicycleUpdateSuccess,
 } from "./shop.actions";
 
 import ShopActionTypes from "./shop.types";
@@ -41,22 +30,20 @@ export function* fetchBicyclesStartAsync() {
 export function* deleteBicycle({ payload: { imgKey, id } }) {
   try {
     const bicycleRef = firestore.collection("bicycle").doc(id);
-    const bicycleDelete = bicycleRef.delete();
+    bicycleRef.delete();
 
-    yield all([call(deleteUserBicycleImages, imgKey), call(bicycleDelete)]);
+    yield call(deleteUserBicycleImages, imgKey);
+    yield put(deleteBicycleSuccess());
   } catch (error) {
     console.log(error);
-  } finally {
-    yield all([put(deleteBicycleSuccess()), put(hasBicycleDeleted())]);
   }
 }
 
-export function* updateBicycle({ payload: { id, update } }) {
-  yield call(updateUserBicycle, id, update);
-  yield put(bicycleUpdateSuccess());
+export function* fetchNewBicycles() {
+  yield put(fetchBicyclesStart());
 }
 
-export function* fetchBicyclesStart() {
+export function* fetchBicycles() {
   yield takeLatest(
     ShopActionTypes.FETCH_BICYCLES_START,
     fetchBicyclesStartAsync
@@ -67,30 +54,27 @@ export function* onBicycleDelete() {
   yield takeLatest(ShopActionTypes.DELETE_BICYCLE_START, deleteBicycle);
 }
 
-export function* onBicycleUpdate() {
-  yield takeLatest(ShopActionTypes.BICYCLE_UPDATE_START, updateBicycle);
-}
-
 export function* onBicycleUpdateSuccess() {
-  yield takeLatest(
-    ShopActionTypes.BICYCLE_UPDATE_SUCCESS,
-    fetchBicyclesStartAsync
-  );
+  yield takeLatest(UpdateActionTypes.BICYCLE_UPDATE_SUCCESS, fetchNewBicycles);
 }
 
 export function* onImageUpdateFinish() {
   yield takeLatest(
     UpdateActionTypes.IMAGE_URL_UPDATE_SUCCESS,
-    fetchBicyclesStartAsync
+    fetchNewBicycles
   );
+}
+
+export function* onBicycleDeleteFinish() {
+  yield takeLatest(ShopActionTypes.GET_DELETE_DEFAULT, fetchNewBicycles);
 }
 
 export function* shopSagas() {
   yield all([
-    call(fetchBicyclesStart),
+    call(fetchBicycles),
     call(onBicycleDelete),
-    call(onBicycleUpdate),
     call(onBicycleUpdateSuccess),
     call(onImageUpdateFinish),
+    call(onBicycleDeleteFinish),
   ]);
 }

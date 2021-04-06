@@ -8,6 +8,9 @@ const INITIAL_STATE = {
   hasToDelete: false,
   currentId: "",
   success: false,
+  isFormUpdating: false,
+  snackbar: false,
+  message: "",
 };
 const updateReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -20,6 +23,7 @@ const updateReducer = (state = INITIAL_STATE, action) => {
     case UpdateActiontypes.IMAGE_UPDATE_START:
       return {
         ...state,
+        success: false,
         isLoading: true,
         hasToDelete: action.payload.toRemove,
         isImageUpdating: true,
@@ -34,6 +38,7 @@ const updateReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isUrlUpdating: false,
+        isImageUpdating: false,
         isLoading: false,
         success: true,
       };
@@ -42,6 +47,37 @@ const updateReducer = (state = INITIAL_STATE, action) => {
         ...state,
         currentId: action.payload,
       };
+    case UpdateActiontypes.BICYCLE_UPDATE_START:
+      return {
+        ...state,
+        success: false,
+        isFormUpdating: true,
+      };
+    case UpdateActiontypes.BICYCLE_UPDATE_SUCCESS:
+      return {
+        ...state,
+        message: action.payload,
+        isFormUpdating: false,
+        success: true,
+        snackbar: !state.snackbar,
+      };
+    case UpdateActiontypes.INVALID_UPDATE_FORM:
+      return {
+        ...state,
+        message: action.payload,
+        snackbar: !state.snackbar,
+      };
+    case UpdateActiontypes.GET_DEFAULT:
+      return {
+        ...state,
+        success: false,
+      };
+    case UpdateActiontypes.TOGGLE_UPDATE_SNACKBAR:
+      return {
+        ...state,
+        snackbar: !state.snackbar,
+      };
+
     default:
       return state;
   }

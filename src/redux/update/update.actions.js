@@ -32,3 +32,26 @@ export const selectCurrent = (payload) => ({
   type: UpdateActiontypes.SELECT_CURRENT,
   payload,
 });
+
+export const bicycleUpdateStart = (values) => ({
+  type: UpdateActiontypes.BICYCLE_UPDATE_START,
+  payload: values,
+});
+
+export const bicycleUpdateSuccess = (successMessage) => ({
+  type: UpdateActiontypes.BICYCLE_UPDATE_SUCCESS,
+  payload: successMessage,
+});
+
+export const invalidUpdateForm = (errorMessage) => ({
+  type: UpdateActiontypes.INVALID_UPDATE_FORM,
+  payload: errorMessage,
+});
+
+export const getDefault = () => ({
+  type: UpdateActiontypes.GET_DEFAULT,
+});
+
+export const toggleSnackBar = () => ({
+  type: UpdateActiontypes.TOGGLE_UPDATE_SNACKBAR,
+});

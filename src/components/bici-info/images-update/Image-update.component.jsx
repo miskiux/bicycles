@@ -15,7 +15,6 @@ import {
 const thumbsContainer = {
   verticalAlign: "top",
   display: "inline-block",
-  marginTop: 16,
 };
 
 const thumb = {
@@ -83,7 +82,6 @@ const Container = styled.div`
   transition: border 0.24s ease-in-out;
 `;
 const ImageUpdate = ({
-  images,
   allImages,
   populateImages,
   removeFile,
@@ -109,6 +107,7 @@ const ImageUpdate = ({
       let index = imgArr.findIndex((i) => i.id === mainImgId);
       let newArr = arrayMove(imgArr, index, 0);
       imgArr = newArr;
+      console.log(imgArr);
       setImageOrder(imgArr);
     }
   }, [mainImgId]);
@@ -118,7 +117,7 @@ const ImageUpdate = ({
       let imgArr = [...allImages];
       setOpen(true);
       let newArr = imgArr.slice(0, 6);
-      populateImages(newArr);
+      setImageOrder(newArr);
     }
   }, [allImages]);
 
@@ -164,8 +163,6 @@ const ImageUpdate = ({
     onDragEnter,
     onDragLeave,
   });
-
-  //not working
 
   const getMainImage = (index) => {
     setMainImgId(index);
@@ -215,9 +212,13 @@ const ImageUpdate = ({
           <div className="text-wrapper">
             <input {...getInputProps()} />
             <span className="image-text">Images</span>
-            <button className="upload-text" type="button" onClick={open}>
-              Upload Images
-            </button>
+            <div className="image-upload-text">
+              <button className="upload-text" type="button" onClick={open}>
+                Upload Images
+              </button>
+              <span style={{ fontSize: "9px" }}>or</span>
+              <span>Drop it</span>
+            </div>
           </div>
           <aside style={thumbsContainer}>
             <ul>{imagePreview}</ul>
@@ -233,10 +234,10 @@ const ImageUpdate = ({
           <div className="confirmation-wrapper">
             {isLoading || isFetching ? (
               <CustomSpinnerOverlay>
-                <SpinnerContainer />
+                <SpinnerContainer size={"small"} />
               </CustomSpinnerOverlay>
             ) : (
-              <>
+              <div className="confirmation-wrapper-buttons">
                 <Button
                   type="button"
                   color="primary"
@@ -253,7 +254,7 @@ const ImageUpdate = ({
                 >
                   Done
                 </Button>
-              </>
+              </div>
             )}
           </div>
           {/* {errors.image && (

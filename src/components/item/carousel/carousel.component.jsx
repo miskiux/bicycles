@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-
+import ClearIcon from "@material-ui/icons/Clear";
 import { toggleCarousel } from "../../../redux/shop/shop.actions";
 
 import Carousel from "react-multi-carousel";
@@ -33,16 +33,14 @@ const ViewCarousel = ({ item, handleCarousel, toggleCarousel }) => {
   };
 
   return (
-    <div>
-      <div
-        className="remove-button"
+    <>
+      <ClearIcon
+        className="clear-icon"
         onClick={() => {
           handleCarousel();
           toggleCarousel();
         }}
-      >
-        &#10005;
-      </div>
+      />
       <div className="slider">
         {url.map((image, index) => {
           return (
@@ -62,7 +60,7 @@ const ViewCarousel = ({ item, handleCarousel, toggleCarousel }) => {
           <ChevronRightIcon style={{ fontSize: 40 }} />
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

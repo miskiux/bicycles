@@ -7,6 +7,10 @@ import {
   genderList,
 } from "../../../../assets/additional/form-helpers.js";
 
+// phone
+// description
+// errors
+
 export const GeneralUpdate = (props) => {
   return (
     <>
@@ -15,7 +19,9 @@ export const GeneralUpdate = (props) => {
           <Form.Label>Manufacturer</Form.Label>
           <Hint options={props.hintData}>
             <Form.Control
-              className="input-field"
+              className={`${
+                props.errors.manufacturer ? "input-field-error" : "input-field"
+              }`}
               type="text"
               size="sm"
               name="manufacturer"
@@ -31,7 +37,9 @@ export const GeneralUpdate = (props) => {
           </Hint>
           <Form.Label>Model</Form.Label>
           <Form.Control
-            className="input-field"
+            className={`${
+              props.errors.model ? "input-field-error" : "input-field"
+            }`}
             ref={props.register}
             type="text"
             size="sm"
@@ -45,6 +53,9 @@ export const GeneralUpdate = (props) => {
           <Form.Label>Bicycle Type</Form.Label>
           <Form.Control
             as="select"
+            className={`${
+              props.errors.bicycleType ? "input-field-error" : "input-field"
+            }`}
             ref={props.register}
             name="bicycleType"
             size="sm"
@@ -168,6 +179,9 @@ export const GeneralUpdate = (props) => {
           <Form.Label>Price</Form.Label>
           <Form.Control
             name="price"
+            className={`${
+              props.errors.price ? "input-field-error" : "input-field"
+            }`}
             ref={props.register}
             size="sm"
             autoComplete="off"
@@ -181,6 +195,9 @@ export const GeneralUpdate = (props) => {
           <Form.Label>Phone</Form.Label>
           <Form.Control
             name="phone"
+            className={`${
+              props.errors.phone ? "input-field-error" : "input-field"
+            }`}
             ref={props.register}
             size="sm"
             autoplaceholder="aggressive"
@@ -194,6 +211,9 @@ export const GeneralUpdate = (props) => {
           <Form.Label>Address</Form.Label>
           <Form.Control
             name="address"
+            className={`${
+              props.errors.address ? "input-field-error" : "input-field"
+            }`}
             ref={props.register}
             size="sm"
             autoplaceholder="aggressive"

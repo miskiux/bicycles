@@ -1,13 +1,17 @@
 .sign-in-and-sign-up {
-	width: 950px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	margin: 30px auto;
+  position: relative;
+  width: 70%;
+  max-width: 1000px;
+  height: 600px;
+  margin: 30px auto;
+  background: rgba(228, 233, 237, 0.2);
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
 
-	.sign-options {
-		padding: 50px;
-		display: flex;
-		justify-content: center;
-	}
+  .sign-options {
+    margin: auto;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
 }

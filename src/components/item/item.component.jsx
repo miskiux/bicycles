@@ -8,23 +8,13 @@ import { toggleCarousel } from "../../redux/shop/shop.actions";
 import ReactHover, { Trigger, Hover } from "react-hover";
 
 import ViewCarousel from "./carousel/carousel.component";
-import ReactMapGL, { Marker } from "react-map-gl";
+import ReactMapGL, { Marker, StaticMap } from "react-map-gl";
 
 import { Container, Row, Col } from "react-bootstrap";
 
 import RoomSharpIcon from "@material-ui/icons/RoomSharp";
-import "./item.styles.css";
-
-import "./styles.scss";
 import classNames from "classnames";
-
-//UL
-// 3 on each ul
-// figuring out how to wrap larger text
-
-//marker losing its sight on zoom
-
-//overflow
+import "./item.styles.scss";
 
 const mapStyle = {
   width: "100%",
@@ -37,19 +27,25 @@ const optionsCursorTrueWithMargin = {
   shiftY: 0,
 };
 
-const Item = ({ item, toggleCarousel, subCategory, phone, email }) => {
+const Item = ({
+  item,
+  toggleCarousel,
+  subCategory,
+  phone,
+  email,
+  bicycleType,
+}) => {
   //cursor
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const [hidden, setHidden] = useState(false);
-  const [isSpec, setIsSpec] = useState(false);
   const [open, setOpen] = useState(true);
 
   // location
   const [viewport, setViewport] = useState({
     latitude: 54.526,
     longitude: 15.2551,
-    zoom: 11,
+    zoom: 8,
     bearing: 0,
     pitch: 0,
   });
@@ -63,7 +59,6 @@ const Item = ({ item, toggleCarousel, subCategory, phone, email }) => {
     description,
     gender,
     info,
-    options,
     price,
     size,
     year,
@@ -71,16 +66,12 @@ const Item = ({ item, toggleCarousel, subCategory, phone, email }) => {
     url,
   } = item;
 
-  //carousel
-
-  //cursor
   useEffect(() => {
     addEventListeners();
     return () => removeEventListeners();
   }, []);
 
-  //make sure sell form is giving place_name
-
+  //
   useEffect(() => {
     if (address) {
       try {
@@ -103,11 +94,6 @@ const Item = ({ item, toggleCarousel, subCategory, phone, email }) => {
       }
     }
   }, []);
-
-  const handleViewportChange = useCallback(
-    (newViewport) => setViewport(newViewport),
-    []
-  );
 
   const addEventListeners = () => {
     document.addEventListener("mousemove", onMouseMove);
@@ -137,14 +123,8 @@ const Item = ({ item, toggleCarousel, subCategory, phone, email }) => {
     "cursor--hidden": hidden,
   });
 
-  //carousel pop handler for child
   const handleCarousel = () => {
     setOpen(!open);
-  };
-
-  //dispalying specifications based on option index
-  const showSpecification = () => {
-    setIsSpec(true);
   };
 
   return (
@@ -162,7 +142,12 @@ const Item = ({ item, toggleCarousel, subCategory, phone, email }) => {
                 style={{
                   backgroundImage: `url(${url[0]})`,
                 }}
-              ></div>
+              >
+                <div className="item-name">
+                  <h3 className="item-title">{manufacturer}</h3>
+                  <h3 className="item-title">{model}</h3>
+                </div>
+              </div>
             </Trigger>
             <Hover type="hover">
               <div
@@ -176,83 +161,74 @@ const Item = ({ item, toggleCarousel, subCategory, phone, email }) => {
               </div>
             </Hover>
           </ReactHover>
-          <Container className="item-container">
+          <Container className="item-container" fluid>
             <Row className="item-info-container">
-              <Col>
-                <div className="item-info">
+              {size && (
+                <Col className="header-info">
                   <h6 className="item-info-title">Size</h6>
-                  <span>{size}</span>
-                  <span>cm</span>
-                </div>
-                <div className="item-info">
+                  <div className="size-info">
+                    <span>{size}</span>
+                    <span style={{ fontSize: "0.75rem" }}>cm</span>
+                  </div>
+                </Col>
+              )}
+              {year && (
+                <Col className="header-info">
                   <h6 className="item-info-title">Year</h6>
                   <span>{year}</span>
-                </div>
-
-                <div className="item-info">
-                  <h6 className="item-info-title">Condition</h6>
+                </Col>
+              )}
+              {condition && (
+                <Col className="header-info">
+                  <h6 className="item-info-title">New/Used</h6>
                   <span>{condition}</span>
-                </div>
-
-                <div className="item-info">
+                </Col>
+              )}
+              {gender && (
+                <Col className="header-info">
                   <h6 className="item-info-title">Gender</h6>
                   <span>{gender}</span>
-                </div>
-
-                <div className="item-info">
+                </Col>
+              )}
+              {subCategory ? (
+                <Col className="header-info">
                   <h6 className="item-info-title">Type</h6>
                   <span>{subCategory}</span>
-                </div>
-              </Col>
-              <Col xs lg="2">
-                <div className="item-price">
-                  <h3>€{price}</h3>
-                </div>
+                </Col>
+              ) : (
+                <Col className="header-info">
+                  <h6 className="item-info-title">Type</h6>
+                  <span>{bicycleType}</span>
+                </Col>
+              )}
+              <Col xs lg="2" className="header-info">
+                <h3 className="item-price">€{price}</h3>
               </Col>
             </Row>
           </Container>
-          <div className="item-name">
-            <h2 className="item-manufacturer">{manufacturer}</h2>
-            <h3 style={{ letterSpacing: "15px" }}>{model}</h3>
+          <div className="client-info">
+            <p>{info}</p>
           </div>
-
-          <div className="item-specifications">
-            <ul>
-              {options.map((option, i) => (
-                <div className="item-options">
-                  <li key={i} onMouseOver={showSpecification}>
-                    {option}
-                  </li>
-                  {isSpec ? (
-                    <div className="item-description">
-                      <span>{description[i]}</span>
-                    </div>
-                  ) : null}
-                </div>
-              ))}
-            </ul>
-          </div>
-          <Container className="client-wrapper">
+          <Container className="client-wrapper" fluid>
             <Row>
               <Col xs={6}>
-                <div className="client-info">
-                  <p>{info}</p>
+                <div className="item-specifications-wrapper">
+                  {description.map(({ item, value, id }) => (
+                    <div key={id} className="item-specification">
+                      <span className="specification-label">{item}:</span>
+                      <span className="specification-value">{value}</span>
+                    </div>
+                  ))}
                 </div>
               </Col>
               <Col xs={6} className="client-contacts">
                 <div>
-                  <ReactMapGL
-                    {...viewport}
-                    {...mapStyle}
-                    onViewportChange={handleViewportChange}
+                  <StaticMap
                     mapboxApiAccessToken={process.env.REACT_APP_API_KEY}
+                    {...mapStyle}
+                    {...viewport}
                   >
-                    <Marker
-                      latitude={latitude}
-                      longitude={longitude}
-                      offsetLeft={-20}
-                      offsetTop={-10}
-                    >
+                    <Marker latitude={latitude} longitude={longitude}>
                       <div>
                         <RoomSharpIcon
                           style={{ color: "#FF8C00" }}
@@ -260,7 +236,7 @@ const Item = ({ item, toggleCarousel, subCategory, phone, email }) => {
                         />
                       </div>
                     </Marker>
-                  </ReactMapGL>
+                  </StaticMap>
                   <div>
                     <div className="client-additional-info">
                       <h3>Address</h3>

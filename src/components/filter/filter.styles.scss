@@ -1,35 +1,56 @@
 .filter-container {
-  position: absolute;
-  top: 100px;
   width: 100%;
+  height: 100%;
+  z-index: 100;
+  margin-top: 57px;
 
   .filter-trigger {
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 40px;
+    width: 100%;
+  }
+
+  .remove-icon {
+    width: auto;
+  }
+
+  .ui.accordion:not(.styled) .title ~ .content:not(.ui) {
+    padding: 0;
   }
 
   .accordion-title {
     border-bottom: 1px solid;
-    border-top: 1px solid;
+
     border-color: rgba(228, 233, 237, 1);
-    letter-spacing: 1px;
+    font-weight: bold;
+  }
+  .ui.accordion .accordion {
+    margin: 0;
+    &:hover {
+      background-color: white;
+    }
+  }
+
+  .ui.accordion .sub-accordion {
+    margin: 0;
+    &:hover {
+      background-color: white;
+    }
   }
 
   .sub-accordion-title {
     border-bottom: 1px solid;
     border-color: rgba(228, 233, 237, 1);
     text-align: center;
-    letter-spacing: 1px;
+    vertical-align: middle;
+    height: 50px;
+    line-height: 35px;
   }
 
-  .filter-options {
-  }
   .filter-selection {
     text-align: center;
-  }
-
-  .filter-option {
   }
 
   .ui.dropdown .menu > .item {
@@ -41,5 +62,12 @@
 
   .dropdown.icon {
     display: none;
+  }
+}
+
+.modal-filter-container {
+  position: relative;
+  .modal-filter-content {
+    background-color: white;
   }
 }

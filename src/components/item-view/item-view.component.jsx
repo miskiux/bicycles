@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 import { connect } from "react-redux";
-import { compose } from "redux";
 
 import { useParams } from "react-router-dom";
 
@@ -9,7 +8,7 @@ import Item from "../item/item.component";
 
 import { selectAll } from "../../redux/shop/shop.selectors";
 
-const ItemView = ({ bicycles, match, location }) => {
+const ItemView = ({ bicycles }) => {
   const [item, setItem] = useState([]);
 
   const { bicycleId } = useParams();
@@ -20,11 +19,11 @@ const ItemView = ({ bicycles, match, location }) => {
   }, [bicycleId, bicycles]);
 
   return (
-    <div>
+    <>
       {item.map(({ id, ...otherProps }) => (
         <Item key={id} {...otherProps} />
       ))}
-    </div>
+    </>
   );
 };
 

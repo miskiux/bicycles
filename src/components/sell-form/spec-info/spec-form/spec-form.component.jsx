@@ -54,11 +54,11 @@ const SpecForm = ({ callback, description, specsData, specsCallback }) => {
   };
 
   const partsInfo = {
-    bottom: specsData.slice(0, 4),
-    frame: specsData.slice(4, 6),
-    handler: specsData.slice(6, 10),
-    saddle: specsData.slice(10, 11),
-    wheel: specsData.slice(11, 16),
+    bottom: specsData.slice(0, 5),
+    frame: specsData.slice(5, 7),
+    handler: specsData.slice(7, 11),
+    saddle: specsData.slice(11, 12),
+    wheel: specsData.slice(12, 17),
   };
 
   const addClickListener = useCallback(() => {
@@ -69,13 +69,13 @@ const SpecForm = ({ callback, description, specsData, specsCallback }) => {
     });
   }, []);
 
-  const removeClickListener = () => {
+  const removeClickListener = useCallback(() => {
     clipIds.forEach((item) => {
       document
         .getElementById(item)
         .removeEventListener("click", () => handleShow(item));
     });
-  };
+  }, []);
 
   useEffect(() => {
     if (listenDocument) {
@@ -83,7 +83,6 @@ const SpecForm = ({ callback, description, specsData, specsCallback }) => {
     }
   }, [clip, listenDocument]);
 
-  //click
   useEffect(() => {
     addClickListener();
     return () => removeClickListener();
@@ -115,12 +114,6 @@ const SpecForm = ({ callback, description, specsData, specsCallback }) => {
     specsCallback(inputVals);
   };
 
-  //unneccesarrloty
-  const getTypedSpecs = () => {
-    let specsArr = specsData.filter((i) => i.value.length);
-    setViewSelection(specsArr);
-  };
-
   return (
     <div class="spec-container">
       <div className="image-spec-wrapper">
@@ -147,20 +140,6 @@ const SpecForm = ({ callback, description, specsData, specsCallback }) => {
           <SaddleClip />
           <WheelClip />
         </svg>
-      </div>
-      <div className="view-selection-container">
-        <div onClick={getTypedSpecs}>
-          <h3 className="view-selections">View Selected</h3>
-        </div>
-        <div className="view-selection-grid">
-          {viewSelection &&
-            viewSelection.map(({ item, value }, i) => (
-              <div key={i} className="view-selection-item">
-                <span className="selection-label">{item}:</span>
-                <span className="selection-value">{value}</span>
-              </div>
-            ))}
-        </div>
       </div>
     </div>
   );

@@ -181,7 +181,6 @@ const ImageInput = ({ callback, errors, images }) => {
 
   return (
     <div className="image-upload-container">
-      {console.log(images)}
       {showDrop ? (
         <Container
           {...getRootProps({ isDragActive, isDragAccept, isDragReject })}

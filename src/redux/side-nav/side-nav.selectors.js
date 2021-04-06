@@ -1,13 +1,18 @@
-import { createSelector } from 'reselect';
+import { createSelector } from "reselect";
 // to save some re-renders off of components
-const selectSidebar = state => state.sidenav
+const selectSidebar = (state) => state.sidenav;
 
 export const selectFavouriteItems = createSelector(
-[selectSidebar],
-(sidenav) => sidenav.favouriteItems
-	)
+  [selectSidebar],
+  (sidenav) => sidenav.favouriteItems
+);
 
 export const selectCartItemsFlash = createSelector(
-[selectFavouriteItems],
-favouriteItems => favouriteItems.length !== 0
-	)
+  [selectFavouriteItems],
+  (favouriteItems) => favouriteItems.length !== 0
+);
+
+export const selectAccount = createSelector(
+  [selectSidebar],
+  (sidenav) => sidenav.account_dropdown
+);

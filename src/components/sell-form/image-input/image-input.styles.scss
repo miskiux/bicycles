@@ -2,6 +2,9 @@
   min-height: 533px;
   background: white;
   width: 100%;
+  border: 1px solid;
+  border-color: rgba(228, 233, 237, 0.8);
+  max-width: 900px;
 
   .dropzone {
     outline: none;

@@ -6,8 +6,9 @@ import { selectAll } from "../../redux/shop/shop.selectors";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
 import { selectCurrent } from "../../redux/update/update.actions";
 import "./Bici-info-preview.styles.scss";
+import { toggleAccount } from "../../redux/side-nav/side-nav.actions";
 
-function BiciPreview({ bicycles, user }) {
+function BiciPreview({ bicycles, user, toggleAccount }) {
   const [userBicycles, setUserBicycles] = useState([]);
 
   useEffect(() => {
@@ -27,29 +28,32 @@ function BiciPreview({ bicycles, user }) {
       pathname: "/update",
     });
     dispatch(selectCurrent(id));
+    toggleAccount();
   };
 
   return (
     <div className="bici-info-preview-list">
-      <div className="preview-list-labels">
+      <div className="bici-info-label-container">
         <span>manufacturer</span>
         <span>model</span>
         <span>date</span>
       </div>
 
-      {userBicycles.map(({ item, id, createdAt }) => (
-        <div
-          key={id}
-          className="bici-info-title"
-          onClick={() => redirectToUpdate(id)}
-        >
-          <span className="bici-info-name">{item.manufacturer}</span>
-          <span className="bici-info-name">{item.model}</span>
-          <span className="bici-info-date">
-            {createdAt.substr(0, createdAt.indexOf("T"))}
-          </span>
-        </div>
-      ))}
+      <div className="bici-info-overview">
+        {userBicycles.map(({ item, id, createdAt }) => (
+          <div
+            key={id}
+            className="bici-info-item"
+            onClick={() => redirectToUpdate(id)}
+          >
+            <span className="bici-info-name">{item.manufacturer}</span>
+            <span className="bici-info-name">{item.model}</span>
+            <span className="bici-info-date">
+              {createdAt.substr(0, createdAt.indexOf("T"))}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -59,4 +63,8 @@ const mapStateToProps = (state) => ({
   user: selectCurrentUser(state),
 });
 
-export default connect(mapStateToProps)(BiciPreview);
+const mapDispatchToProps = (dispatch) => ({
+  toggleAccount: () => dispatch(toggleAccount()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BiciPreview);

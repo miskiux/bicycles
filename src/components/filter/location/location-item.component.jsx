@@ -49,7 +49,12 @@ const PrettoSlider = withStyles({
 // if url has a keyword then filter by loaction
 // ?location=locations.length
 
-function LocationItem({ reduxBicycles, filterByLocation, updateQuery }) {
+function LocationItem({
+  reduxBicycles,
+  filterByLocation,
+  updateQuery,
+  onModalClose,
+}) {
   const [bicycleDistance, setDistance] = useState([]);
   const [userLocation, setUserLocation] = useState({
     lat1: null,
@@ -58,6 +63,8 @@ function LocationItem({ reduxBicycles, filterByLocation, updateQuery }) {
   const [value, setValue] = useState(20);
   const [range, setRange] = useState(false);
   const [addressCount, setAddressCount] = useState(null);
+  const [unavailable, setUnavailable] = useState(false);
+  const [length, setLength] = useState(0);
 
   const { lat1, lon1 } = userLocation;
 
@@ -66,7 +73,6 @@ function LocationItem({ reduxBicycles, filterByLocation, updateQuery }) {
   const classes = useStyles();
 
   const calculateDistance = (lat2, lon2, lat1, lon1) => {
-    let arr = [];
     let p = 0.017453292519943295;
     let c = Math.cos;
     let a =
@@ -83,29 +89,41 @@ function LocationItem({ reduxBicycles, filterByLocation, updateQuery }) {
       reduxBicycles.forEach((value) => {
         let lat2 = value.coordinates[0];
         let lon2 = value.coordinates[1];
+
         const fx = calculateDistance(lat2, lon2, lat1, lon1);
         myArr.push({ distance: fx });
+        console.log(fx);
       });
       const obj = myArr.map((item, i) =>
         Object.assign({}, item, reduxBicycles[i])
       );
       const filteredObj = obj.filter((item) => item.distance <= value);
-      setDistance(filteredObj);
+      setDistance("running", filteredObj);
       const locationIdList = filteredObj.map((item) => item.id);
       filterByLocation(locationIdList);
+      console.log("i run ");
+      updateQuery(search, "locations", locationIdList.length);
       setAddressCount(locationIdList.length);
     }
-  }, [userLocation]);
+  }, [lat1, lon1, reduxBicycles, length]);
 
   //user location
   const findLocation = () => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      let uloc = {
-        lat: position.coords.latitude,
-        long: position.coords.longitude,
-      };
-      setUserLocation({ ...userLocation, lat1: uloc.lat, lon1: uloc.long });
-    });
+    if (navigator.geolocation) {
+      console.log("exist ?");
+      navigator.geolocation.getCurrentPosition((position) => {
+        let uloc = {
+          lat: position.coords.latitude,
+          long: position.coords.longitude,
+        };
+        console.log(uloc);
+        setUserLocation({ lat1: uloc.lat, lon1: uloc.long });
+        setUnavailable(false);
+      });
+    } else {
+      console.log("i run ?");
+      setUnavailable(true);
+    }
   };
 
   const valuetext = (value) => {
@@ -114,6 +132,14 @@ function LocationItem({ reduxBicycles, filterByLocation, updateQuery }) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const confirmSubmit = () => {
+    if (onModalClose) {
+      onModalClose();
+    }
+    findLocation();
+    setLength(length + 1);
   };
 
   return (
@@ -131,13 +157,10 @@ function LocationItem({ reduxBicycles, filterByLocation, updateQuery }) {
           defaultValue={20}
         />
       </div>
-      <button
-        className="confirm"
-        onClick={() => {
-          findLocation();
-          updateQuery(search, "locations", addressCount);
-        }}
-      >
+      {unavailable && (
+        <span style={{ fontSize: "0.75rem" }}>Cannot access your location</span>
+      )}
+      <button className="confirm" onClick={confirmSubmit}>
         confirm
       </button>
     </div>

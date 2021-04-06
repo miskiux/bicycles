@@ -41,6 +41,11 @@
   .image-upload {
     z-index: 100;
   }
+  .image-upload-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .confirmation-wrapper {
     position: absolute;
     text-align: right;
@@ -49,11 +54,12 @@
     height: 64px;
     width: 100%;
     border-top: 1px solid;
-
     border-color: rgba(232, 236, 241, 1);
-  }
-  .submit-button {
-    padding: 0;
-    margin: 0;
+
+    .confirmation-wrapper-buttons {
+      display: flex;
+      justify-content: flex-end;
+      height: 100%;
+    }
   }
 }
