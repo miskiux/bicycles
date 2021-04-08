@@ -78,8 +78,8 @@ const SignInAndSignUp = () => {
     return (
       <div className={classes.root}>
         <Snackbar open={true} autoHideDuration={2000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="success">
-            welcome
+          <Alert onClose={handleClose} severity="success" color="info">
+            <span style={{ textAlign: "center" }}>Welcome</span>
           </Alert>
         </Snackbar>
       </div>

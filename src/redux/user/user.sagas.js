@@ -91,7 +91,7 @@ export function* signUp({ payload: { displayName, email, password } }) {
 
 export function* signInAferSignUp({ payload: { user, additionalData } }) {
   yield getSnapshotFromUserAuth(user, additionalData);
-  //yield put(redirect('/'))
+  yield put(redirect("/"));
 }
 
 //LISTENERS
