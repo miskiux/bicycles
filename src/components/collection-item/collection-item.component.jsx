@@ -42,9 +42,6 @@ const CollectionItem = ({
   } = item;
 
   const { sourceLoaded, didLoad } = useProgressiveImage(images[index]);
-  const imageStyle = didLoad
-    ? { maxWidth: 100 + "%", maxHeight: "250px", minHeight: "250px" }
-    : { visibility: "hidden" };
 
   useEffect(() => {
     const existingIds = favourites.map(({ id }) => id);
