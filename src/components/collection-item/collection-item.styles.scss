@@ -19,6 +19,15 @@
       opacity: 1;
     }
   }
+
+  .collection-item-image {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 250px;
+    max-height: 250px;
+    width: 100%;
+  }
 }
 .arrow-container {
   width: 340px;

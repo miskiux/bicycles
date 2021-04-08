@@ -208,7 +208,7 @@ const Item = ({
             </Row>
           </div>
           <Row className="bicycle-client-container">
-            <Col xs={6}>
+            <Col sm={6} xs={12}>
               {info && (
                 <div className="client-info">
                   <p>{info}</p>
@@ -223,7 +223,7 @@ const Item = ({
                 ))}
               </div>
             </Col>
-            <Col xs={6} className="client-contacts">
+            <Col sm={6} xs={12} className="client-contacts">
               <div className="client-contacts-wrapper">
                 <StaticMap
                   mapboxApiAccessToken={process.env.REACT_APP_API_KEY}

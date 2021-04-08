@@ -9,7 +9,7 @@ import {
 } from "../../redux/side-nav/side-nav.actions";
 import { selectFavouriteItems } from "../../redux/side-nav/side-nav.selectors";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-
+import { useProgressiveImage } from "../../hooks/useProgressiveImage";
 import { Icon } from "semantic-ui-react";
 import {
   SpinnerContainer,
@@ -26,7 +26,7 @@ const CollectionItem = ({
   clearItemFromFavourites,
 }) => {
   const [index, setIndex] = useState(0);
-  const [didLoad, setLoad] = useState(false);
+  //const [didLoad, setLoad] = useState(false);
   const [bookmarked, setBookMarked] = useState([]);
   const [itemSpecs, setItemSpecs] = useState([]);
 
@@ -41,6 +41,7 @@ const CollectionItem = ({
     description,
   } = item;
 
+  const { sourceLoaded, didLoad } = useProgressiveImage(images[index]);
   const imageStyle = didLoad
     ? { maxWidth: 100 + "%", maxHeight: "250px", minHeight: "250px" }
     : { visibility: "hidden" };
@@ -129,11 +130,9 @@ const CollectionItem = ({
           </SpinnerOverlay>
         }
       >
-        <LazyLoadImage
-          alt="err"
-          style={imageStyle}
-          src={images[index]}
-          afterLoad={() => setLoad(true)}
+        <div
+          style={{ backgroundImage: `url(${sourceLoaded})` }}
+          className="collection-item-image"
         />
       </Suspense>
       {didLoad ? (
