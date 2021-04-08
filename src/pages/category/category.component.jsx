@@ -19,6 +19,7 @@ const CategoryPage = ({
   locationId,
 }) => {
   const [bicycleCategory, setBicycleCategory] = useState([]);
+  const [nothingToDisplay, showNothingToDisplay] = useState(false);
 
   const { price_range, manufacturer, locations } = filterData;
 
@@ -34,6 +35,7 @@ const CategoryPage = ({
 
   useEffect(() => {
     let result = [...category];
+    showNothingToDisplay(false);
     if (filterprice) {
       result = result.filter(
         (bicycle) =>
@@ -52,6 +54,9 @@ const CategoryPage = ({
       result = locationId;
     }
     setBicycleCategory(result);
+    if (!result.length) {
+      showNothingToDisplay(true);
+    }
   }, [category, filterData]);
 
   return (
@@ -59,7 +64,7 @@ const CategoryPage = ({
       {bicycleCategory.map(({ id, ...otherCollectionProps }) => (
         <CollectionItem id={id} key={id} {...otherCollectionProps} />
       ))}
-      {bicycleCategory.length === 0 && (
+      {nothingToDisplay && (
         <h3 style={{ padding: "10px" }}>No bicycles to display</h3>
       )}
     </div>

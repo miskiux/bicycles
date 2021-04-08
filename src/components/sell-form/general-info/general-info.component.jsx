@@ -218,7 +218,7 @@ const GeneralInfo = (props) => {
           <Form.Control
             as="textarea"
             name="info"
-            style={{ height: "80px" }}
+            style={{ height: "80px", resize: "none" }}
             className="info-input"
             type="text"
             value={props.info}

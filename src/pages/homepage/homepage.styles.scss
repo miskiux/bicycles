@@ -1,14 +1,25 @@
 .homepage {
+  //position: relative;
+  min-height: 100%;
+  position: relative;
   width: auto;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   padding: 10px 10px;
+
+  @media screen and (max-width: 415px) {
+    height: 760px;
+  }
 }
 
 .homepage-bottom {
   position: absolute;
+  left: 0;
   bottom: 0;
+  width: 100%;
   font-weight: lighter;
   width: 100%;
   padding: 15px;
@@ -16,4 +27,8 @@
   letter-spacing: 0.01em;
   text-align: right;
   background: rgba(228, 233, 237, 0.2);
+
+  @media screen and (max-width: 500px) {
+    padding: 10px;
+  }
 }

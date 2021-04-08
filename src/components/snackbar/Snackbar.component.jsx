@@ -8,11 +8,11 @@ const useStyles = makeStyles({
   root: {
     display: "flex",
     justifyContent: "center",
-    position: ({ name }) =>
-      name === "deleteMessage" ? "relative" : "absolute",
+    position: ({ name }) => (name === "deleteMessage" ? "relative" : ""),
     color: ({ color }) =>
       color === "success" ? "rgba(0, 177, 106, 1)" : "rgba(244,92,67, 1)",
     height: 100,
+    minWidth: 130,
     backgroundColor: ({ color }) =>
       color === "success"
         ? "rgba(104, 195, 163, 0.5)"
@@ -22,12 +22,12 @@ const useStyles = makeStyles({
   action: ({ name }) =>
     name === "deleteMessage"
       ? {
-          position: "absolute",
-          display: "block",
-          top: 25 + "%",
-          left: 50 + "%",
-          transform: "translateX(-50%) translateY(-50%)",
-          paddingLeft: 0,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: 0,
+          padding: 0,
         }
       : {
           display: "flex",

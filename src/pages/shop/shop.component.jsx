@@ -70,11 +70,7 @@ function ShopPage({ fetchBicyclesStart, match, activeLink, isFetching }) {
   const isBreakPoint = useMediaQuery(915);
 
   useEffect(() => {
-    let unmounted = false;
     fetchBicyclesStart();
-    return () => {
-      unmounted = true;
-    };
   }, []);
 
   useEffect(() => {
@@ -149,7 +145,11 @@ function ShopPage({ fetchBicyclesStart, match, activeLink, isFetching }) {
 
   const renderShopPage = () => {
     return (
-      <Transition in={!filterOpen || isBreakPoint} timeout={duration}>
+      <Transition
+        in={!filterOpen || isBreakPoint}
+        timeout={duration}
+        enter={filterOpen ? false : true}
+      >
         {(state) => (
           <div
             style={{
@@ -233,7 +233,11 @@ function ShopPage({ fetchBicyclesStart, match, activeLink, isFetching }) {
           )}
         </Transition>
       )}
-      <Transition in={!filterOpen || isBreakPoint} timeout={duration}>
+      <Transition
+        in={!filterOpen || isBreakPoint}
+        timeout={duration}
+        enter={filterOpen ? false : true}
+      >
         {(state) => (
           <div
             style={{

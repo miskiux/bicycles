@@ -41,7 +41,6 @@
     background-position: center center;
     z-index: 1;
     overflow: hidden;
-    position: relative;
     @media screen and (max-width: 550px) {
       transition: height 0.7s ease-out;
       height: 450px;
@@ -49,11 +48,11 @@
     }
     @media screen and (max-width: 414px) {
       transition: width 0.7s ease-out;
-      max-width: 414px;
+      width: 414px;
     }
-    @media screen and (max-width: 376px) {
+    @media screen and (max-width: 375px) {
       transition: width 0.7s ease-out;
-      max-width: 375px;
+      width: 375px;
     }
   }
 

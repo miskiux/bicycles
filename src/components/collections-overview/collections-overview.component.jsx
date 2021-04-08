@@ -22,7 +22,7 @@ const CollectionsOverview = ({
   updateLink,
 }) => {
   const [filteredBicycles, setFilteredBicycles] = useState([]);
-
+  const [nothingToDisplay, showNothingToDisplay] = useState(false);
   const { price_range, manufacturer, locations } = filterData;
 
   const filterprice = price_range ? price_range.split(",") : "";
@@ -31,6 +31,7 @@ const CollectionsOverview = ({
 
   useEffect(() => {
     let result = [...bicycles];
+    showNothingToDisplay(false);
     if (filterprice) {
       result = result.filter(
         (bicycle) =>
@@ -49,6 +50,9 @@ const CollectionsOverview = ({
       result = locationId;
     }
     setFilteredBicycles(result);
+    if (!result.length) {
+      showNothingToDisplay(true);
+    }
   }, [bicycles, filterData]);
 
   useEffect(() => {
@@ -70,7 +74,7 @@ const CollectionsOverview = ({
           <CollectionItem key={id} id={id} {...otherCollectionProps} />
         </LazyLoad>
       ))}
-      {filteredBicycles.length === 0 && (
+      {nothingToDisplay && (
         <h3 style={{ padding: "10px" }}>No bicycles to display</h3>
       )}
     </div>
