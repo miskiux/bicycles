@@ -32,8 +32,6 @@ const SignInAndSignUp = () => {
 
   const classes = useStyles();
 
-  const [error, set] = useState(true);
-
   const [currentStep, setCurrentStep] = useState(0);
 
   const redirectToHome = useSelector((state) => state.user.redirectTo);

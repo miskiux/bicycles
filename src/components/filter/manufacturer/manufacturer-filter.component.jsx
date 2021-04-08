@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { useLocation, useParams, useRouteMatch } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 
 import {
@@ -13,7 +13,7 @@ import { getManufacturerLabel } from "../../../redux/shop/shop.actions";
 
 import * as QueryString from "query-string";
 
-import { Checkbox, Item } from "semantic-ui-react";
+import { Checkbox } from "semantic-ui-react";
 import { Input } from "semantic-ui-react";
 
 import "./manufacturer-filter.css";

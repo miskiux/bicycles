@@ -70,7 +70,7 @@ function FilterModal({ data }) {
                 <Accordion.Title className="sub-accordion-title">
                   Price
                 </Accordion.Title>
-                <Accordion.Content>
+                <Accordion.Content active={true}>
                   <PriceItem
                     updateQuery={updateQueryStringParameter}
                     onModalClose={onModalClose}
