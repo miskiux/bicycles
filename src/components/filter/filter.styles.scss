@@ -13,7 +13,8 @@
   }
 
   .remove-icon {
-    width: auto;
+    position: absolute;
+    right: 0;
   }
 
   .ui.accordion:not(.styled) .title ~ .content:not(.ui) {

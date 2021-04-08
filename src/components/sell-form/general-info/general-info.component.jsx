@@ -162,7 +162,7 @@ const GeneralInfo = (props) => {
             ))}
           </Form.Control>
         </Col>
-        <Col>
+        <Col sm={2} xs={4}>
           <Form.Label>Gender</Form.Label>
           <Form.Control
             as="select"
@@ -178,7 +178,7 @@ const GeneralInfo = (props) => {
             ))}
           </Form.Control>
         </Col>
-        <Col>
+        <Col sm={2} xs={4}>
           <Form.Label>Size (cm)</Form.Label>
           <Form.Control
             type="text"

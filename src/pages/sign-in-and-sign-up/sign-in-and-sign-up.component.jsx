@@ -7,7 +7,7 @@ import SignUp from "../../components/sign-up/sign-up.component";
 import { Button } from "semantic-ui-react";
 
 import { showWelcome } from "../../redux/user/user.actions";
-import { redirect } from "../../redux/user/user.actions";
+import { redirect, signInFailure } from "../../redux/user/user.actions";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
@@ -45,6 +45,12 @@ const SignInAndSignUp = () => {
       history.push("/");
     }
   }, [user, welcome]);
+
+  useEffect(() => {
+    if (errorValue) {
+      dispatch(signInFailure(null));
+    }
+  }, []);
 
   const PageNavigation = () => {
     if (currentStep === 0) {

@@ -42,7 +42,7 @@ const CollectionItem = ({
   } = item;
 
   const imageStyle = didLoad
-    ? { maxWidth: 100 + "%", maxHeight: "80%", minHeight: "250px" }
+    ? { maxWidth: 100 + "%", maxHeight: "250px", minHeight: "250px" }
     : { visibility: "hidden" };
 
   useEffect(() => {
@@ -57,7 +57,6 @@ const CollectionItem = ({
     setItemSpecs(twoValues);
   }, [description]);
 
-  //image directions
   const onClickForward = () => {
     setIndex((index + 1) % images.length);
   };
@@ -71,7 +70,6 @@ const CollectionItem = ({
     }
   };
 
-  //routing
   const history = useHistory();
 
   const NavigateToView = () => {
@@ -90,9 +88,6 @@ const CollectionItem = ({
       clearItemFromFavourites(id);
     }
   };
-
-  //adding a border beetween two
-  //frame type, frame material, Wheel Size, groupset
 
   return (
     <div className="collection-item">
