@@ -6,13 +6,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ClearIcon from "@material-ui/icons/Clear";
 import { toggleCarousel } from "../../../redux/shop/shop.actions";
 
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-
 import "./carousel.styles.scss";
-
-//distinguishing vertical pics
-// numbering of pics
 
 const ViewCarousel = ({ item, handleCarousel, toggleCarousel }) => {
   const { url } = item;

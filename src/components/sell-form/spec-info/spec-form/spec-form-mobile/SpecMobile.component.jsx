@@ -9,9 +9,6 @@ import "./SpecMobile.styles.scss";
 export const SpecMobile = (props) => {
   const [newItems, setNewItems] = useState([]);
   const [restricted, setRestricted] = useState(false);
-  const [errors, setErrors] = useState([{}]);
-
-  const [showRemove, setShowRemove] = useState(0);
 
   useEffect(() => {
     addNewItem();
@@ -42,7 +39,6 @@ export const SpecMobile = (props) => {
     const values = [...newItems];
     let checkPoint = newItems.map(({ item }) => item).includes(e.target.value);
     if (checkPoint) {
-      setErrors(true);
       return;
     } else {
       const currentSpec = BicycleSpecs.filter(
@@ -53,7 +49,6 @@ export const SpecMobile = (props) => {
       values[newItemsIndex].idx = Number(currentSpecIndex);
       values[newItemsIndex].item = e.target.value;
       setNewItems(values);
-      setErrors(false);
     }
   };
 
@@ -65,14 +60,6 @@ export const SpecMobile = (props) => {
     setNewItems(values);
   };
 
-  const toggleOn = (id) => {
-    setShowRemove(id);
-  };
-
-  const toggleOff = () => {
-    setShowRemove();
-  };
-
   const removeDescription = (id) => {
     const values = newItems.filter((i) => i.idx !== id);
     setNewItems(values);
@@ -81,13 +68,8 @@ export const SpecMobile = (props) => {
   return (
     <>
       <div className="description-update-form">
-        {console.log(newItems)}
         {newItems.map(({ item, value, idx }) => (
-          <Form.Group
-            key={idx}
-            onMouseEnter={() => toggleOn(idx)}
-            onMouseLeave={() => toggleOff()}
-          >
+          <Form.Group key={idx}>
             <div className="description-label-wrapper">
               <Form.Control
                 as="select"

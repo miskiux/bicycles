@@ -24,7 +24,6 @@ const SpecForm = ({ callback, description, specsData, specsCallback }) => {
   const [toggleVal, setToggleVal] = useState("");
   const [listenDocument, setListenDocument] = useState(true);
 
-  const [viewSelection, setViewSelection] = useState([]);
   const [clipping, dispatch] = useReducer((state, action) => {
     return action;
   });

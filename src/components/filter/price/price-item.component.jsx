@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-import { useHistory, useLocation } from "react-router-dom";
-import * as QueryString from "query-string";
+import { useLocation } from "react-router-dom";
 
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 
 import "./price-item.styles.css";

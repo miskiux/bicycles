@@ -1,22 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
-import {
-  useHistory,
-  useLocation,
-  useRouteMatch,
-  useParams,
-} from "react-router-dom";
-
-import * as QueryString from "query-string";
+import { useHistory, useRouteMatch } from "react-router-dom";
 
 import PriceItem from "./price/price-item.component";
 import ManufacturerCheckBox from "./manufacturer/manufacturer-filter.component";
 import LocationItem from "./location/location-item.component";
 
-import { Icon, Modal } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import { Accordion } from "semantic-ui-react";
-import UseAnimations from "react-useanimations";
-import menu2 from "react-useanimations/lib/menu2";
 import "./filter.styles.scss";
 
 const Filter = ({ data, toggleFilter, isBreakPoint }) => {

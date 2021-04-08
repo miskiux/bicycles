@@ -10,7 +10,6 @@ import {
 } from "../../redux/shop/shop.selectors";
 import { fetchBicyclesStart } from "../../redux/shop/shop.actions";
 import Filter from "../../components/filter/filter.component";
-import SideMenu from "../../components/side-menu/Side-menu.component";
 import UseAnimations from "react-useanimations";
 import {
   SpinnerContainer,
@@ -26,7 +25,7 @@ import "./shop.styles.scss";
 //small screen refresh sliding
 
 function ShopPage({ fetchBicyclesStart, match, activeLink, isFetching }) {
-  const [links, setLinks] = useState([
+  const links = [
     {
       id: 1,
       name: "all",
@@ -62,7 +61,7 @@ function ShopPage({ fetchBicyclesStart, match, activeLink, isFetching }) {
         pathname: `${match.path}/off-road`,
       },
     },
-  ]);
+  ];
 
   const [filterOpen, setFilterOpen] = useState(true);
   const [queryParams, setQueryParams] = useState({});
@@ -189,7 +188,6 @@ function ShopPage({ fetchBicyclesStart, match, activeLink, isFetching }) {
     );
   };
 
-  //transition for SideMenu also
   const sideduration = 550;
 
   const sidebarStyle = {

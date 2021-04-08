@@ -15,7 +15,6 @@ function UpdatePage({ bicycles, user }) {
       setUserBicycles(userBicycles);
     }
   }, [user, bicycles]);
-  console.log(userBicycles);
   return <BiciInfo userBicycles={userBicycles} />;
 }
 

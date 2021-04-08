@@ -8,13 +8,12 @@ import { toggleCarousel } from "../../redux/shop/shop.actions";
 import ReactHover, { Trigger, Hover } from "react-hover";
 
 import ViewCarousel from "./carousel/carousel.component";
-import ReactMapGL, { Marker, StaticMap } from "react-map-gl";
+import { Marker, StaticMap } from "react-map-gl";
 
 import { Container, Row, Col } from "react-bootstrap";
 
 import RoomSharpIcon from "@material-ui/icons/RoomSharp";
 import classNames from "classnames";
-import styled from "styled-components";
 import "./item.styles.scss";
 
 const mapStyle = {

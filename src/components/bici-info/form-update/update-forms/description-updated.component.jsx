@@ -7,11 +7,8 @@ import { Icon } from "semantic-ui-react";
 import "./description-updated.styles.scss";
 
 export const DescriptionUpdate = (props) => {
-  const [availableSpecs, setAvailableSpecs] = useState([]);
-  const [newItems, setNewItems] = useState([]);
+  const newItems = [];
   const [restricted, setRestricted] = useState(false);
-
-  const [showRemove, setShowRemove] = useState(0);
 
   function addNewItem() {
     const lastItem = props.description.length
@@ -28,24 +25,12 @@ export const DescriptionUpdate = (props) => {
     }
   }
 
-  const toggleOn = (id) => {
-    setShowRemove(id);
-  };
-
-  const toggleOff = () => {
-    setShowRemove();
-  };
-
   return (
     <>
       {props.edit ? (
         <div className="description-update-form">
           {props.description.map(({ item, value, idx }) => (
-            <Form.Group
-              key={idx}
-              onMouseEnter={() => toggleOn(idx)}
-              onMouseLeave={() => toggleOff()}
-            >
+            <Form.Group key={idx}>
               <div className="description-label-wrapper">
                 <Form.Control
                   as="select"
@@ -95,11 +80,7 @@ export const DescriptionUpdate = (props) => {
       ) : (
         <div className="description-update-form">
           {props.item.description.map(({ item, value, idx }) => (
-            <Form.Group
-              key={idx}
-              onMouseEnter={() => toggleOn(idx)}
-              onMouseLeave={() => toggleOff()}
-            >
+            <Form.Group key={idx}>
               <div className="description-label-wrapper">
                 <Form.Control
                   as="select"

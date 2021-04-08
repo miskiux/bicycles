@@ -102,7 +102,7 @@ const ImageUpdate = ({
   const arrayMove = require("array-move");
 
   const dispatch = useDispatch();
-  const hasToDelete = useSelector((state) => state.update.hasToDelete);
+
   const isLoading = useSelector((state) => state.update.isLoading);
   const isFetching = useSelector((state) => state.shop.isFetching);
 
@@ -173,9 +173,7 @@ const ImageUpdate = ({
     setMainImgId(index);
   };
 
-  //must have at least one image
   const submitImages = () => {
-    console.log(imgKey, url, toRemove);
     dispatch(imagesUpdatingStart({ imgKey, url, toRemove }));
   };
 
@@ -256,15 +254,13 @@ const ImageUpdate = ({
                   color="primary"
                   className="submit-button"
                   onClick={submitImages}
+                  disabled={!allImages.length && true}
                 >
                   Done
                 </Button>
               </div>
             )}
           </div>
-          {/* {errors.image && (
-            <span className="form-error">{Object.values(errors.image)}</span>
-          )} */}
         </div>
       )}
     </div>

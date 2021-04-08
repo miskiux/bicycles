@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { useStorage } from "../../../hooks/useStorage";
 import CustomSnack from "../../snackbar/Snackbar.component";
@@ -18,7 +17,7 @@ import {
 import { Transition } from "react-transition-group";
 import "./bici-item.styles.scss";
 
-function BiciItem({ currentBicycle, edit, toggleEdit, userBicycles }) {
+function BiciItem({ currentBicycle, edit, toggleEdit }) {
   const [show, setShow] = useState(false);
   const [allImages, setAllImages] = useState([]);
   const [deleteArr, setDeleteArr] = useState([]);
@@ -61,7 +60,7 @@ function BiciItem({ currentBicycle, edit, toggleEdit, userBicycles }) {
       );
       setAllImages(attachId);
     }
-  }, [item]);
+  }, [item, show]);
 
   useEffect(() => {
     if (item && allImages) {

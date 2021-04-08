@@ -1,13 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import {
-  useHistory,
-  useLocation,
-  useRouteMatch,
-  useParams,
-} from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 
-import * as QueryString from "query-string";
 import CloseIcon from "@material-ui/icons/Close";
 import PriceItem from "./price/price-item.component";
 import ManufacturerCheckBox from "./manufacturer/manufacturer-filter.component";

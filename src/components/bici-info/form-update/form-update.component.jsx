@@ -11,7 +11,6 @@ import {
   nameValidation,
   typeValidation,
   priceValidation,
-  imageValidation,
   phoneValidation,
   descriptionValidation,
 } from "../../../pages/sell/validate";
@@ -184,7 +183,6 @@ function FormUpdate({ inputData, edit, toggleEdit }) {
     const typeError = typeValidation("Bicycle Type", bicycleType);
     const priceError = priceValidation("Price", price);
     const phoneError = phoneValidation(update.phone);
-    //const imageError = imageValidation(image);
     const locationError = nameValidation("Location", address);
     errorObj["address"] = locationError;
     errorObj["price"] = priceError;

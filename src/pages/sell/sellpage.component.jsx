@@ -33,7 +33,6 @@ import { FormUpdate } from "../../redux/form/form.actions";
 import { Icon } from "semantic-ui-react";
 
 import { useStorage } from "../../hooks/useStorage.js";
-import Button from "@material-ui/core/Button";
 import FormSteps from "../../components/sell-form/form-steps/FormSteps.component";
 import "./sellpage.styles.scss";
 import {
@@ -43,9 +42,7 @@ import {
 import CustomSnack from "../../components/snackbar/Snackbar.component";
 import { Col, Container, Row } from "react-bootstrap";
 import { Transition } from "react-transition-group";
-// bring component later
-//able on CHANGE to go to next bicycle - update form
-//if not change loader is submitting update form
+
 function SellPage({
   submitDone,
   currentUser,

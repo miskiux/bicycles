@@ -106,6 +106,7 @@ export const GeneralUpdate = (props) => {
             as="select"
             ref={props.register}
             size="sm"
+            name="gender"
             value={props.edit ? props.update.gender : props.item.gender}
             onChange={props.handleChange}
             custom

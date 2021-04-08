@@ -10,10 +10,6 @@ import { selectToggleCarousel } from "../../redux/shop/shop.selectors";
 import { updateLink } from "../../redux/shop/shop.actions";
 import { toggleCarousel } from "../../redux/shop/shop.actions";
 
-import {
-  SpinnerContainer,
-  SpinnerOverlay,
-} from "../with-spinner/with-spinner.styles";
 import "./collections-overview.styles.scss";
 
 const CollectionsOverview = ({
