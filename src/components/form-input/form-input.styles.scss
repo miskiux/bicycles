@@ -36,10 +36,10 @@ $main-color: black;
   .description-field {
     background: none;
     color: $sub-color;
-    font-size: 18px;
+    font-size: 16px;
     padding: 10px 10px 10px 5px;
     display: block;
-    width: 65%;
+    width: 100%;
     border: none;
 
     &:focus {

@@ -23,8 +23,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-//redux saga dispatches action which does not exist
-
 const SignInAndSignUp = () => {
   const Alert = (props) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
