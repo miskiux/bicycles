@@ -3,7 +3,7 @@ import { BicycleSpecs } from "../../../../../assets/additional/form-helpers";
 import { Form } from "react-bootstrap";
 import AddIcon from "@material-ui/icons/Add";
 import { v4 as uuidv4 } from "uuid";
-import { Icon } from "semantic-ui-react";
+import ClearIcon from "@material-ui/icons/Clear";
 import "./SpecMobile.styles.scss";
 
 export const SpecMobile = (props) => {
@@ -86,9 +86,8 @@ export const SpecMobile = (props) => {
                   </option>
                 ))}
               </Form.Control>
-              <Icon
+              <ClearIcon
                 className="remove-old"
-                name="remove"
                 onClick={() => removeDescription(idx)}
               />
             </div>

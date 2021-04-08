@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import ClearIcon from "@material-ui/icons/Clear";
 import { BicycleSpecs } from "../../../../assets/additional/form-helpers";
 import { Form } from "react-bootstrap";
 import AddIcon from "@material-ui/icons/Add";
 import { v4 as uuidv4 } from "uuid";
-import { Icon } from "semantic-ui-react";
 import "./description-updated.styles.scss";
 
 export const DescriptionUpdate = (props) => {
@@ -48,9 +48,8 @@ export const DescriptionUpdate = (props) => {
                   ))}
                 </Form.Control>
                 {props.edit && (
-                  <Icon
+                  <ClearIcon
                     className="remove-old"
-                    name="remove"
                     onClick={() => props.removeDescription(idx)}
                   />
                 )}
@@ -98,9 +97,8 @@ export const DescriptionUpdate = (props) => {
                   ))}
                 </Form.Control>
                 {props.edit && (
-                  <Icon
+                  <ClearIcon
                     className="remove-old"
-                    name="remove"
                     onClick={() => props.removeDescription(idx)}
                   />
                 )}
