@@ -1,49 +1,60 @@
-.slider {
-  width: 100%;
-  height: 100vh;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  background: white;
-}
+.carousel-wrapper {
+  width: 100vw;
+  height: 100vw;
+  position: fixed;
 
-.clear-icon {
-  position: absolute;
-  top: -10px;
-  font-size: 90px !important;
-}
+  .slider {
+    width: 100%;
+    height: 100vh;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: white;
+  }
 
-.slide {
-  min-width: 100%;
-  height: 80vh;
-  transition: 0.5s;
-  overflow: hidden;
-}
+  .clear-icon {
+    position: absolute;
+    top: -10px;
+    font-size: 90px !important;
+  }
 
-.imgStyles {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: 50% 50%;
-}
+  .slide {
+    min-width: 100%;
+    height: 80vh;
+    transition: 0.5s;
+    overflow: hidden;
+  }
 
-%btn-styles {
-  height: 80vh;
-  max-height: 80vh;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 7%;
-  background: none;
-  border: none;
-  outline: none;
-  transition: 0.5s;
-  &:hover {
-    background: rgba(232, 236, 241, 0.3);
-    cursor: pointer;
+  .imgStyles {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: 50% 50%;
+  }
+
+  %btn-styles {
+    height: 40vh;
+    max-height: 40vh;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+
+    width: 7%;
+    background: none;
+    border: none;
+    outline: none;
+    transition: 0.5s;
+    &:hover {
+      background: rgba(232, 236, 241, 0.3);
+      cursor: pointer;
+    }
+    @media screen and (max-width: 550px) {
+      width: 12%;
+      height: 30vh;
+    }
   }
 }
 
@@ -54,5 +65,6 @@
 
 #goRight {
   right: 0;
+
   @extend %btn-styles;
 }

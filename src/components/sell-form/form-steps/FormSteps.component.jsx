@@ -21,7 +21,7 @@ const FormSteps = ({
   showMarker,
   setMarker,
 }) => {
-  const isBreakpoint = useMediaQuery(375);
+  const isBreakpoint = useMediaQuery(450);
   return [
     {
       title: "General information",

@@ -86,7 +86,10 @@ const BiciInfo = ({
         />
         <div className="bicycle-page-selection">
           {userBicycles.map(({ id }) => (
-            <div key={id} style={{ display: "inline-block" }}>
+            <div
+              key={id}
+              style={{ display: "inline-block", paddingRight: "10px" }}
+            >
               {currentId === id ? (
                 <FiberManualRecordIcon fontSize="small" />
               ) : (

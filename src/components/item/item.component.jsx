@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 
 import { connect } from "react-redux";
 import axios from "axios";
@@ -14,6 +14,7 @@ import { Container, Row, Col } from "react-bootstrap";
 
 import RoomSharpIcon from "@material-ui/icons/RoomSharp";
 import classNames from "classnames";
+import styled from "styled-components";
 import "./item.styles.scss";
 
 const mapStyle = {
@@ -130,41 +131,42 @@ const Item = ({
   return (
     <>
       {open ? (
-        <div className="item-wrapper">
-          <ReactHover options={optionsCursorTrueWithMargin}>
-            <Trigger type="trigger">
-              <div
-                onClick={() => {
-                  toggleCarousel();
-                  setOpen(!open);
-                }}
-                className="asset-image"
-                style={{
-                  backgroundImage: `url(${url[0]})`,
-                }}
-              >
+        <Container className="item-wrapper" fluid>
+          <Row noGutters={true} xs={12} className="itemview-image-row">
+            <ReactHover options={optionsCursorTrueWithMargin}>
+              <Trigger type="trigger">
+                <div
+                  className="asset-image"
+                  style={{
+                    backgroundImage: `url(${url[0]})`,
+                  }}
+                  onClick={() => {
+                    toggleCarousel();
+                    setOpen(!open);
+                  }}
+                ></div>
                 <div className="item-name">
                   <h3 className="item-title">{manufacturer}</h3>
                   <h3 className="item-title">{model}</h3>
                 </div>
-              </div>
-            </Trigger>
-            <Hover type="hover">
-              <div
-                className={cursorClasses}
-                style={{
-                  left: `${position.x}px`,
-                  top: `${position.y}px`,
-                }}
-              >
-                <span className="image-count">1 / {item.url.length}</span>
-              </div>
-            </Hover>
-          </ReactHover>
-          <Container className="item-container" fluid>
+              </Trigger>
+              <Hover type="hover">
+                <div
+                  className={cursorClasses}
+                  style={{
+                    left: `${position.x}px`,
+                    top: `${position.y}px`,
+                  }}
+                >
+                  <span className="image-count">1 / {item.url.length}</span>
+                </div>
+              </Hover>
+            </ReactHover>
+          </Row>
+          <div className="white-break">
             <Row className="item-info-container">
               {size && (
-                <Col className="header-info">
+                <Col xs={2} className="header-info">
                   <h6 className="item-info-title">Size</h6>
                   <div className="size-info">
                     <span>{size}</span>
@@ -173,89 +175,91 @@ const Item = ({
                 </Col>
               )}
               {year && (
-                <Col className="header-info">
+                <Col xs={2} className="header-info">
                   <h6 className="item-info-title">Year</h6>
                   <span>{year}</span>
                 </Col>
               )}
               {condition && (
-                <Col className="header-info">
+                <Col xs={2} className="header-info">
                   <h6 className="item-info-title">New/Used</h6>
                   <span>{condition}</span>
                 </Col>
               )}
               {gender && (
-                <Col className="header-info">
+                <Col xs={2} className="header-info">
                   <h6 className="item-info-title">Gender</h6>
                   <span>{gender}</span>
                 </Col>
               )}
               {subCategory ? (
-                <Col className="header-info">
+                <Col xs={2} className="header-info">
                   <h6 className="item-info-title">Type</h6>
                   <span>{subCategory}</span>
                 </Col>
               ) : (
-                <Col className="header-info">
+                <Col xs={2} className="header-info">
                   <h6 className="item-info-title">Type</h6>
                   <span>{bicycleType}</span>
                 </Col>
               )}
-              <Col xs lg="2" className="header-info">
+              <Col xs={2} className="header-info">
                 <h3 className="item-price">€{price}</h3>
               </Col>
             </Row>
-          </Container>
-          <div className="client-info">
-            <p>{info}</p>
           </div>
-          <Container className="client-wrapper" fluid>
-            <Row>
-              <Col xs={6}>
-                <div className="item-specifications-wrapper">
-                  {description.map(({ item, value, id }) => (
-                    <div key={id} className="item-specification">
-                      <span className="specification-label">{item}:</span>
-                      <span className="specification-value">{value}</span>
-                    </div>
-                  ))}
+          <Row className="bicycle-client-container">
+            <Col xs={6}>
+              {info && (
+                <div className="client-info">
+                  <p>{info}</p>
                 </div>
-              </Col>
-              <Col xs={6} className="client-contacts">
-                <div>
-                  <StaticMap
-                    mapboxApiAccessToken={process.env.REACT_APP_API_KEY}
-                    {...mapStyle}
-                    {...viewport}
-                  >
-                    <Marker latitude={latitude} longitude={longitude}>
-                      <div>
-                        <RoomSharpIcon
-                          style={{ color: "#FF8C00" }}
-                          fontSize="large"
-                        />
-                      </div>
-                    </Marker>
-                  </StaticMap>
-                  <div>
-                    <div className="client-additional-info">
-                      <h3>Address</h3>
-                      <span>{address}</span>
+              )}
+              <div className="item-specifications-wrapper">
+                {description.map(({ item, value, id }) => (
+                  <div key={id} className="item-specification">
+                    <span className="specification-label">{item}:</span>
+                    <span className="specification-value">{value}</span>
+                  </div>
+                ))}
+              </div>
+            </Col>
+            <Col xs={6} className="client-contacts">
+              <div className="client-contacts-wrapper">
+                <StaticMap
+                  mapboxApiAccessToken={process.env.REACT_APP_API_KEY}
+                  {...mapStyle}
+                  {...viewport}
+                >
+                  <Marker latitude={latitude} longitude={longitude}>
+                    <div>
+                      <RoomSharpIcon
+                        style={{ color: "#FF8C00" }}
+                        fontSize="large"
+                      />
                     </div>
+                  </Marker>
+                </StaticMap>
+                <div className="client-addition-info-container">
+                  <div className="client-additional-info">
+                    <h3 className="contact-title">Address</h3>
+                    <span className="contact-value">{address}</span>
+                  </div>
+                  {phone && (
                     <div className="client-additional-info">
-                      <h3>Phone</h3>
-                      <span>{phone}</span>
+                      <h3 className="contact-title">Phone</h3>
+                      <span className="contact-value">{phone}</span>
                     </div>
-                    <div className="client-additional-info">
-                      <h3>Email</h3>
-                      <span>{email}</span>
-                    </div>
+                  )}
+                  <div className="client-additional-info">
+                    <h3 className="contact-title">Email</h3>
+                    <span className="contact-value">{email}</span>
                   </div>
                 </div>
-              </Col>
-            </Row>
-          </Container>
-        </div>
+              </div>
+            </Col>
+          </Row>
+        </Container>
       ) : (
         <ViewCarousel item={item} handleCarousel={handleCarousel} />
       )}

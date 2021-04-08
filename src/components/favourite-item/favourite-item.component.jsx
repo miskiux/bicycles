@@ -4,15 +4,13 @@ import { useHistory } from "react-router-dom";
 
 import "./favourite-item.styles.scss";
 
-//onhover clear
-
 const FavouriteItem = ({
   item,
   clearItemFromFavourites,
   id,
   toggleSideNav,
 }) => {
-  const { url, price, manufacturer, model } = item;
+  const { price, manufacturer, model } = item;
 
   const history = useHistory();
 

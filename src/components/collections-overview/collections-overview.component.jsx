@@ -26,7 +26,6 @@ const CollectionsOverview = ({
   updateLink,
 }) => {
   const [filteredBicycles, setFilteredBicycles] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   const { price_range, manufacturer, locations } = filterData;
 
@@ -57,12 +56,6 @@ const CollectionsOverview = ({
   }, [bicycles, filterData]);
 
   useEffect(() => {
-    const imagesArr = bicycles.map((bicycle) => bicycle.item.url);
-    const arr = imagesArr.flat();
-    cacheImages(arr);
-  }, []);
-
-  useEffect(() => {
     if (toggleHeader === false) {
       toggleCarousel();
     }
@@ -74,31 +67,10 @@ const CollectionsOverview = ({
     }
   }, [match.params]);
 
-  const cacheImages = async (srcArray) => {
-    const promises = await srcArray.map((src) => {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = src;
-        img.onload = resolve();
-        img.onerror = reject();
-      });
-    });
-    await Promise.all(promises);
-    setIsLoading(false);
-  };
-
-  if (isLoading) {
-    return (
-      <SpinnerOverlay>
-        <SpinnerContainer />
-      </SpinnerOverlay>
-    );
-  }
-
   return (
     <div className="preview">
       {filteredBicycles.map(({ id, ...otherCollectionProps }) => (
-        <LazyLoad height={200} offset={100} once>
+        <LazyLoad key={id} height={200} offset={100} once>
           <CollectionItem key={id} id={id} {...otherCollectionProps} />
         </LazyLoad>
       ))}

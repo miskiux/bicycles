@@ -32,12 +32,13 @@ const SignInAndSignUp = () => {
 
   const classes = useStyles();
 
-  const [open, setOpen] = useState(true);
+  const [error, set] = useState(true);
 
   const [currentStep, setCurrentStep] = useState(0);
 
   const redirectToHome = useSelector((state) => state.user.redirectTo);
   const user = useSelector((state) => state.user.currentUser);
+  const errorValue = useSelector((state) => state.user.error);
   const welcome = useSelector((state) => state.user.welcomePopUp);
   const history = useHistory();
 
@@ -63,7 +64,6 @@ const SignInAndSignUp = () => {
         </Button>
       );
     }
-    return null;
   };
 
   const handleClose = () => {
@@ -75,7 +75,7 @@ const SignInAndSignUp = () => {
   if (!!redirectToHome) {
     return (
       <div className={classes.root}>
-        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Snackbar open={true} autoHideDuration={2000} onClose={handleClose}>
           <Alert onClose={handleClose} severity="success">
             welcome
           </Alert>
@@ -95,6 +95,9 @@ const SignInAndSignUp = () => {
 
   return (
     <div className="sign-in-and-sign-up">
+      {errorValue !== null && (
+        <span className="login-error">*Invalid email or password values</span>
+      )}
       {components[`${currentStep}`].content}
       <div className="sign-options">{PageNavigation()}</div>
     </div>

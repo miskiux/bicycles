@@ -18,23 +18,19 @@ const Directory = ({ sections }) => {
           backgroundImage: `url(${imageUrl})`,
         }}
       />
-      <table className="portal">
-        <tbody>
-          <tr>
-            <div className="table-head">Category</div>
-            {sections.map(({ title, id, linkUrl }) => (
-              <td
-                key={id}
-                className="table-item"
-                onClick={() => history.push(`/${linkUrl}`)}
-              >
-                <span className="table-title">{title}</span>
-                <ArrowForwardIosIcon fontSize="small" />
-              </td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
+      <div className="portal">
+        <div className="table-head">Category</div>
+        {sections.map(({ title, id, linkUrl }) => (
+          <div
+            key={id}
+            className="table-item"
+            onClick={() => history.push(`/${linkUrl}`)}
+          >
+            <span className="table-title">{title}</span>
+            <ArrowForwardIosIcon fontSize="small" />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

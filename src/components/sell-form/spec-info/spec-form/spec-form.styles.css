@@ -13,7 +13,7 @@
   max-height: 533px;
 }
 
-.bicycle {
+.spec-bicycle {
   position: absolute;
   min-height: 533px;
   z-index: 1000;

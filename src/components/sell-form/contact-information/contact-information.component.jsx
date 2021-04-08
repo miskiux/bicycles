@@ -68,7 +68,6 @@ function ContactInformation({
     [handleViewportChange]
   );
 
-  //double clicks on map
   return (
     <div className="map-container">
       <ReactMapGL

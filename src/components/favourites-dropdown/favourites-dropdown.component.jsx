@@ -39,7 +39,7 @@ const FavouriteDropdown = ({
       {favouriteItems.length ? (
         favouriteItems.map(({ id, item }) => (
           <div className="favourite-item" key={id}>
-            <FavouriteItem item={item} />
+            <FavouriteItem item={item} id={id} />
             <Icon
               className="remove-icon"
               name="remove"

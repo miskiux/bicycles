@@ -55,14 +55,11 @@ function LocationItem({
   updateQuery,
   onModalClose,
 }) {
-  const [bicycleDistance, setDistance] = useState([]);
   const [userLocation, setUserLocation] = useState({
     lat1: null,
     lon1: null,
   });
   const [value, setValue] = useState(20);
-  const [range, setRange] = useState(false);
-  const [addressCount, setAddressCount] = useState(null);
   const [unavailable, setUnavailable] = useState(false);
   const [length, setLength] = useState(0);
 
@@ -98,12 +95,11 @@ function LocationItem({
         Object.assign({}, item, reduxBicycles[i])
       );
       const filteredObj = obj.filter((item) => item.distance <= value);
-      setDistance("running", filteredObj);
+
       const locationIdList = filteredObj.map((item) => item.id);
       filterByLocation(locationIdList);
-      console.log("i run ");
+
       updateQuery(search, "locations", locationIdList.length);
-      setAddressCount(locationIdList.length);
     }
   }, [lat1, lon1, reduxBicycles, length]);
 

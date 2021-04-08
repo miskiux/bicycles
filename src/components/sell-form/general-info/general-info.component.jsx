@@ -90,11 +90,12 @@ const GeneralInfo = (props) => {
   return (
     <Form className="form-bootstrap">
       <Form.Row>
-        <Col className="form-col" xs={5}>
+        <Col className="form-col" sm={6} lg={4}>
           <Form.Label>Manufacturer</Form.Label>
           <Hint options={hintData}>
             <Form.Control
               type="text"
+              className={props.errors.manufacturer && "invalid-input"}
               name="manufacturer"
               autoComplete="off"
               value={props.manufacturer}
@@ -102,33 +103,25 @@ const GeneralInfo = (props) => {
               required
             />
           </Hint>
-          {props.errors.manufacturer && (
-            <span className="form-error">
-              {Object.values(props.errors.manufacturer)}
-            </span>
-          )}
         </Col>
-        <Col className="form-col">
+        <Col className="form-col" sm={6} lg={4}>
           <Form.Label>Model</Form.Label>
           <Form.Control
             type="text"
             name="model"
+            className={props.errors.model && "invalid-input"}
             autoComplete="off"
             value={props.model}
             onChange={props.handleChange}
             required
           />
-          {props.errors.model && (
-            <span className="form-error">
-              {Object.values(props.errors.model)}
-            </span>
-          )}
         </Col>
         <Col className="form-col">
           <Form.Label>Bicycle Type</Form.Label>
           <Form.Control
             as="select"
             value={props.bicycleType}
+            className={props.errors.bicycleType && "invalid-input"}
             onChange={handleType}
             custom
             required
@@ -139,11 +132,6 @@ const GeneralInfo = (props) => {
               </option>
             ))}
           </Form.Control>
-          {props.errors.bicycleType && (
-            <span className="form-error">
-              {Object.values(props.errors.bicycleType)}
-            </span>
-          )}
         </Col>
         <Col>
           <Form.Label>Sub Type</Form.Label>
@@ -225,7 +213,7 @@ const GeneralInfo = (props) => {
         </Col>
       </Form.Row>
       <Form.Row>
-        <Col>
+        <Col xs={12} sm={4}>
           <Form.Label>Additional Information</Form.Label>
           <Form.Control
             as="textarea"
@@ -238,26 +226,23 @@ const GeneralInfo = (props) => {
           />
         </Col>
         <Col className="form-col">
-          <Form.Label>Price</Form.Label>
+          <Form.Label>Price (€)</Form.Label>
           <Form.Control
             name="price"
             autoComplete="off"
+            className={props.errors.price && "invalid-input"}
             type="text"
             value={props.price}
             onChange={props.handleChange}
             required
           />
-          {props.errors.price && (
-            <span className="form-error">
-              {Object.values(props.errors.price)}
-            </span>
-          )}
         </Col>
         <Col className="form-col">
           <Form.Label>Phone</Form.Label>
           <Form.Control
             name="phone"
             autoplaceholder="aggressive"
+            className={props.errors.price && "invalid-input"}
             type="tel"
             autoComplete="off"
             id="phone"

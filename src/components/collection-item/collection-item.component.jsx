@@ -120,9 +120,11 @@ const CollectionItem = ({
               <Icon name="arrow right" onClick={onClickForward} />
             </div>
           </div>
-          <div className="collection-item-condition">
-            <span style={{ fontSize: "0.75rem" }}>{condition}</span>
-          </div>
+          {condition && (
+            <div className="collection-item-condition">
+              <span style={{ fontSize: "0.75rem" }}>{condition}</span>
+            </div>
+          )}
         </>
       )}
       <Suspense

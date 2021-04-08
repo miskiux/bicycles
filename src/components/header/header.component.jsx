@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import AccountDropdown from "../account-dropdown/account-dropdown.component";
-
+//import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
 import { selectAccount } from "../../redux/side-nav/side-nav.selectors";
@@ -13,7 +13,6 @@ import { selectToggleCarousel } from "../../redux/shop/shop.selectors";
 import { signOutStart } from "../../redux/user/user.actions";
 import { connect } from "react-redux";
 
-import "../../assets/bici.png";
 import "./header.styles.scss";
 
 const Header = ({
@@ -27,13 +26,9 @@ const Header = ({
   return (
     <>
       {toggleCarousel ? (
-        <div class="header">
+        <div className="header">
           <Link className="logo-container" to="/">
-            <img
-              className="logo"
-              alt="logo"
-              src={require("../../assets/bici.png")}
-            />
+            <h3 className="logo">bici</h3>
           </Link>
           <div className="options">
             <Link className="option" to="/shop">

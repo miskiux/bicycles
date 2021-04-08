@@ -4,7 +4,7 @@ import { connect, useSelector } from "react-redux";
 
 import ErrorBoundary from "./components/error-boundary/error-boundary.component";
 
-import "./App.css";
+import { GlobalStyle } from "./global.styles";
 
 import Header from "./components/header/header.component.jsx";
 import ProtectedRoute from "./components/protected-routes/protected-route.component";
@@ -36,6 +36,7 @@ function App({ checkUserSession }) {
 
   return (
     <>
+      <GlobalStyle />
       <Header />
       <Switch>
         <ErrorBoundary>

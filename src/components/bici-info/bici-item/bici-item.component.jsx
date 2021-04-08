@@ -10,10 +10,7 @@ import {
 } from "../../with-spinner/with-spinner.styles";
 import FormUpdate from "../form-update/form-update.component";
 import ImageUpdate from "../images-update/Image-update.component";
-import {
-  imageUrlUpdateStart,
-  selectCurrent,
-} from "../../../redux/update/update.actions";
+import { imageUrlUpdateStart } from "../../../redux/update/update.actions";
 import {
   deleteBicycleStart,
   getDeleteDefault,
@@ -30,7 +27,6 @@ function BiciItem({ currentBicycle, edit, toggleEdit, userBicycles }) {
   const [openDelete, setOpenDelete] = useState(false);
 
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const isUrlUpdating = useSelector((state) => state.update.isUrlUpdating);
   const isImageUpdating = useSelector((state) => state.update.isImageUpdating);
@@ -38,7 +34,6 @@ function BiciItem({ currentBicycle, edit, toggleEdit, userBicycles }) {
 
   const deleteStatus = useSelector((state) => state.shop.isDeleting);
   const deleteMessage = useSelector((state) => state.shop.deleteMessage);
-  const isBicyclesFetching = useSelector((state) => state.shop.isFetching);
 
   const { item, createdAt, imgKey, id } = currentBicycle;
 
@@ -186,8 +181,6 @@ function BiciItem({ currentBicycle, edit, toggleEdit, userBicycles }) {
     },
   };
 
-  //fucked up laoder, sizes on refresh
-  //!isImgPreview
   return (
     <>
       {item && (

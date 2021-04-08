@@ -1,23 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Snackbar, SnackbarContent } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 
-// const small = {
-//   position: "absolute",
-//   bottom: "20px",
-//   left: "20px",
-//   backgroundColor: "#eb4511",
-//   background: "linear-gradient(315deg, #eb4511 0%, #b02e0c 74%)",
-//   borderRadius: 3,
-//   border: 0,
-//   color: "white",
-//   height: 48,
-//   padding: "0 30px",
-//   boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-// };
 const useStyles = makeStyles({
   root: {
     display: "flex",
@@ -50,45 +36,6 @@ const useStyles = makeStyles({
         },
 });
 
-//overrides: {
-// Style sheet name ⚛️
-//MuiSnackbar: {
-// Name of the rule
-// root: {
-//   position: "relative",
-//   display: "flex",
-//   backgroundColor: " #3bb78f",
-//   background: "linear-gradient(315deg, #3bb78f 0%, #0bab64 74%)",
-//   borderRadius: 3,
-//   border: 0,
-//   color: "white",
-//   height: 60,
-//   width: "24vw",
-//   padding: "0 30px",
-//   bottom: "auto",
-//   boxShadow: "0 3px 5px 2px rgba(59, 183, 143 .3)",
-
-// const large = {
-//   success: {
-//     position: "relative",
-//     backgroundColor: " #3bb78f",
-//     background: "linear-gradient(315deg, #3bb78f 0%, #0bab64 74%)",
-//     borderRadius: 3,
-//     border: 0,
-//     color: "white",
-//     height: 48,
-//     width: "24vw",
-//     padding: "0 30px",
-//     bottom: "auto",
-//     boxShadow: "0 3px 5px 2px rgba(59, 183, 143 .3)",
-//   },
-//   error: {
-//     backgroundColor: "#eb4511",
-//     background: "linear-gradient(315deg, #eb4511 0%, #b02e0c 74%)",
-//     boxShadow: "0 1px 2px 2px rgba(255, 105, 135, .15)",
-//   },
-// };
-
 function CustomSnack({ open, handleClick, name, text, color }) {
   const classes = useStyles({ name, color });
 
@@ -101,7 +48,6 @@ function CustomSnack({ open, handleClick, name, text, color }) {
     >
       <SnackbarContent
         classes={{ root: classes.root, action: classes.action }}
-        //message={text}
         action={
           <React.Fragment>
             <h3 style={{ fontSize: "1.5rem" }}>{text}</h3>

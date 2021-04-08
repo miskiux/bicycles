@@ -60,7 +60,6 @@
       display: flex;
       width: 100vw;
       justify-content: center;
-      background: rgba(228, 233, 237, 0.2);
 
       .list-wrapper {
         display: flex;
@@ -72,9 +71,13 @@
 
         .category-option {
           margin-left: 0px;
-          margin: 0px 0px -16px;
           padding: 20px;
           list-style-type: none;
+
+          @media screen and (max-width: 800px) {
+            padding: 10px;
+            padding-bottom: 20px;
+          }
         }
 
         .category-wrapper {

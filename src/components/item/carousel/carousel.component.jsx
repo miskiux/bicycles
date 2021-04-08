@@ -17,11 +17,6 @@ import "./carousel.styles.scss";
 const ViewCarousel = ({ item, handleCarousel, toggleCarousel }) => {
   const { url } = item;
 
-  let imgStyles = {
-    width: 100 + "%",
-    height: 100 + "vh",
-  };
-
   const [x, setX] = useState(0);
 
   const goLeft = () => {
@@ -33,7 +28,7 @@ const ViewCarousel = ({ item, handleCarousel, toggleCarousel }) => {
   };
 
   return (
-    <>
+    <div className="carousel-wrapper">
       <ClearIcon
         className="clear-icon"
         onClick={() => {
@@ -60,7 +55,7 @@ const ViewCarousel = ({ item, handleCarousel, toggleCarousel }) => {
           <ChevronRightIcon style={{ fontSize: 40 }} />
         </button>
       </div>
-    </>
+    </div>
   );
 };
 

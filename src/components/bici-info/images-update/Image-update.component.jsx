@@ -17,17 +17,22 @@ const thumbsContainer = {
   display: "inline-block",
 };
 
-const thumb = {
-  display: "inline-flex",
-  borderRadius: 1,
-  border: "1px solid rgba(232, 236, 241, 1)",
-  marginBottom: 8,
-  marginRight: 8,
-  width: 180,
-  height: 180,
-  padding: 4,
-  boxSizing: "border-box",
-};
+const Thumb = styled.div`
+  display: inline-flex;
+  border-radius: 1;
+  border: 1px solid #eaeaea;
+  margin-bottom: 8;
+  margin-right: 8;
+  width: 200px;
+  height: 200px;
+  padding: 4;
+  box-sizing: border-box;
+
+  @media screen and (max-width: 1050px) {
+    width: 130px;
+    height: 130px;
+  }
+`;
 
 const thumbInner = {
   display: "flex",
@@ -176,7 +181,7 @@ const ImageUpdate = ({
 
   const imagePreview = allImages.map((file, index) => (
     <div style={wrapper} key={file.id}>
-      <div style={thumb}>
+      <Thumb>
         <div style={thumbInner}>
           <img
             alt="img"
@@ -186,7 +191,7 @@ const ImageUpdate = ({
             onClick={() => removeFile(file.id)}
           />
         </div>
-      </div>
+      </Thumb>
       <input
         style={checkbox}
         key={file.id}
@@ -227,7 +232,7 @@ const ImageUpdate = ({
             <CustomSnack
               open={openSnack}
               handleClick={handleClick}
-              name="small"
+              name="error"
               text="Add up to 6 images"
             />
           )}

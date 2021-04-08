@@ -4,6 +4,7 @@ import { Form } from "react-bootstrap";
 import AddIcon from "@material-ui/icons/Add";
 import { v4 as uuidv4 } from "uuid";
 import { Icon } from "semantic-ui-react";
+import "./description-updated.styles.scss";
 
 export const DescriptionUpdate = (props) => {
   const [availableSpecs, setAvailableSpecs] = useState([]);
@@ -12,14 +13,7 @@ export const DescriptionUpdate = (props) => {
 
   const [showRemove, setShowRemove] = useState(0);
 
-  useEffect(() => {
-    const filteredSpecs = BicycleSpecs.filter(
-      ({ idx: x }) => !props.description.some(({ idx: y }) => x === y)
-    );
-    setAvailableSpecs(filteredSpecs);
-  }, [props.description]);
-
-  const addNewItem = () => {
+  function addNewItem() {
     const lastItem = props.description.length
       ? props.description[props.description.length - 1]
       : [{ item: "a" }];
@@ -32,7 +26,7 @@ export const DescriptionUpdate = (props) => {
     } else {
       setRestricted(true);
     }
-  };
+  }
 
   const toggleOn = (id) => {
     setShowRemove(id);
@@ -44,61 +38,119 @@ export const DescriptionUpdate = (props) => {
 
   return (
     <>
-      <div className="description-update-form">
-        {props.description.map(({ item, value, idx }) => (
-          <Form.Group
-            key={idx}
-            onMouseEnter={() => toggleOn(idx)}
-            onMouseLeave={() => toggleOff()}
-          >
-            <div className="description-label-wrapper">
+      {props.edit ? (
+        <div className="description-update-form">
+          {props.description.map(({ item, value, idx }) => (
+            <Form.Group
+              key={idx}
+              onMouseEnter={() => toggleOn(idx)}
+              onMouseLeave={() => toggleOff()}
+            >
+              <div className="description-label-wrapper">
+                <Form.Control
+                  as="select"
+                  size="sm"
+                  className="spec-select"
+                  onChange={(e) => props.labelChange(e, idx)}
+                  value={item}
+                  custom
+                  disabled={!props.edit}
+                >
+                  {BicycleSpecs.map(({ item, value, idx }) => (
+                    <option key={idx} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </Form.Control>
+                {props.edit && (
+                  <Icon
+                    className="remove-old"
+                    name="remove"
+                    onClick={() => props.removeDescription(idx)}
+                  />
+                )}
+              </div>
               <Form.Control
-                as="select"
+                className="input-field"
+                type="text"
                 size="sm"
-                className="spec-select"
-                onChange={(e) => props.labelChange(e, idx)}
-                value={item}
-                custom
-                required
-              >
-                {BicycleSpecs.map(({ item, value, idx }) => (
-                  <option key={idx} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </Form.Control>
-              {idx === showRemove && (
-                <Icon
-                  className="remove-old"
-                  name="remove"
-                  onClick={() => props.removeDescription(idx)}
-                />
-              )}
+                autoComplete="off"
+                value={value}
+                onChange={(e) => props.valueChange(e, idx)}
+                disabled={!props.edit}
+              />
+            </Form.Group>
+          ))}
+          {props.edit && (
+            <div
+              className={`${
+                restricted && "add-restricred-wrapper"
+              } add-spec-wrapper`}
+              onClick={addNewItem}
+            >
+              <AddIcon />
             </div>
-            <Form.Control
-              className="input-field"
-              type="text"
-              size="sm"
-              autoComplete="off"
-              value={value}
-              onChange={(e) => props.valueChange(e, idx)}
-              required
-            />
-          </Form.Group>
-        ))}
-        {props.edit && (
-          <div
-            className={`${
-              restricted && "add-restricred-wrapper"
-            } add-spec-wrapper`}
-            onClick={addNewItem}
-          >
-            <AddIcon />
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      ) : (
+        <div className="description-update-form">
+          {props.item.description.map(({ item, value, idx }) => (
+            <Form.Group
+              key={idx}
+              onMouseEnter={() => toggleOn(idx)}
+              onMouseLeave={() => toggleOff()}
+            >
+              <div className="description-label-wrapper">
+                <Form.Control
+                  as="select"
+                  size="sm"
+                  className="spec-select"
+                  onChange={(e) => props.labelChange(e, idx)}
+                  value={item}
+                  custom
+                  disabled={!props.edit}
+                >
+                  {BicycleSpecs.map(({ item, value, idx }) => (
+                    <option key={idx} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </Form.Control>
+                {props.edit && (
+                  <Icon
+                    className="remove-old"
+                    name="remove"
+                    onClick={() => props.removeDescription(idx)}
+                  />
+                )}
+              </div>
+              <Form.Control
+                className="input-field"
+                type="text"
+                size="sm"
+                autoComplete="off"
+                value={value}
+                onChange={(e) => props.valueChange(e, idx)}
+                disabled={!props.edit}
+              />
+            </Form.Group>
+          ))}
+          {props.edit && (
+            <div
+              className={`${
+                restricted && "add-restricred-wrapper"
+              } add-spec-wrapper`}
+              onClick={addNewItem}
+            >
+              <AddIcon />
+            </div>
+          )}
+        </div>
+      )}
       {props.description.length === 0 && !props.edit && (
-        <span style={{ fontSize: "20px", padding: "0px" }}>
+        <span
+          style={{ fontSize: "20px", padding: "0px", position: "absolute" }}
+        >
           {" "}
           ' Click change to add bicycle specifications '
         </span>

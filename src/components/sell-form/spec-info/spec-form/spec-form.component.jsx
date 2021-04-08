@@ -130,10 +130,14 @@ const SpecForm = ({ callback, description, specsData, specsCallback }) => {
             <clipPath id="parts">{clipping && figures[clipping]}</clipPath>
           </defs>
           <image
-            className={clipping ? "opacity-bicycle" : "bicycle"}
+            className={clipping ? "opacity-bicycle" : "spec-bicycle"}
             xlinkHref={Edit}
           />
-          <image className="bicycle" xlinkHref={Edit} clipPath="url(#parts)" />
+          <image
+            className="spec-bicycle"
+            xlinkHref={Edit}
+            clipPath="url(#parts)"
+          />
           <BottomClip />
           <FrameClip />
           <HandlerClip />

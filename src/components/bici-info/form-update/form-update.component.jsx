@@ -84,6 +84,12 @@ function FormUpdate({ inputData, edit, toggleEdit }) {
 
   const { manufacturer, model, price, address, description } = update;
 
+  useEffect(() => {
+    if (!edit) {
+      setUpdate({ ...update, description: item.description });
+    }
+  }, [edit]);
+
   const handleChange = (event) => {
     const { value, name } = event.target;
     setUpdate({ ...update, [name]: value });
@@ -261,11 +267,11 @@ function FormUpdate({ inputData, edit, toggleEdit }) {
             edit={edit}
             descriptionChange={descriptionChange}
             removeDescription={removeDescription}
-            register={register}
             combineDescriptions={combineDescriptions}
             labelChange={labelChange}
             valueChange={valueChange}
             errors={errors}
+            item={item}
           />
         )}
       </Form>

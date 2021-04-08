@@ -22,7 +22,6 @@ import {
 } from "../../redux/sell/sell.selectors";
 
 import { selectCurrentUser } from "../../redux/user/user.selectors";
-import Sellbackground from "../../assets/sellform-back.jpg";
 import {
   imageUploadStart,
   bicycleUploadStart,
@@ -121,6 +120,7 @@ function SellPage({
     address,
     image,
     imgKey,
+    phone,
   } = data;
 
   useEffect(() => {
@@ -198,6 +198,8 @@ function SellPage({
     const priceError = priceValidation("Price", price);
     const imageError = imageValidation(image);
     const locationError = nameValidation("Location", address);
+    const phoneError = phoneValidation(phone);
+    errorObj["phone"] = phoneError;
     errorObj["address"] = locationError;
     errorObj["image"] = imageError;
     errorObj["price"] = priceError;
@@ -280,7 +282,7 @@ function SellPage({
       <Row className="sellpage-row">
         <h3 className="sellpage-name">Bicycle form</h3>
         <Col className="sellpage-info-wrapper" xs={12} lg={3} md={4}>
-          <h3>Tell us about your bicycle</h3>
+          <h3 style={{ paddingBottom: "10px" }}>Tell us about your bicycle</h3>
           <div className="sellpage-item-wrapper">
             {steps.map(({ title, id, name }) => (
               <div

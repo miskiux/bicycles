@@ -1,10 +1,10 @@
-import UserActionTypes from './user.types';
+import UserActionTypes from "./user.types";
 
 // reducer receives an initial state and action(to transform the state)
 const INITIAL_STATE = {
   currentUser: null,
   error: null,
-  welcomePopUp: false
+  welcomePopUp: false,
 };
 
 //state gets a default parameter,in a case, to default back to INITIAL_STATE
@@ -15,31 +15,32 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentUser: action.payload,
-        error: null
+        error: null,
       };
     case UserActionTypes.SIGN_OUT_SUCCESS:
       return {
         ...state,
         currentUser: null,
-        error: null
-      }
+        error: null,
+      };
     case UserActionTypes.REDIRECT:
       return {
         ...state,
-        redirectTo: action.payload
-      }
+        redirectTo: action.payload,
+      };
     case UserActionTypes.SHOW_SUCCESS:
       return {
         ...state,
-        welcomePopUp: action.payload
-      }
+        welcomePopUp: action.payload,
+        error: null,
+      };
     case UserActionTypes.SIGN_IN_FAILURE:
     case UserActionTypes.SIGN_OUT_FAILURE:
     case UserActionTypes.SIGN_UP_FAILURE:
-    return {
-      ...state,
-      error: action.payload
-    }
+      return {
+        ...state,
+        error: action.payload,
+      };
     default:
       return state;
   }

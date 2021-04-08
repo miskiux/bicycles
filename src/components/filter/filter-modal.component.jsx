@@ -15,8 +15,7 @@ import LocationItem from "./location/location-item.component";
 
 import { Icon, Modal } from "semantic-ui-react";
 import { Accordion } from "semantic-ui-react";
-import UseAnimations from "react-useanimations";
-import menu2 from "react-useanimations/lib/menu2";
+
 import "./filter-modal.styles.scss";
 
 function FilterModal({ data }) {
@@ -29,9 +28,6 @@ function FilterModal({ data }) {
   const routeOption = match ? match.url : "/shop";
 
   const history = useHistory();
-
-  const [activeIndex, setActiveIndex] = useState(true);
-  const [subIndex, setSubIndex] = useState(false);
 
   const price = price_range ? price_range.split(",") : "";
   const manu = manufacturer ? manufacturer.split(",") : "";
@@ -66,11 +62,7 @@ function FilterModal({ data }) {
       >
         <div className="modal-filter-container">
           <Accordion fluid>
-            <Accordion.Title
-              className="accordion-title"
-              active={activeIndex === true}
-              index={true}
-            >
+            <Accordion.Title className="accordion-title">
               <div className="title-items">
                 <span style={{ fontSize: "2rem" }}>Filter</span>
                 <CloseIcon
@@ -81,14 +73,10 @@ function FilterModal({ data }) {
             </Accordion.Title>
             <Accordion.Content active={true}>
               <Accordion className="sub-accordion">
-                <Accordion.Title
-                  className="sub-accordion-title"
-                  active={true}
-                  index={1}
-                >
+                <Accordion.Title className="sub-accordion-title">
                   Price
                 </Accordion.Title>
-                <Accordion.Content active={true}>
+                <Accordion.Content>
                   <PriceItem
                     updateQuery={updateQueryStringParameter}
                     onModalClose={onModalClose}
@@ -96,11 +84,7 @@ function FilterModal({ data }) {
                 </Accordion.Content>
               </Accordion>
               <Accordion className="sub-accordion">
-                <Accordion.Title
-                  className="sub-accordion-title"
-                  active={true}
-                  index={2}
-                >
+                <Accordion.Title className="sub-accordion-title">
                   Manufacturer
                 </Accordion.Title>
                 <Accordion.Content active={true}>
@@ -112,11 +96,7 @@ function FilterModal({ data }) {
                 </Accordion.Content>
               </Accordion>
               <Accordion className="sub-accordion">
-                <Accordion.Title
-                  className="sub-accordion-title"
-                  active={true}
-                  index={3}
-                >
+                <Accordion.Title className="sub-accordion-title">
                   Location
                 </Accordion.Title>
                 <Accordion.Content active={true}>

@@ -13,17 +13,22 @@ const thumbsContainer = {
   marginTop: 16,
 };
 
-const thumb = {
-  display: "inline-flex",
-  borderRadius: 1,
-  border: "1px solid #eaeaea",
-  marginBottom: 8,
-  marginRight: 8,
-  width: 200,
-  height: 200,
-  padding: 4,
-  boxSizing: "border-box",
-};
+const Thumb = styled.div`
+  display: inline-flex;
+  border-radius: 1;
+  border: 1px solid #eaeaea;
+  margin-bottom: 8;
+  margin-right: 8;
+  width: 200px;
+  height: 200px;
+  padding: 4;
+  box-sizing: border-box;
+
+  @media screen and (max-width: 1050px) {
+    width: 130px;
+    height: 130px;
+  }
+`;
 
 const thumbInner = {
   display: "flex",
@@ -158,7 +163,7 @@ const ImageInput = ({ callback, errors, images }) => {
 
   const imagePrewiew = images.map((file, index) => (
     <div style={wrapper} key={file.id}>
-      <div style={thumb}>
+      <Thumb>
         <div style={thumbInner}>
           <img
             alt="img"
@@ -168,7 +173,7 @@ const ImageInput = ({ callback, errors, images }) => {
             onClick={removeFile(file)}
           />
         </div>
-      </div>
+      </Thumb>
       <input
         style={checkbox}
         key={file.id}
@@ -194,9 +199,13 @@ const ImageInput = ({ callback, errors, images }) => {
           <div className="text-wrapper">
             <input {...getInputProps()} />
             <span className="image-text">Images</span>
-            <button className="upload-text" type="button" onClick={open}>
-              Upload Images
-            </button>
+            <div className="image-upload-text">
+              <button className="upload-text" type="button" onClick={open}>
+                Upload Images
+              </button>
+              <span style={{ fontSize: "9px" }}>or</span>
+              <span>Drop it</span>
+            </div>
           </div>
           <aside style={thumbsContainer}>
             <ul>{imagePrewiew}</ul>
@@ -205,11 +214,11 @@ const ImageInput = ({ callback, errors, images }) => {
             <CustomSnack
               open={openSnack}
               handleClick={handleClick}
-              name="small"
+              name="error"
               text="Add up to 6 images"
             />
           )}
-          {errors.image && (
+          {errors.image && !images.length && (
             <span className="form-error">{Object.values(errors.image)}</span>
           )}
         </div>

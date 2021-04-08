@@ -28,9 +28,6 @@ const Filter = ({ data, toggleFilter, isBreakPoint }) => {
 
   const history = useHistory();
 
-  const [activeIndex, setActiveIndex] = useState(true);
-  const [subIndex, setSubIndex] = useState(false);
-
   const price = price_range ? price_range.split(",") : "";
   const manu = manufacturer ? manufacturer.split(",") : "";
   const loc = locations ? locations : "";
@@ -50,24 +47,11 @@ const Filter = ({ data, toggleFilter, isBreakPoint }) => {
     });
   };
 
-  const handleSubClick = () => {
-    setSubIndex((i) => !i);
-  };
-
   return (
-    <div
-      className="filter-container"
-      // className={`${
-      //   isBreakPoint ? "modal-filter-container" : "filter-container"
-      // }`}
-    >
+    <div className="filter-container">
       <Accordion fluid>
-        <Accordion.Title
-          className="accordion-title"
-          active={activeIndex === true}
-          index={true}
-        >
-          <div className="filter-trigger" onClick={handleSubClick}>
+        <Accordion.Title className="accordion-title">
+          <div className="filter-trigger">
             <span>Filter</span>
             {price || manu || loc ? (
               <Icon
@@ -81,34 +65,16 @@ const Filter = ({ data, toggleFilter, isBreakPoint }) => {
           </div>
         </Accordion.Title>
         <Accordion.Content className="filter-content" active={true}>
-          <Accordion
-            className="sub-accordion"
-            // className={`${
-            //   isBreakPoint ? "modal-filter-content" : "sub-accordion"
-            // }`}
-          >
-            <Accordion.Title
-              className="sub-accordion-title"
-              active={true}
-              index={1}
-            >
+          <Accordion className="sub-accordion">
+            <Accordion.Title className="sub-accordion-title">
               Price
             </Accordion.Title>
             <Accordion.Content active={true}>
               <PriceItem updateQuery={updateQueryStringParameter} />
             </Accordion.Content>
           </Accordion>
-          <Accordion
-            className="sub-accordion"
-            // className={`${
-            //   isBreakPoint ? "modal-filter-content" : "sub-accordion"
-            // }`}
-          >
-            <Accordion.Title
-              className="sub-accordion-title"
-              active={true}
-              index={2}
-            >
+          <Accordion className="sub-accordion">
+            <Accordion.Title className="sub-accordion-title">
               Manufacturer
             </Accordion.Title>
             <Accordion.Content active={true}>
@@ -118,17 +84,8 @@ const Filter = ({ data, toggleFilter, isBreakPoint }) => {
               />
             </Accordion.Content>
           </Accordion>
-          <Accordion
-            className="sub-accordion"
-            // className={`${
-            //   isBreakPoint ? "modal-filter-content" : "sub-accordion"
-            // }`}
-          >
-            <Accordion.Title
-              className="sub-accordion-title"
-              active={true}
-              index={3}
-            >
+          <Accordion className="sub-accordion">
+            <Accordion.Title className="sub-accordion-title">
               Location
             </Accordion.Title>
             <Accordion.Content active={true}>
@@ -137,117 +94,6 @@ const Filter = ({ data, toggleFilter, isBreakPoint }) => {
           </Accordion>
         </Accordion.Content>
       </Accordion>
-      {/* <div className="filter-options">
-        <Dropdown className="filter-selection" text="Price" open={true}>
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={(e) => e.stopPropagation()}>
-              <div className="filter-option">
-                <PriceItem updateQuery={updateQueryStringParameter} />
-              </div>
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-        <Dropdown
-          className="filter-selection"
-          placeholder="Manufacturer"
-          open={true}
-        >
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={(e) => e.stopPropagation()}>
-              <div className="filter-option">
-                <ManufacturerCheckBox
-                  updateQuery={updateQueryStringParameter}
-                />
-              </div>
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-        <Dropdown
-          className="filter-selection"
-          placeholder="Location"
-          open={true}
-        >
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={(e) => e.stopPropagation()}>
-              <div className="filter-option">
-                <LocationItem updateQuery={updateQueryStringParameter} />
-              </div>
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
-      {price || manu || loc ? (
-        <div class="ui animated button" tabIndex="0">
-          <div class="visible content">
-            <span>{"Reset All"}</span>
-          </div>
-          <div class="hidden content">
-            <i
-              class="close icon"
-              onClick={() => {
-                history.push("/shop");
-              }}
-            ></i>
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
-      {price ? (
-        <div class="ui animated button" tabIndex="0">
-          <div class="visible content">
-            <span>{`${price[0]} - ${price[1]}`}</span>
-          </div>
-          <div class="hidden content">
-            <i
-              class="close icon"
-              onClick={() => {
-                removeQueryString(search, "price_range", price);
-              }}
-            ></i>
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
-      {manu ? (
-        <div>
-          {manu.map((item, index) => (
-            <div key={index} class="ui animated button" tabIndex="0">
-              <div class="visible content">
-                <span>{item}</span>
-              </div>
-              <div class="hidden content">
-                <i
-                  class="close icon"
-                  onClick={() => {
-                    removeQueryString(search, "manufacturer", manu[index]);
-                  }}
-                ></i>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        ""
-      )}
-      {loc ? (
-        <div class="ui animated button" tabIndex="0">
-          <div class="visible content">
-            <span>{`Bicycles: ${loc}`}</span>
-          </div>
-          <div class="hidden content">
-            <i
-              class="close icon"
-              onClick={() => {
-                removeQueryString(search, "locations", loc);
-              }}
-            ></i>
-          </div>
-        </div>
-      ) : (
-        ""
-      )} */}
     </div>
   );
 };

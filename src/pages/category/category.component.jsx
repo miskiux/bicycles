@@ -59,6 +59,9 @@ const CategoryPage = ({
       {bicycleCategory.map(({ id, ...otherCollectionProps }) => (
         <CollectionItem id={id} key={id} {...otherCollectionProps} />
       ))}
+      {bicycleCategory.length === 0 && (
+        <h3 style={{ padding: "10px" }}>No bicycles to display</h3>
+      )}
     </div>
   );
 };

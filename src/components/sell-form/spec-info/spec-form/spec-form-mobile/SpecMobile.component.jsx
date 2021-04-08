@@ -73,9 +73,15 @@ export const SpecMobile = (props) => {
     setShowRemove();
   };
 
+  const removeDescription = (id) => {
+    const values = newItems.filter((i) => i.idx !== id);
+    setNewItems(values);
+  };
+
   return (
     <>
       <div className="description-update-form">
+        {console.log(newItems)}
         {newItems.map(({ item, value, idx }) => (
           <Form.Group
             key={idx}
@@ -98,13 +104,11 @@ export const SpecMobile = (props) => {
                   </option>
                 ))}
               </Form.Control>
-              {idx === showRemove && (
-                <Icon
-                  className="remove-old"
-                  name="remove"
-                  onClick={() => props.removeDescription(idx)}
-                />
-              )}
+              <Icon
+                className="remove-old"
+                name="remove"
+                onClick={() => removeDescription(idx)}
+              />
             </div>
             <Form.Control
               className="input-field"
