@@ -45,8 +45,7 @@ function App({ checkUserSession }) {
               <SpinnerOverlay>
                 <SpinnerContainer />
               </SpinnerOverlay>
-            }
-          >
+            }>
             <Route exact path="/" component={HomePage} />
             <ProtectedRoute path="/sell" user={user} component={SellPage} />
             <Route path="/shop" component={ShopPage} />
