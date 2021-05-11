@@ -1,10 +1,13 @@
-import { takeLatest, call, put, all } from "redux-saga/effects";
+import { takeLatest, call, put, all, fork } from "redux-saga/effects";
 
 import {
   firestore,
   getBiciDataForShop,
   deleteUserBicycleImages,
 } from "../../firebase/firebase.utils";
+
+import { getBlob } from "../../utils/getBlob";
+import { getPreview } from "../../utils/getPreview";
 
 import {
   fetchBicyclesStart,
@@ -16,12 +19,31 @@ import {
 import ShopActionTypes from "./shop.types";
 import UpdateActionTypes from "../update/update.types";
 
+//dont fetch data if changes in firebase didnt occur
+
+//creating an id of a photo
 export function* fetchBicyclesStartAsync() {
   try {
     const bicycleRef = firestore.collection("bicycle");
     const snapshot = yield bicycleRef.get();
     const bicycleMap = yield call(getBiciDataForShop, snapshot);
-    yield put(fetchBicyclesSuccess(bicycleMap));
+
+    const previewArr = bicycleMap.map((i) => ({
+      id: i.id,
+      url: i.item.url,
+    }));
+    const blobs = yield call(getBlob, previewArr);
+    const previews = yield call(getPreview, blobs);
+    const newBicycleMap = bicycleMap.map((x) => ({
+      ...x,
+      item: {
+        ...x.item,
+        preview: previews
+          .filter((item) => item.id === x.id)
+          .map(({ id, ...rest }) => rest),
+      },
+    }));
+    yield put(fetchBicyclesSuccess(newBicycleMap));
   } catch (error) {
     yield put(fetchBicyclesFailure(error.message));
   }

@@ -7,8 +7,8 @@ import {
   addItem,
   clearItemFromFavourites,
 } from "../../redux/side-nav/side-nav.actions";
+
 import { selectFavouriteItems } from "../../redux/side-nav/side-nav.selectors";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useProgressiveImage } from "../../hooks/useProgressiveImage";
 import { Icon } from "semantic-ui-react";
 import {
@@ -26,20 +26,12 @@ const CollectionItem = ({
   clearItemFromFavourites,
 }) => {
   const [index, setIndex] = useState(0);
-  //const [didLoad, setLoad] = useState(false);
   const [bookmarked, setBookMarked] = useState([]);
   const [itemSpecs, setItemSpecs] = useState([]);
 
   const images = item.url;
-  const {
-    manufacturer,
-    model,
-    price,
-    year,
-    size,
-    condition,
-    description,
-  } = item;
+  const { manufacturer, model, price, year, size, condition, description } =
+    item;
 
   const { sourceLoaded, didLoad } = useProgressiveImage(images[index]);
 
@@ -89,6 +81,7 @@ const CollectionItem = ({
 
   return (
     <div className="collection-item">
+      {console.log(item.preview[index].preview)}
       {didLoad && (
         <>
           <div className="bookmark-wrapper">
@@ -120,56 +113,53 @@ const CollectionItem = ({
           )}
         </>
       )}
-      <Suspense
-        fallback={
-          <SpinnerOverlay>
-            <SpinnerContainer />
-          </SpinnerOverlay>
-        }
-      >
+      <div className="image-placeholder">
+        <img
+          alt="thumb"
+          src={item.preview[index].preview}
+          className="image thumb"
+          style={{ visibility: didLoad ? "hidden" : "visible" }}
+        />
         <div
           style={{ backgroundImage: `url(${sourceLoaded})` }}
-          className="collection-item-image"
+          className={`${didLoad ? "loaded" : "loading"} collection-item-image`}
         />
-      </Suspense>
-      {didLoad ? (
-        <div className="collection-menu" onClick={NavigateToView}>
-          <div className="collection-footer">
-            <div className="model-manufacturer">
-              <span className="manufacturer-name">{manufacturer}</span>
-              <span className="model-name">{model}</span>
-            </div>
-            <span className="price">${price}</span>
+      </div>
+
+      <div className="collection-menu" onClick={NavigateToView}>
+        <div className="collection-footer">
+          <div className="model-manufacturer">
+            <span className="manufacturer-name">{manufacturer}</span>
+            <span className="model-name">{model}</span>
           </div>
-          <div>
-            {description.length !== 0 && (
-              <ul className="description-items">
-                {itemSpecs.map((i, index) => (
-                  <li className="description-items-title" key={index}>
-                    {i.toUpperCase()}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div className="collection-menu-icons">
-            {size && (
-              <div className="collection-item-circle">
-                <span className="collection-menu-item-title">{size}</span>
-                <span style={{ fontSize: "0.5rem", margin: "-9px" }}>cm</span>
-              </div>
-            )}
-            {year && (
-              <div className="collection-item-date">
-                <Icon name="calendar alternate outline" />
-                <span className="collection-menu-item-title">{year}</span>
-              </div>
-            )}
-          </div>
+          <span className="price">${price}</span>
         </div>
-      ) : (
-        ""
-      )}
+        <div>
+          {description.length !== 0 && (
+            <ul className="description-items">
+              {itemSpecs.map((i, index) => (
+                <li className="description-items-title" key={index}>
+                  {i.toUpperCase()}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className="collection-menu-icons">
+          {size && (
+            <div className="collection-item-circle">
+              <span className="collection-menu-item-title">{size}</span>
+              <span style={{ fontSize: "0.5rem", margin: "-9px" }}>cm</span>
+            </div>
+          )}
+          {year && (
+            <div className="collection-item-date">
+              <Icon name="calendar alternate outline" />
+              <span className="collection-menu-item-title">{year}</span>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

@@ -30,7 +30,6 @@ export const filterByLocation = (payload) => ({
 export const toggleCarousel = () => ({
   type: ShopActionTypes.TOGGLE_CAROUSEL,
 });
-
 //delete actions
 
 export const deleteBicycleStart = (keys) => ({

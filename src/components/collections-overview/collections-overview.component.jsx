@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import LazyLoad from "react-lazyload";
 import CollectionItem from "../collection-item/collection-item.component";
 
 import { selectAll } from "../../redux/shop/shop.selectors";
@@ -70,9 +69,7 @@ const CollectionsOverview = ({
   return (
     <div className="preview">
       {filteredBicycles.map(({ id, ...otherCollectionProps }) => (
-        <LazyLoad key={id} height={200} offset={100} once>
-          <CollectionItem key={id} id={id} {...otherCollectionProps} />
-        </LazyLoad>
+        <CollectionItem key={id} id={id} {...otherCollectionProps} />
       ))}
       {nothingToDisplay && (
         <h3 style={{ padding: "10px" }}>No bicycles to display</h3>

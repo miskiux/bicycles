@@ -4,9 +4,11 @@
   flex-direction: column;
   justify-content: space-between;
   max-height: 330px;
+  min-height: 330px;
   width: 340px;
   margin: 14px;
   border: 1px solid transparent;
+  overflow: hidden;
 
   &:hover {
     border: 1px solid rgba(128, 128, 128, 0.1);
@@ -20,13 +22,51 @@
     }
   }
 
-  .collection-item-image {
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+  .image-placeholder {
+    position: relative;
+    z-index: -1;
     height: 250px;
     max-height: 250px;
     width: 100%;
+    overflow: hidden;
+
+    .image {
+      display: block;
+      z-index: 1;
+      max-height: 250px;
+      height: 100%;
+      width: 100%;
+      border-radius: 5px;
+      opacity: 1;
+    }
+
+    .loaded {
+      opacity: 1;
+      transition: opacity 300ms ease 100ms;
+    }
+
+    .loading {
+      opacity: 0;
+    }
+
+    .thumb {
+      filter: blur(5px);
+      -webkit-filter: blur(5px);
+      transform: scale(1);
+      transition: visibility 0ms ease 350ms;
+    }
+
+    .collection-item-image {
+      position: absolute;
+      top: 0;
+      z-index: 2;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      height: 250px;
+      max-height: 250px;
+      width: 100%;
+    }
   }
 }
 .arrow-container {

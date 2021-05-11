@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useRef } from "react";
 import { connect } from "react-redux";
 import { Route, Link, useLocation } from "react-router-dom";
 import * as QueryString from "query-string";
@@ -22,8 +22,7 @@ import { useMediaQuery } from "../../hooks/useMediaQuery";
 
 import "./shop.styles.scss";
 
-//small screen refresh sliding
-
+//link action launching multiple times
 function ShopPage({ fetchBicyclesStart, match, activeLink, isFetching }) {
   const links = [
     {
@@ -68,10 +67,11 @@ function ShopPage({ fetchBicyclesStart, match, activeLink, isFetching }) {
   const [breakPoint, setBreakPoint] = useState(false);
   const location = useLocation();
   const isBreakPoint = useMediaQuery(915);
+  const canvasRef = useRef();
 
-  useEffect(() => {
-    fetchBicyclesStart();
-  }, []);
+  // useEffect(() => {
+  //   fetchBicyclesStart();
+  // }, []);
 
   useEffect(() => {
     setBreakPoint(true);
@@ -211,6 +211,13 @@ function ShopPage({ fetchBicyclesStart, match, activeLink, isFetching }) {
 
   return (
     <div className="shop-page-wrapper">
+      <canvas
+        id="progressive"
+        style={{ display: "none" }}
+        ref={canvasRef}
+        width="10"
+        height="10"
+      ></canvas>
       {breakPoint && (
         <Transition in={isBreakPoint || !filterOpen} timeout={sideduration}>
           {(state) => (

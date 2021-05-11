@@ -234,13 +234,13 @@ export const getBiciDataForShop = (bicycle) => {
       createdAt,
     };
   });
-  return bicycleObj.reduce((accumulator, item) => {
-    accumulator[item.id] = item;
-    return accumulator;
-  }, {});
+  return bicycleObj;
+  // return bicycleObj.reduce((accumulator, item) => {
+  //   accumulator[item.id] = item;
+  //   return accumulator;
+  // }, {});
 };
 
-//sagas like async/await work of the promises
 export const getCurrentUserSession = () => {
   return new Promise((resolve, reject) => {
     const unsubscribe = auth.onAuthStateChanged((userAuth) => {
