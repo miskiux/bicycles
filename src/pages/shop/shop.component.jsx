@@ -69,9 +69,9 @@ function ShopPage({ fetchBicyclesStart, match, activeLink, isFetching }) {
   const isBreakPoint = useMediaQuery(915);
   const canvasRef = useRef();
 
-  // useEffect(() => {
-  //   fetchBicyclesStart();
-  // }, []);
+  useEffect(() => {
+    fetchBicyclesStart();
+  }, []);
 
   useEffect(() => {
     setBreakPoint(true);
