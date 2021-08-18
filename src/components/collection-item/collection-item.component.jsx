@@ -1,21 +1,17 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import { useHistory } from "react-router-dom";
-
+import StyleUtils from "../../utils/StyleUtil";
 import {
   addItem,
   clearItemFromFavourites,
 } from "../../redux/side-nav/side-nav.actions";
 
+import { Image } from "../shared/image/image.component";
 import { selectFavouriteItems } from "../../redux/side-nav/side-nav.selectors";
 import { useProgressiveImage } from "../../hooks/useProgressiveImage";
 import { Icon } from "semantic-ui-react";
-import {
-  SpinnerContainer,
-  SpinnerOverlay,
-} from "../with-spinner/with-spinner.styles";
-
 import "./collection-item.styles.scss";
 
 const CollectionItem = ({
@@ -24,11 +20,12 @@ const CollectionItem = ({
   id,
   favourites,
   clearItemFromFavourites,
+  type,
 }) => {
   const [index, setIndex] = useState(0);
   const [bookmarked, setBookMarked] = useState([]);
   const [itemSpecs, setItemSpecs] = useState([]);
-
+  const history = useHistory();
   const images = item.url;
   const { manufacturer, model, price, year, size, condition, description } =
     item;
@@ -60,9 +57,7 @@ const CollectionItem = ({
     }
   };
 
-  const history = useHistory();
-
-  const NavigateToView = () => {
+  const navigateToItemView = () => {
     history.push({
       pathname: `/item/${id}`,
     });
@@ -70,8 +65,6 @@ const CollectionItem = ({
 
   const addingToList = (id, item) => {
     const existingIds = favourites.map(({ id }) => id);
-    console.log(existingIds);
-    console.log(id);
     if (!existingIds.includes(id)) {
       addItem({ id, item });
     } else {
@@ -80,8 +73,12 @@ const CollectionItem = ({
   };
 
   return (
-    <div className="collection-item">
-      {console.log(item.preview[index].preview)}
+    <div
+      className={StyleUtils.flatten([
+        "collection-item",
+        type === "s" && "sizeS",
+      ])}
+    >
       {didLoad && (
         <>
           <div className="bookmark-wrapper">
@@ -113,20 +110,9 @@ const CollectionItem = ({
           )}
         </>
       )}
-      <div className="image-placeholder">
-        <img
-          alt="thumb"
-          src={item.preview[index].preview}
-          className="image thumb"
-          style={{ visibility: didLoad ? "hidden" : "visible" }}
-        />
-        <div
-          style={{ backgroundImage: `url(${sourceLoaded})` }}
-          className={`${didLoad ? "loaded" : "loading"} collection-item-image`}
-        />
-      </div>
+      <Image image={{ url: item.url, preview: item.preview }} />
 
-      <div className="collection-menu" onClick={NavigateToView}>
+      <div className="collection-menu" onClick={navigateToItemView}>
         <div className="collection-footer">
           <div className="model-manufacturer">
             <span className="manufacturer-name">{manufacturer}</span>

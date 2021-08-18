@@ -1,0 +1,19 @@
+@import "src/styling/variables";
+
+.container {
+  padding: 25px;
+  border: 1px solid $color-grey-250;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  max-width: 1000px;
+
+  .headerContainer {
+    display: flex;
+    justify-content: space-between;
+
+    h2 {
+      font-weight: 300;
+    }
+  }
+}

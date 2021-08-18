@@ -1,0 +1,68 @@
+//----------------------------------------
+// Breakpoints
+//----------------------------------------
+$desktop-wide: 1200px;
+$desktop: 1024px;
+$tablet: 768px;
+
+//----------------------------------------
+// Colors
+//----------------------------------------
+$color-text: #15263c;
+
+$color-primary: #5697ef;
+
+$color-info: $color-primary;
+$color-success: #40c564;
+$color-warning: #efae56;
+$color-error: #ef6256;
+
+$color-grey-600: #606979;
+$color-grey-500: #768297;
+$color-grey-400: #8b95a6;
+$color-grey-350: #96a0af;
+$color-grey-300: #a0a8b7;
+$color-grey-275: #a9bcc6;
+$color-grey-250: #d4dee3;
+$color-grey-225: #dde2e8;
+$color-grey-200: #e6e9eb;
+$color-grey-150: #d6dadf;
+$color-grey-100: #f7f7f7;
+$color-grey-50: #f6f9fb;
+$color-white: #ffffff;
+$color-black: #000000;
+$color-purple: #a399d8;
+
+//----------------------------------------
+// Shadows
+//----------------------------------------
+$default-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.24);
+$dropdown-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.12);
+$sticky-section-shadow: 0px -3px 10px rgba(21, 38, 60, 0.1);
+
+$shadow-1: 0px 0px 2px rgba(0, 0, 0, 0.14), 0px 1px 3px rgba(0, 0, 0, 0.2);
+$shadow-2: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 1px 5px rgba(0, 0, 0, 0.2);
+$shadow-3: 0px 3px 3px rgba(0, 0, 0, 0.14), 0px 1px 8px rgba(0, 0, 0, 0.2);
+$shadow-4: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.2);
+$shadow-6: 0px 6px 10px rgba(0, 0, 0, 0.14), 0px 3px 5px rgba(0, 0, 0, 0.2);
+$shadow-8: 0px 8px 10px rgba(0, 0, 0, 0.14), 0px 4px 5px rgba(0, 0, 0, 0.2);
+$shadow-9: 0px 9px 12px rgba(0, 0, 0, 0.14), 0px 5px 6px rgba(0, 0, 0, 0.2);
+$shadow-12: 0px 12px 17px rgba(0, 0, 0, 0.14), 0px 7px 8px rgba(0, 0, 0, 0.2);
+$shadow-16: 0px 16px 24px rgba(0, 0, 0, 0.14), 0px 8px 10px rgba(0, 0, 0, 0.2);
+$shadow-24: 0px 24px 38px rgba(0, 0, 0, 0.14), 0px 11px 15px rgba(0, 0, 0, 0.2);
+
+//----------------------------------------
+// Layout
+//----------------------------------------
+$max-width: 1490px;
+
+//----------------------------------------
+// Header
+//----------------------------------------
+$header-height: 60px;
+$header-breakpoint: 1350px;
+
+//----------------------------------------
+// Inputs
+//----------------------------------------
+$default-input-width: 250px;

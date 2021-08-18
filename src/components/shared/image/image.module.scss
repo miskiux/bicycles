@@ -1,0 +1,67 @@
+.placeholder {
+  position: relative;
+  z-index: -1;
+  height: 200px;
+  width: 100%;
+  overflow: hidden;
+
+  &.sizeS {
+    height: 200px;
+  }
+
+  .image {
+    display: block;
+    z-index: 1;
+    height: 250px;
+    width: 100%;
+    border-radius: 5px;
+    opacity: 1;
+
+    &.sizeS {
+      height: 200px;
+    }
+  }
+
+  .loaded {
+    animation: fadeIn 300ms ease-in-out;
+    -webkit-animation: fadeIn 300ms ease-in-out;
+
+    keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+
+  .loading {
+    opacity: 0;
+  }
+
+  .thumb {
+    filter: blur(5px);
+    transform: scale(1);
+    transition: visibility 0ms ease 350ms;
+  }
+
+  .collectionImage {
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 250px;
+    width: 100%;
+
+    &:hover {
+      height: 270px;
+    }
+
+    &.sizeS {
+      height: 200px;
+    }
+  }
+}

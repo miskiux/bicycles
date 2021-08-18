@@ -1,4 +1,4 @@
-import { takeLatest, call, put, all, fork } from "redux-saga/effects";
+import { takeLatest, call, put, all } from "redux-saga/effects";
 
 import {
   firestore,
@@ -18,10 +18,8 @@ import {
 
 import ShopActionTypes from "./shop.types";
 import UpdateActionTypes from "../update/update.types";
+import SellActionTypes from "../sell/sell.types";
 
-//dont fetch data if changes in firebase didnt occur
-
-//creating an id of a photo
 export function* fetchBicyclesStartAsync() {
   try {
     const bicycleRef = firestore.collection("bicycle");
@@ -32,6 +30,7 @@ export function* fetchBicyclesStartAsync() {
       id: i.id,
       url: i.item.url,
     }));
+
     const blobs = yield call(getBlob, previewArr);
     const previews = yield call(getPreview, blobs);
     const newBicycleMap = bicycleMap.map((x) => ({
@@ -43,6 +42,7 @@ export function* fetchBicyclesStartAsync() {
           .map(({ id, ...rest }) => rest),
       },
     }));
+
     yield put(fetchBicyclesSuccess(newBicycleMap));
   } catch (error) {
     yield put(fetchBicyclesFailure(error.message));
@@ -87,6 +87,10 @@ export function* onImageUpdateFinish() {
   );
 }
 
+export function* onNewBicycleAdded() {
+  yield takeLatest(SellActionTypes.SUBMIT_SUCCESS, fetchNewBicycles);
+}
+
 export function* onBicycleDeleteFinish() {
   yield takeLatest(ShopActionTypes.GET_DELETE_DEFAULT, fetchNewBicycles);
 }
@@ -98,5 +102,6 @@ export function* shopSagas() {
     call(onBicycleUpdateSuccess),
     call(onImageUpdateFinish),
     call(onBicycleDeleteFinish),
+    call(onNewBicycleAdded),
   ]);
 }

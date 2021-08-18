@@ -1,0 +1,14 @@
+//----------------------------------------
+// Spacing
+//----------------------------------------
+@mixin child-spacing($axis, $size) {
+  @if ($axis == "horizontal") {
+    > *:not(:last-child) {
+      margin-right: $size;
+    }
+  } @else if ($axis == "vertical") {
+    > *:not(:last-child) {
+      margin-bottom: $size;
+    }
+  }
+}

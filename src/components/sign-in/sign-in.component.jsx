@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 
-import FormInput from "../form-input/form-input.component";
+import FormInput from "../shared/form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
 
 import {

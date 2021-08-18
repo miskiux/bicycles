@@ -8,7 +8,6 @@ import {
   linkSelector,
   selectIsBicyclesFetching,
 } from "../../redux/shop/shop.selectors";
-import { fetchBicyclesStart } from "../../redux/shop/shop.actions";
 import Filter from "../../components/filter/filter.component";
 import UseAnimations from "react-useanimations";
 import {
@@ -22,8 +21,7 @@ import { useMediaQuery } from "../../hooks/useMediaQuery";
 
 import "./shop.styles.scss";
 
-//link action launching multiple times
-function ShopPage({ fetchBicyclesStart, match, activeLink, isFetching }) {
+function ShopPage({ match, activeLink, isFetching }) {
   const links = [
     {
       id: 1,
@@ -68,10 +66,6 @@ function ShopPage({ fetchBicyclesStart, match, activeLink, isFetching }) {
   const location = useLocation();
   const isBreakPoint = useMediaQuery(915);
   const canvasRef = useRef();
-
-  useEffect(() => {
-    fetchBicyclesStart();
-  }, []);
 
   useEffect(() => {
     setBreakPoint(true);
@@ -211,13 +205,6 @@ function ShopPage({ fetchBicyclesStart, match, activeLink, isFetching }) {
 
   return (
     <div className="shop-page-wrapper">
-      <canvas
-        id="progressive"
-        style={{ display: "none" }}
-        ref={canvasRef}
-        width="10"
-        height="10"
-      ></canvas>
       {breakPoint && (
         <Transition in={isBreakPoint || !filterOpen} timeout={sideduration}>
           {(state) => (
@@ -316,13 +303,9 @@ function ShopPage({ fetchBicyclesStart, match, activeLink, isFetching }) {
   );
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  fetchBicyclesStart: () => dispatch(fetchBicyclesStart()),
-});
-
 const mapStateToProps = (state) => ({
   activeLink: linkSelector(state),
   isFetching: selectIsBicyclesFetching(state),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);
+export default connect(mapStateToProps, null)(ShopPage);

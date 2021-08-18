@@ -1,6 +1,7 @@
-import React, { useEffect, lazy, Suspense } from "react";
+import React, { useEffect, lazy, Suspense, useRef } from "react";
+import ReactDOM from "react-dom";
 import { Switch, Route } from "react-router-dom";
-import { connect, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import ErrorBoundary from "./components/error-boundary/error-boundary.component";
 
@@ -16,6 +17,7 @@ import {
   SpinnerContainer,
   SpinnerOverlay,
 } from "./components/with-spinner/with-spinner.styles";
+import { fetchBicyclesStart } from "./redux/shop/shop.actions";
 
 const HomePage = lazy(() => import("./pages/homepage/homepage.component"));
 const ShopPage = lazy(() => import("./pages/shop/shop.component.jsx"));
@@ -27,16 +29,33 @@ const ItemView = lazy(() =>
   import("./components/item-view/item-view.component.jsx")
 );
 
-function App({ checkUserSession }) {
+function App() {
+  const canvasRef = useRef();
+  const dispatch = useDispatch();
+
   const user = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
-    checkUserSession();
+    dispatch(checkUserSession());
+    dispatch(fetchBicyclesStart());
   }, []);
+
+  const CanvasComponent = () =>
+    ReactDOM.createPortal(
+      <canvas
+        id="progressive"
+        style={{ display: "none" }}
+        ref={canvasRef}
+        width="10"
+        height="10"
+      ></canvas>,
+      document.body
+    );
 
   return (
     <>
       <GlobalStyle />
+      <CanvasComponent />
       <Header />
       <Switch>
         <ErrorBoundary>
@@ -45,7 +64,8 @@ function App({ checkUserSession }) {
               <SpinnerOverlay>
                 <SpinnerContainer />
               </SpinnerOverlay>
-            }>
+            }
+          >
             <Route exact path="/" component={HomePage} />
             <ProtectedRoute path="/sell" user={user} component={SellPage} />
             <Route path="/shop" component={ShopPage} />
@@ -59,8 +79,4 @@ function App({ checkUserSession }) {
   );
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  checkUserSession: () => dispatch(checkUserSession()),
-});
-
-export default connect(null, mapDispatchToProps)(App);
+export default App;

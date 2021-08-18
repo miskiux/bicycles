@@ -48,7 +48,6 @@ export const getRedirectDefault = () => ({
   type: ShopActionTypes.GET_REDIRECT_DEFAULT,
 });
 
-//category link update
 export const updateLink = (link) => ({
   type: ShopActionTypes.UPDATE_LINK,
   payload: link,
