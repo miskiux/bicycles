@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  position: relative;
+  height: 100%;
+  width: 100%;
+
+  .backgroundImage {
+    width: 40%;
+    height: 500px;
+    background-repeat: no-repeat;
+    background-position: 50% 10%;
+  }
+
+  .stepContainer {
+    width: 60%;
+    padding: 25px;
+  }
+}

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 
-import FormInput from "../shared/form-input/form-input.component";
+// import FormInput from "components/shared/Input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
 
 import {
   googleSignInStart,
   emailSignInStart,
-} from "../../redux/user/user.actions";
+} from "../../redux/User/user.actions";
 
 import "./sign-in.styles.scss";
 
@@ -32,7 +32,7 @@ function SignIn({ googleSignInStart, emailSignInStart }) {
   return (
     <div className="sign-in">
       <form onSubmit={handleSubmit}>
-        <FormInput
+        {/* <FormInput
           inputStyle="form-input"
           name="email"
           type="email"
@@ -49,7 +49,7 @@ function SignIn({ googleSignInStart, emailSignInStart }) {
           handleChange={handleChange}
           label="password"
           required
-        />
+        /> */}
         <div className="sign-in-buttons">
           <CustomButton type="submit">Sign In</CustomButton>
           <CustomButton

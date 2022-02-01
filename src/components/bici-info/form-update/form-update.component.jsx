@@ -2,18 +2,17 @@ import React, { useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { useManufacturerHint } from "../../../hooks/useManufacturerHint";
 import { BicycleSpecs } from "../../../assets/additional/form-helpers";
 import { GeneralUpdate } from "./update-forms/general-updated.component";
 import { DescriptionUpdate } from "./update-forms/description-updated.component";
-import { invalidUpdateForm } from "../../../redux/update/update.actions";
-import {
-  nameValidation,
-  typeValidation,
-  priceValidation,
-  phoneValidation,
-  descriptionValidation,
-} from "../../../pages/sell/validate";
+import { invalidUpdateForm } from "../../../redux/BicycleUpdate/update.actions";
+// import {
+//   nameValidation,
+//   typeValidation,
+//   priceValidation,
+//   phoneValidation,
+//   descriptionValidation,
+// } from "../../../utils/form/validations";
 import CustomSnack from "../../snackbar/Snackbar.component";
 import {
   offroadSubList,
@@ -25,7 +24,7 @@ import {
   bicycleUpdateStart,
   getDefault,
   toggleSnackBar,
-} from "../../../redux/update/update.actions";
+} from "../../../redux/BicycleUpdate/update.actions";
 
 import { Form } from "react-bootstrap";
 
@@ -74,7 +73,6 @@ function FormUpdate({ inputData, edit, toggleEdit }) {
   const [errors, setErrors] = useState({});
 
   const { register } = useForm();
-  const { hintData } = useManufacturerHint();
   const dispatch = useDispatch();
 
   const snackbar = useSelector((state) => state.update.snackbar);
@@ -174,35 +172,35 @@ function FormUpdate({ inputData, edit, toggleEdit }) {
   const currentYear = new Date().getFullYear();
   const years = Array.from(new Array(50), (val, index) => currentYear - index);
 
-  const validate = () => {
-    let errorObj = {};
+  // const validate = () => {
+  //   let errorObj = {};
 
-    const descriptionErrors = descriptionValidation("Description", description);
-    const manufacturerErrors = nameValidation("Manufacturer", manufacturer);
-    const modelErrors = nameValidation("Model", model);
-    const typeError = typeValidation("Bicycle Type", bicycleType);
-    const priceError = priceValidation("Price", price);
-    const phoneError = phoneValidation(update.phone);
-    const locationError = nameValidation("Location", address);
-    errorObj["address"] = locationError;
-    errorObj["price"] = priceError;
-    errorObj["manufacturer"] = manufacturerErrors;
-    errorObj["model"] = modelErrors;
-    errorObj["bicycleType"] = typeError;
-    errorObj["phone"] = phoneError;
-    errorObj["description"] = descriptionErrors;
-    Object.keys(errorObj).forEach((key) => {
-      if (errorObj[key] === null || errorObj[key] === undefined) {
-        delete errorObj[key];
-      }
-    });
-    setErrors(errorObj);
-    return errorObj;
-  };
+  //   const descriptionErrors = descriptionValidation("Description", description);
+  //   const manufacturerErrors = nameValidation("Manufacturer", manufacturer);
+  //   const modelErrors = nameValidation("Model", model);
+  //   const typeError = typeValidation("Bicycle Type", bicycleType);
+  //   const priceError = priceValidation("Price", price);
+  //   const phoneError = phoneValidation(update.phone);
+  //   const locationError = nameValidation("Location", address);
+  //   errorObj["address"] = locationError;
+  //   errorObj["price"] = priceError;
+  //   errorObj["manufacturer"] = manufacturerErrors;
+  //   errorObj["model"] = modelErrors;
+  //   errorObj["bicycleType"] = typeError;
+  //   errorObj["phone"] = phoneError;
+  //   errorObj["description"] = descriptionErrors;
+  //   Object.keys(errorObj).forEach((key) => {
+  //     if (errorObj[key] === null || errorObj[key] === undefined) {
+  //       delete errorObj[key];
+  //     }
+  //   });
+  //   setErrors(errorObj);
+  //   return errorObj;
+  // };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const err = validate();
+    const err = true;
     if (Object.keys(err).length) {
       dispatch(invalidUpdateForm("Invalid input values"));
       return;
@@ -251,7 +249,7 @@ function FormUpdate({ inputData, edit, toggleEdit }) {
             subCategory={subCategory}
             item={item}
             edit={edit}
-            hintData={hintData}
+            hintData={{}}
             update={update}
             handleChange={handleChange}
             options={options}

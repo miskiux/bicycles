@@ -1,0 +1,29 @@
+@import "src/styling/variables";
+
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: $color-grey;
+  min-height: 44px;
+  border-radius: 10px;
+  width: 100%;
+
+  .tab {
+    padding: 6px 35px;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .indicator {
+    position: absolute;
+    width: 120px;
+    box-shadow: $shadow-4;
+    background-color: $color-white;
+    border-radius: 8px;
+    top: 3px;
+    left: 3px;
+    bottom: 3px;
+    height: auto;
+  }
+}

@@ -1,0 +1,181 @@
+@import "./mixins.scss";
+@import "./variables.scss";
+//----------------------------------------
+// Spacing
+//----------------------------------------
+$offset-helpers: (
+  t: "top",
+  r: "right",
+  b: "bottom",
+  l: "left",
+  m: "margin",
+  m-t: "margin-top",
+  m-r: "margin-right",
+  m-b: "margin-bottom",
+  m-l: "margin-left",
+  p: "padding",
+  p-t: "padding-top",
+  p-r: "padding-right",
+  p-b: "padding-bottom",
+  p-l: "padding-left",
+  l-h: "line-height",
+);
+
+@each $class, $property in $offset-helpers {
+  $helperMaxValue: 100;
+  $helperStep: 5;
+  @while $helperMaxValue >= 0 {
+    :global(.#{$class + "-" + $helperMaxValue}) {
+      #{$property}: #{$helperMaxValue}px !important;
+    }
+    $helperMaxValue: $helperMaxValue - $helperStep;
+  }
+}
+
+//----------------------------------------
+// Display
+//----------------------------------------
+$displays: (
+  none: "none",
+  block: "block",
+  inline: "inline",
+  iblock: "inline-block",
+  flex: "flex",
+  grid: "grid",
+);
+
+@each $suffix, $value in $displays {
+  $property: "display";
+  :global(.#{$property + "-" + $suffix}) {
+    #{$property}: #{$value};
+  }
+}
+
+//----------------------------------------
+// Vertical Align
+//----------------------------------------
+$vertical-alignments: (
+  top: "top",
+  bottom: "bottom",
+  middle: "middle",
+  baseline: "baseline",
+);
+
+@each $suffix, $value in $vertical-alignments {
+  $property: "vertical-align";
+  $prefix: "v-align";
+  :global(.#{$prefix + "-" + $suffix}) {
+    #{$property}: #{$value};
+  }
+}
+
+:global {
+  .position {
+    &-relative {
+      position: relative;
+    }
+  }
+
+  .par {
+    margin-bottom: 24px;
+  }
+
+  .width {
+    &-full {
+      width: 100% !important;
+    }
+  }
+
+  .text {
+    &-ellipsis {
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+
+    &-word-wrap {
+      word-break: break-word !important;
+      word-wrap: break-word !important;
+    }
+  }
+
+  .hidden {
+    visibility: hidden !important;
+  }
+
+  .print {
+    &-visible {
+      display: none;
+
+      @media print {
+        display: block;
+      }
+    }
+
+    &-hidden {
+      @media print {
+        display: none;
+      }
+    }
+  }
+
+  .fixed {
+    overflow: hidden;
+
+    &-while-mobile-menu {
+      @include until($header-breakpoint) {
+        overflow: hidden;
+      }
+    }
+  }
+
+  .grid {
+    @include grid;
+  }
+
+  .info-grid {
+    @include info-grid;
+  }
+
+  .info-grid-font {
+    font-size: 14px;
+  }
+
+  .info-grid-label {
+    color: $color-grey-400;
+  }
+
+  .info-grid-column {
+    @include info-grid-column;
+  }
+
+  .form-grid {
+    @include grid;
+
+    & > * {
+      @include form-grid-cell;
+    }
+  }
+
+  .form-grid-column {
+    @include form-grid-column;
+  }
+
+  .form-grid-cell {
+    @include form-grid-cell;
+  }
+
+  .input-group {
+    @include input-group;
+  }
+
+  .action-group {
+    @include action-group;
+  }
+
+  .visually-hidden {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+}

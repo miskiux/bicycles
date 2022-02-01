@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import FavouriteItem from "../favourite-item/favourite-item.component";
 
 import { selectFavouriteItems } from "../../redux/side-nav/side-nav.selectors";
-import { selectAll } from "../../redux/shop/shop.selectors";
+import { selectAll } from "../../redux/Shop/Shop.selectors";
 
 import { clearItemFromFavourites } from "../../redux/side-nav/side-nav.actions";
 import { connect } from "react-redux";

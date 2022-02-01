@@ -1,49 +1,35 @@
 import { takeLatest, call, put, all } from "redux-saga/effects";
 
-import {
-  firestore,
-  getBiciDataForShop,
-  deleteUserBicycleImages,
-} from "../../firebase/firebase.utils";
+import { firestore, deleteUserBicycleImages } from "src/firebase";
 
-import { getBlob } from "../../utils/getBlob";
-import { getPreview } from "../../utils/getPreview";
+import { ShopListConverter } from "src/domain/Shop/Bicycles/Converter/ShopListConverter";
+import { GetShopListCommand } from "src/domain/Shop/Collection/Command/GetCollectionCommand";
 
 import {
-  fetchBicyclesStart,
   fetchBicyclesSuccess,
   fetchBicyclesFailure,
   deleteBicycleSuccess,
-} from "./shop.actions";
+} from "./Shop.actions";
 
-import ShopActionTypes from "./shop.types";
-import UpdateActionTypes from "../update/update.types";
-import SellActionTypes from "../sell/sell.types";
+import ShopActionTypes from "./Shop.types";
+import UpdateActionTypes from "../BicycleUpdate/update.types";
+import SellActionTypes from "src/redux/SellStore/sell.types";
 
-export function* fetchBicyclesStartAsync() {
+export function* getShopListAsync({ payload }) {
+  const { shopType } = payload;
+
   try {
-    const bicycleRef = firestore.collection("bicycle");
-    const snapshot = yield bicycleRef.get();
-    const bicycleMap = yield call(getBiciDataForShop, snapshot);
+    const listRef = yield call(GetShopListCommand, payload);
+    const listItems = yield call(ShopListConverter, listRef, shopType);
 
-    const previewArr = bicycleMap.map((i) => ({
-      id: i.id,
-      url: i.item.url,
-    }));
+    const lastVisible = listRef.docs[listRef.docs.length - 1];
 
-    const blobs = yield call(getBlob, previewArr);
-    const previews = yield call(getPreview, blobs);
-    const newBicycleMap = bicycleMap.map((x) => ({
-      ...x,
-      item: {
-        ...x.item,
-        preview: previews
-          .filter((item) => item.id === x.id)
-          .map(({ id, ...rest }) => rest),
-      },
-    }));
-
-    yield put(fetchBicyclesSuccess(newBicycleMap));
+    yield put(
+      fetchBicyclesSuccess({
+        list: listItems,
+        lastVisible: lastVisible ?? null,
+      })
+    );
   } catch (error) {
     yield put(fetchBicyclesFailure(error.message));
   }
@@ -61,15 +47,16 @@ export function* deleteBicycle({ payload: { imgKey, id } }) {
   }
 }
 
+///
+/// WATCHERS
+///
+
 export function* fetchNewBicycles() {
-  yield put(fetchBicyclesStart());
+  yield put(getShopList());
 }
 
-export function* fetchBicycles() {
-  yield takeLatest(
-    ShopActionTypes.FETCH_BICYCLES_START,
-    fetchBicyclesStartAsync
-  );
+export function* getShopList() {
+  yield takeLatest(ShopActionTypes.GET_LIST, getShopListAsync);
 }
 
 export function* onBicycleDelete() {
@@ -97,7 +84,7 @@ export function* onBicycleDeleteFinish() {
 
 export function* shopSagas() {
   yield all([
-    call(fetchBicycles),
+    call(getShopList),
     call(onBicycleDelete),
     call(onBicycleUpdateSuccess),
     call(onImageUpdateFinish),

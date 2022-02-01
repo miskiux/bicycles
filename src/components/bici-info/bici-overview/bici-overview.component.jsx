@@ -11,16 +11,16 @@ import {
   SpinnerContainer,
 } from "../../with-spinner/with-spinner.styles";
 
-import { selectCurrentUser } from "../../../redux/user/user.selectors";
+import { selectCurrentUser } from "../../../redux/User/user.selectors";
 import {
   selectAll,
   selectRedirect,
   selectIsBicyclesFetching,
-} from "../../../redux/shop/shop.selectors";
+} from "../../../redux/Shop/Shop.selectors";
 import { toggleModal } from "../../../redux/side-nav/side-nav.actions";
-import { getRedirectDefault } from "../../../redux/shop/shop.actions";
-import { selectCurrent } from "../../../redux/update/update.actions";
-import { selectCurrentBicycle } from "../../../redux/update/update.selectors";
+import { getRedirectDefault } from "../../../redux/Shop/Shop.actions";
+import { selectCurrent } from "../../../redux/BicycleUpdate/update.actions";
+import { selectCurrentBicycle } from "../../../redux/BicycleUpdate/update.selectors";
 import "./bici-overview.styles.scss";
 
 //does not stay after refresh

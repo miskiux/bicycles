@@ -1,0 +1,161 @@
+@import "src/styling/variables";
+
+.baseInput {
+  display: inline-block;
+  min-width: 40px;
+
+  &.invalid .input {
+    &:focus {
+      border-color: $color-error;
+    }
+  }
+
+  .inputContainer {
+    position: relative;
+    display: inline-block;
+  }
+
+  .input {
+    box-sizing: border-box;
+    padding: 10px 12px;
+    font-size: 14px;
+    line-height: 18px;
+    font-family: inherit;
+    border: 1px solid $color-grey-300;
+    background-color: $color-white;
+    transition-property: border-color, color, opacity, background-color;
+    transition-duration: 200ms;
+    width: $default-input-width;
+    max-width: 100%;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &:hover {
+      border-color: $color-grey-150;
+    }
+
+    &:focus {
+      border-color: $color-grey-500;
+    }
+
+    &[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    &[type="color"] {
+      min-height: 40px;
+      padding: 5px;
+    }
+    &[type="search"] {
+      padding: 8px 0px 8px 42px;
+      //background-image: url("../../../../../assets/images/icons/inputs/search.svg");
+      background-position: left 15px center;
+      background-repeat: no-repeat;
+      background-size: 16px;
+
+      &.hasValue {
+        padding: 8px 30px 8px 42px;
+      }
+
+      & + button {
+        border: 0;
+        background-color: transparent;
+        position: absolute;
+        top: 6px;
+        right: 10px;
+      }
+
+      &.small {
+        background-size: 14px;
+        background-position: left 10px center;
+        padding-left: 30px;
+        padding-right: 30px;
+
+        & + button {
+          top: 3px;
+        }
+      }
+    }
+
+    &.invalid {
+      border-color: $color-error;
+    }
+
+    &.disabled {
+      color: $color-grey-300;
+      opacity: 0.8;
+      background-color: $color-grey-50;
+      border-color: $color-grey-200;
+      cursor: not-allowed;
+    }
+
+    &.small {
+      font-size: 14px;
+      padding: 5px;
+    }
+  }
+
+  .fullWidth {
+    display: block;
+    width: 100%;
+  }
+
+  @media only screen and (max-width: 300px) {
+    .input {
+      width: 100%;
+    }
+  }
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.errors {
+  padding-top: 6px;
+  color: $color-error;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 8px;
+
+  &.left {
+    right: auto;
+    left: 8px;
+  }
+}
+
+.iconButton {
+  border: 0;
+  background-color: transparent;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 12px;
+}
+
+.fullWidth {
+  display: block;
+  width: 100%;
+
+  .input {
+    display: block;
+    width: 100%;
+  }
+}
+
+.asterisk {
+  margin-left: 4px;
+  color: $color-error;
+}

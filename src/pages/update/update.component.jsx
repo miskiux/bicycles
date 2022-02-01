@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { selectAll } from "../../redux/shop/shop.selectors";
-import { selectCurrentUser } from "../../redux/user/user.selectors";
+import { selectAll } from "../../redux/Shop/Shop.selectors";
+import { selectCurrentUser } from "../../redux/User/user.selectors";
 import BiciInfo from "../../components/bici-info/bici-overview/bici-overview.component";
 
 function UpdatePage({ bicycles, user }) {

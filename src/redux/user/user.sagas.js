@@ -7,7 +7,7 @@ import {
   googleProvider,
   createUserProfileDocument,
   getCurrentUserSession,
-} from "../../firebase/firebase.utils";
+} from "../../firebase";
 
 import {
   signInSuccess,

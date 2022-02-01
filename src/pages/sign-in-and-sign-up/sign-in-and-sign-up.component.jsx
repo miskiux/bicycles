@@ -6,8 +6,8 @@ import SignIn from "../../components/sign-in/sign-in.component";
 import SignUp from "../../components/sign-up/sign-up.component";
 import { Button } from "semantic-ui-react";
 
-import { showWelcome } from "../../redux/user/user.actions";
-import { redirect, signInFailure } from "../../redux/user/user.actions";
+import { showWelcome } from "../../redux/User/user.actions";
+import { redirect, signInFailure } from "../../redux/User/user.actions";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";

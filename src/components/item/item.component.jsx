@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 
-import { toggleCarousel } from "../../redux/shop/shop.actions";
+import { toggleCarousel } from "../../redux/Shop/Shop.actions";
 
 import ReactHover, { Trigger, Hover } from "react-hover";
 

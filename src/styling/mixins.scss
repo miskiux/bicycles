@@ -1,3 +1,37 @@
+@import "./variables.scss";
+//----------------------------------------
+// Breakpoints
+//----------------------------------------
+@mixin until($device) {
+  @media screen and (max-width: $device - 1px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media screen and (min-width: $desktop) {
+    @content;
+  }
+}
+
+@mixin tablet-only {
+  @media screen and (min-width: $tablet) and (max-width: $desktop - 1px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media screen and (min-width: $tablet) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media screen and (max-width: $tablet - 1px) {
+    @content;
+  }
+}
+
 //----------------------------------------
 // Spacing
 //----------------------------------------
@@ -9,6 +43,174 @@
   } @else if ($axis == "vertical") {
     > *:not(:last-child) {
       margin-bottom: $size;
+    }
+  }
+}
+
+@mixin gap($size) {
+  margin-right: -$size;
+  margin-bottom: -$size;
+
+  > * {
+    margin-right: $size;
+    margin-bottom: $size;
+  }
+}
+
+/*Draws css triangle*/
+@mixin triangle($direction, $size: 10px, $color: $color-white) {
+  content: "";
+  width: 0;
+  height: 0;
+
+  @if $direction == top {
+    border-right: $size solid transparent;
+    border-left: $size solid transparent;
+    border-bottom: $size solid $color;
+    border-top: none;
+  }
+
+  @if $direction == bottom {
+    border-right: $size solid transparent;
+    border-left: $size solid transparent;
+    border-top: $size solid $color;
+    border-bottom: none;
+  }
+
+  @if $direction == right {
+    border-top: $size solid transparent;
+    border-bottom: $size solid transparent;
+    border-left: $size solid $color;
+    border-right: none;
+  }
+
+  @if $direction == left {
+    border-top: $size solid transparent;
+    border-bottom: $size solid transparent;
+    border-right: $size solid $color;
+    border-left: none;
+  }
+}
+
+//----------------------------------------
+// Fonts
+//----------------------------------------
+@mixin grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@mixin info-grid {
+  @include grid;
+
+  font-size: 14px;
+}
+
+@mixin info-grid-column {
+  min-width: 240px;
+  padding-right: 43px;
+
+  &:nth-child(2n) {
+    padding: 0 0 0 43px;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 23px;
+  }
+
+  @include mobile {
+    width: 100%;
+    padding-right: 0;
+
+    &:nth-child(2n) {
+      padding: 0;
+    }
+  }
+}
+
+@mixin form-grid-column {
+  width: 50%;
+  padding-right: 20px;
+
+  &:nth-child(2n) {
+    padding: 0 0 0 20px;
+  }
+
+  @include mobile {
+    width: 100%;
+    padding-right: 0;
+
+    &:nth-child(2n) {
+      padding: 0;
+    }
+  }
+
+  label {
+    display: block;
+    margin-bottom: 18px;
+  }
+}
+
+@mixin form-grid-cell {
+  display: block;
+  width: 50%;
+  margin-bottom: 12px;
+  padding-right: 12px;
+
+  &:nth-child(2n) {
+    padding: 0 0 0 12px;
+  }
+
+  @include mobile {
+    width: 100%;
+    padding-right: 0;
+
+    &:nth-child(2n) {
+      padding: 0;
+    }
+  }
+}
+
+@mixin input-group {
+  display: flex;
+
+  label {
+    padding-right: 15px;
+
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+
+  input {
+    width: 100%;
+  }
+}
+
+@mixin action-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  > a,
+  > button {
+    margin-right: 12px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  @include until($tablet) {
+    > a,
+    > button {
+      width: 100%;
+      margin-right: 0;
+      margin-bottom: 15px;
+
+      button {
+        width: 100%;
+      }
     }
   }
 }

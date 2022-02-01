@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 
-import FormInput from "../shared/form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
 
-import { signUpStart } from "../../redux/user/user.actions";
+import { signUpStart } from "../../redux/User/user.actions";
 
 import "./sign-up.styles.scss";
 
@@ -37,7 +36,7 @@ function SignUp({ signUpStart }) {
   return (
     <div className="sign-up">
       <form onSubmit={handleSubmit}>
-        <FormInput
+        {/* <FormInput
           inputStyle="form-input"
           type="text"
           name="displayName"
@@ -72,7 +71,7 @@ function SignUp({ signUpStart }) {
           onChange={handleChange}
           label="Confirm Password"
           required
-        />
+        /> */}
         <div className="sign-up-buttons">
           <CustomButton type="submit">Sign Up</CustomButton>
         </div>

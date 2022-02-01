@@ -1,0 +1,123 @@
+@import "src/styling/variables";
+
+.dropdownContainer {
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  color: $color-text;
+
+  .dropdownTitle {
+    background-color: $color-grey-100;
+    font-size: 12px;
+    line-height: 16px;
+    color: $color-grey-600;
+    cursor: auto !important;
+  }
+
+  .comfortable {
+    .dropdownTitle {
+      font-size: 15px;
+      line-height: 20px;
+    }
+  }
+
+  &.disabled {
+    opacity: 0.3;
+
+    * {
+      cursor: not-allowed;
+    }
+  }
+
+  &.fullWidth {
+    display: block;
+  }
+
+  .dropdown {
+    display: none;
+    min-width: 90px;
+    font-size: 14px;
+    line-height: 19px;
+    box-shadow: $dropdown-shadow;
+    background-color: $color-white;
+    position: absolute;
+    border-radius: 4px;
+    overflow: scroll;
+    overflow-x: hidden;
+    max-height: 235px;
+    list-style-type: none;
+    padding: 0;
+
+    &.open {
+      display: inline-block;
+      z-index: 1000;
+    }
+
+    &.alignCenter {
+      text-align: center;
+    }
+    &.alignLeft {
+      text-align: left;
+    }
+    &.top {
+      bottom: 115%;
+    }
+    &.bottom {
+      top: 115%;
+    }
+    &.right {
+      right: 0;
+    }
+    &.left {
+      left: 0;
+    }
+    &.comfortable > * {
+      padding: 14px 24px;
+    }
+    &.compact > * {
+      padding: 7px 12px;
+    }
+
+    &.fullWidth {
+      text-align: left;
+      width: 100%;
+    }
+
+    * {
+      cursor: pointer;
+
+      &.disabled {
+        * {
+          cursor: not-allowed;
+        }
+      }
+    }
+
+    > * {
+      &:hover {
+        background-color: $color-grey-100;
+      }
+
+      &.disabled {
+        background-color: rgba(221, 228, 232, 0.6);
+        color: rgba(21, 38, 60, 0.6);
+        cursor: not-allowed;
+
+        > * {
+          cursor: not-allowed;
+        }
+      }
+
+      > * {
+        display: block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 90vw;
+      }
+
+      &.separated {
+        border-top: 1px solid $color-grey-200;
+      }
+    }
+  }
+}

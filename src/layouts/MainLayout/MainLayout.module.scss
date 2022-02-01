@@ -1,0 +1,14 @@
+.mainLayout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 100%;
+  z-index: 0;
+  padding-bottom: 120px;
+  margin: 0 auto;
+
+  .content {
+    flex: 1 0 auto;
+  }
+}

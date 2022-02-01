@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { selectAll } from "../../redux/shop/shop.selectors";
-import { selectCurrentUser } from "../../redux/user/user.selectors";
-import { selectCurrent } from "../../redux/update/update.actions";
+import { selectAll } from "../../redux/Shop/Shop.selectors";
+import { selectCurrentUser } from "../../redux/User/user.selectors";
+import { selectCurrent } from "../../redux/BicycleUpdate/update.actions";
 import "./Bici-info-preview.styles.scss";
 import { toggleAccount } from "../../redux/side-nav/side-nav.actions";
 

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { imagesUpdatingStart } from "../../../redux/update/update.actions";
+import { imagesUpdatingStart } from "../../../redux/BicycleUpdate/update.actions";
 import { useDropzone } from "react-dropzone";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";

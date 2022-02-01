@@ -1,24 +1,17 @@
-import { createStore, applyMiddleware } from 'redux';
-
-import logger from 'redux-logger';
-
-import { persistStore } from 'redux-persist';
-
-import createSagaMiddleware from 'redux-saga';
-
-import rootReducer from './root-reducer';
-
-import rootSaga from './root-saga';
-
+import { createStore, applyMiddleware } from "redux";
+import logger from "redux-logger";
+import { persistStore } from "redux-persist";
+import createSagaMiddleware from "redux-saga";
+import rootReducer from "./reducers";
+import rootSaga from "./sagas";
 
 const sagaMiddleware = createSagaMiddleware();
+const middlewares = [logger, sagaMiddleware];
 
-const middlewares = [logger, sagaMiddleware]; //expects an array.logger accepts infinite number of middlewares
+export const store = createStore(rootReducer, applyMiddleware(...middlewares));
 
-export const store = createStore(rootReducer, applyMiddleware(...middlewares)) //spreads out all the values in the [] array into this function call as individual arguments
+sagaMiddleware.run(rootSaga);
 
-sagaMiddleware.run(rootSaga)
- 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);
 
-export default {store, persistor};
+export default { store, persistor };

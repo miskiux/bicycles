@@ -1,0 +1,42 @@
+@import "src/styling/variables";
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  .selectionWrapper {
+    display: flex;
+    margin-bottom: 64px;
+  }
+
+  .tabPanel {
+    .topSection {
+      padding-bottom: 25px;
+    }
+
+    .menuTitle {
+      display: flex;
+      font-size: 20px;
+      margin-bottom: 20px;
+      line-height: 30px;
+      letter-spacing: 0.15008px;
+
+      .coloredTitle {
+        padding-right: 10px;
+      }
+    }
+
+    .middleSection {
+      padding-top: 25px;
+      margin-bottom: 25px;
+    }
+  }
+}
+
+.disabled {
+  background-color: $color-grey;
+}
+
+.allowed {
+  background-color: $color-warning;
+}

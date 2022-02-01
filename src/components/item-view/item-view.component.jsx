@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 
 import Item from "../item/item.component";
 
-import { selectAll } from "../../redux/shop/shop.selectors";
+import { selectAll } from "../../redux/Shop/Shop.selectors";
 
 const ItemView = ({ bicycles }) => {
   const [item, setItem] = useState([]);

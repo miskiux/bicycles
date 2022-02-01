@@ -9,11 +9,11 @@ import {
 } from "../../with-spinner/with-spinner.styles";
 import FormUpdate from "../form-update/form-update.component";
 import ImageUpdate from "../images-update/Image-update.component";
-import { imageUrlUpdateStart } from "../../../redux/update/update.actions";
+import { imageUrlUpdateStart } from "../../../redux/BicycleUpdate/update.actions";
 import {
   deleteBicycleStart,
   getDeleteDefault,
-} from "../../../redux/shop/shop.actions";
+} from "../../../redux/Shop/Shop.actions";
 import { Transition } from "react-transition-group";
 import "./bici-item.styles.scss";
 

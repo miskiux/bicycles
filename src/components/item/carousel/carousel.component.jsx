@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ClearIcon from "@material-ui/icons/Clear";
-import { toggleCarousel } from "../../../redux/shop/shop.actions";
+import { toggleCarousel } from "../../../redux/Shop/Shop.actions";
 
 import "./carousel.styles.scss";
 

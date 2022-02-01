@@ -1,0 +1,18 @@
+@import "src/styling/mixins";
+@import "src/styling/variables";
+
+.container {
+  margin-top: 35px;
+  font-size: 0.85rem;
+
+  .form {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+
+    & > * {
+      flex: 1 250px;
+    }
+  }
+}

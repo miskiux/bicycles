@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
-import { storage } from "../firebase/firebase.utils";
+import { storage } from "../firebase";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { imageUploadSuccess } from "../redux/sell/sell.actions";
-import { imagesUpdatingSuccess } from "../redux/update/update.actions";
+import { imageUploadSuccess } from "../redux/SellStore/SellRequestStore/sell-request.actions";
+import { imagesUpdatingSuccess } from "../redux/BicycleUpdate/update.actions";
 
 export const useStorage = (image, imgKey) => {
   const [url, setUrl] = useState([]);

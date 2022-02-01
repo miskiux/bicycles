@@ -2,8 +2,9 @@
 // Breakpoints
 //----------------------------------------
 $desktop-wide: 1200px;
-$desktop: 1024px;
+$desktop: 1000px;
 $tablet: 768px;
+$xs-screen: 300px;
 
 //----------------------------------------
 // Colors
@@ -14,7 +15,7 @@ $color-primary: #5697ef;
 
 $color-info: $color-primary;
 $color-success: #40c564;
-$color-warning: #efae56;
+$color-warning: rgb(251, 232, 79);
 $color-error: #ef6256;
 
 $color-grey-600: #606979;
@@ -29,8 +30,9 @@ $color-grey-200: #e6e9eb;
 $color-grey-150: #d6dadf;
 $color-grey-100: #f7f7f7;
 $color-grey-50: #f6f9fb;
-$color-white: #ffffff;
-$color-black: #000000;
+$color-white: #fff;
+$color-grey: #eee;
+$color-black: #333;
 $color-purple: #a399d8;
 
 //----------------------------------------
@@ -43,7 +45,7 @@ $sticky-section-shadow: 0px -3px 10px rgba(21, 38, 60, 0.1);
 $shadow-1: 0px 0px 2px rgba(0, 0, 0, 0.14), 0px 1px 3px rgba(0, 0, 0, 0.2);
 $shadow-2: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 1px 5px rgba(0, 0, 0, 0.2);
 $shadow-3: 0px 3px 3px rgba(0, 0, 0, 0.14), 0px 1px 8px rgba(0, 0, 0, 0.2);
-$shadow-4: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.2);
+$shadow-4: 0px 4px 12px 0px rgba(0, 0, 0, 0.16);
 $shadow-6: 0px 6px 10px rgba(0, 0, 0, 0.14), 0px 3px 5px rgba(0, 0, 0, 0.2);
 $shadow-8: 0px 8px 10px rgba(0, 0, 0, 0.14), 0px 4px 5px rgba(0, 0, 0, 0.2);
 $shadow-9: 0px 9px 12px rgba(0, 0, 0, 0.14), 0px 5px 6px rgba(0, 0, 0, 0.2);
@@ -60,7 +62,7 @@ $max-width: 1490px;
 // Header
 //----------------------------------------
 $header-height: 60px;
-$header-breakpoint: 1350px;
+$header-breakpoint: 1360px;
 
 //----------------------------------------
 // Inputs

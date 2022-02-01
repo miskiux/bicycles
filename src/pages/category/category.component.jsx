@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
-import CollectionItem from "../../components/collection-item/collection-item.component";
+import CollectionItem from "src/components/CollectionItem/CollectionItem";
 
-import { updateLink } from "../../redux/shop/shop.actions";
+import { updateLink } from "../../redux/Shop/Shop.actions";
 import {
   selectCategory,
   selectFilteredByLocation,
-} from "../../redux/shop/shop.selectors";
+} from "../../redux/Shop/Shop.selectors";
 
 import "./category.styles.scss";
 

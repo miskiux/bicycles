@@ -1,0 +1,6 @@
+const UtilsActionTypes = {
+  GET_MANUFACTURER_LIST: "GET_MANUFACTURER_LIST",
+  ON_MANUFACTURER_LIST_SUCCESS: "ON_MANUFACTURER_LIST_SUCCESS",
+};
+
+export default UtilsActionTypes;

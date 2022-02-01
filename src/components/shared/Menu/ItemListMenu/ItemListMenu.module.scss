@@ -1,0 +1,43 @@
+@import "src/styling/variables.scss";
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  overflow: scroll;
+  overflow-x: hidden;
+  max-height: 408px;
+  padding: 0 24px;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $color-white;
+  }
+
+  .item {
+    display: flex;
+    padding: 9px 0;
+    cursor: pointer;
+    border: 1px solid;
+    border-radius: 2px;
+    width: calc(50% - 5px);
+    margin-bottom: 10px;
+    border-color: $color-grey-200;
+    text-align: center;
+
+    &:nth-child(odd) {
+      margin-right: 10px;
+    }
+
+    &:hover {
+      border-color: $color-black;
+    }
+  }
+}
+
+.scrollbar-width-thin {
+  scrollbar-width: thin;
+}

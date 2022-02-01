@@ -71,3 +71,6 @@ export const selectRedirect = createSelector(
   [selectShop],
   (shop) => shop.redirect
 );
+
+export const selectList = (state) =>
+  state.shop.list ? Object.values(state.shop.list) : [];

@@ -1,0 +1,58 @@
+@import "src/styling/mixins";
+
+.map-container {
+  max-width: 900px;
+  height: 533px;
+  background-color: #333;
+}
+
+
+.location-error {
+  position: absolute;
+  top: 45px;
+  padding: 10px;
+  font-size: 10px;
+  color: #cc0000;
+}
+
+.mapboxgl-ctrl-geocoder {
+  width: 100%;
+  border-radius: 15px;
+  height: 30px;
+  font-size: 14px;
+
+  .mapboxgl-ctrl-geocoder--input {
+    background-color: rgba(228, 233, 237, 0.8);
+    border-radius: 15px;
+    height: 30px;
+    padding: 1em 2em !important;
+    outline: none !important;
+  }
+
+  .mapboxgl-ctrl-geocoder--icon {
+    top: 6px;
+
+    @include mobile {
+      top: 5px;
+    }
+  }
+
+  .mapboxgl-ctrl-geocoder--icon-search {
+    @include mobile {
+      left: 6px;
+      width: 21px;
+      height: 21px;
+    }
+  }
+
+  .mapboxgl-ctrl-geocoder--icon-close {
+    background-color: rgba(228, 233, 237, 0.8);
+    margin-top: -1px;
+
+    @include mobile {
+      width: 19px;
+      height: 19px;
+      margin: 0;
+    }
+  }
+}

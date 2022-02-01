@@ -7,9 +7,9 @@ import {
   selectAll,
   selectCategory,
   manufacturerSelector,
-} from "../../../redux/shop/shop.selectors";
+} from "../../../redux/Shop/Shop.selectors";
 
-import { getManufacturerLabel } from "../../../redux/shop/shop.actions";
+import { getManufacturerLabel } from "../../../redux/Shop/Shop.actions";
 
 import * as QueryString from "query-string";
 
@@ -27,10 +27,8 @@ const ManufacturerCheckBox = ({
   link,
   onModalClose,
 }) => {
-  const [
-    manufacturersCheckBoxOptions,
-    setManufacturersCheckBoxOptions,
-  ] = useState([]);
+  const [manufacturersCheckBoxOptions, setManufacturersCheckBoxOptions] =
+    useState([]);
   const [checkBoxValues, setCheckBoxValues] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [filteredSelection, setFilteredSelection] = useState([]);

@@ -6,8 +6,8 @@ import { connect } from "react-redux";
 import Slider from "@material-ui/core/Slider";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 
-import { selectLocationBicycles } from "../../../redux/shop/shop.selectors";
-import { filterByLocation } from "../../../redux/shop/shop.actions";
+import { selectLocationBicycles } from "../../../redux/Shop/shop.selectors";
+import { filterByLocation } from "../../../redux/Shop/shop.actions";
 import "./location-item.styles.css";
 
 const useStyles = makeStyles({
@@ -105,7 +105,6 @@ function LocationItem({
   //user location
   const findLocation = () => {
     if (navigator.geolocation) {
-      console.log("exist ?");
       navigator.geolocation.getCurrentPosition((position) => {
         let uloc = {
           lat: position.coords.latitude,

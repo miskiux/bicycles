@@ -1,0 +1,32 @@
+.tabContainer {
+  display: flex;
+  width: 100%;
+
+  .tab {
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+    color: #333;
+
+    .box {
+      display: flex;
+      height: 30px;
+      width: 30px;
+      border-radius: 4px;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(228, 233, 237, 0.8);
+      color: #333;
+      margin-right: 6px;
+
+      &.active {
+        background-color: #4183c4;
+        color: white;
+      }
+    }
+  }
+}

@@ -1,0 +1,132 @@
+@import "src/styling/variables";
+
+.outerContainer {
+  width: $default-input-width;
+  display: inline-block;
+
+  & > label {
+    input {
+      caret-color: transparent !important;
+      padding-right: 35px !important;
+    }
+  }
+
+  &.hasDropdownIcon {
+    & > label {
+      input {
+        background: $color-white;
+        // url("../../../../../assets/images/icons/chevron-down-thin.svg") right
+        // 12px center no-repeat;
+        background-size: 12px;
+      }
+    }
+
+    &.dropdownOpen {
+      & > label {
+        input {
+          background-image: $color-white;
+          //url("../../../../../assets/images/icons/chevron-up-thin.svg");
+        }
+      }
+    }
+  }
+
+  &.dropdownOpen {
+    position: relative;
+    z-index: 1;
+
+    & > label {
+      input {
+        border-color: $color-grey-500;
+      }
+    }
+
+    & > img {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.searchContainer {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  background-color: $color-white;
+  border: 1px solid $color-grey-300;
+  border-bottom-color: $color-grey-200;
+  padding: 12px;
+
+  input {
+    padding: 8px 12px !important;
+  }
+}
+
+.dropdownContainer {
+  position: absolute;
+  left: -1px;
+  top: 61px;
+  width: calc(100% + 1px);
+
+  .hidden {
+    display: none;
+  }
+
+  .dropdown {
+    display: none;
+    width: inherit;
+    text-align: center;
+    font-size: 14px;
+    position: absolute;
+    max-height: 225px;
+    overflow: auto;
+
+    border: 1px solid $color-grey-300;
+    border-top-width: 0;
+    background-color: $color-white;
+
+    .dropdownOpen & {
+      display: inline-block;
+    }
+
+    li {
+      cursor: pointer;
+
+      &.focused {
+        background-color: $color-primary;
+        color: $color-white;
+      }
+
+      &.disabled {
+        background-color: $color-grey-200;
+        opacity: 0.6;
+        cursor: not-allowed;
+
+        .option {
+          cursor: not-allowed;
+        }
+
+        & + li .option {
+          border-top: none;
+        }
+      }
+
+      .option {
+        padding: 11px 11px;
+        line-height: 20px;
+        display: block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+      &:not(:first-child) .option {
+        border-top: 1px solid $color-grey-200;
+      }
+    }
+  }
+}
+
+.noResults {
+  padding: 10px 18px;
+}

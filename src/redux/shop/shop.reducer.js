@@ -1,31 +1,46 @@
-import ShopActionTypes from "./shop.types";
+import ShopActionTypes from "./Shop.types";
 
 const INITIAL_STATE = {
-  bicycles: null,
-  isFetching: false,
+  aggregatedList: [],
+  list: null,
+  limit: 2,
+  lastVisible: null,
+  imageLoading: false,
+  loading: false,
+  loadedUrls: [],
+  initialLoad: true,
   isDeleting: false,
   redirect: false,
-  deleteMessage: false,
-  errorMessage: undefined,
   toggleCarousel: true,
   locationId: [],
   manufacturerLabel: "",
-  activeLink: "all",
 };
 
 const shopReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case ShopActionTypes.FETCH_BICYCLES_START:
+    case ShopActionTypes.GET_LIST:
       return {
         ...state,
-        isFetching: true,
+        loading: true,
       };
+
     case ShopActionTypes.FETCH_BICYCLES_SUCCESS:
       return {
         ...state,
-        isFetching: false,
-        bicycles: action.payload,
+        imageLoading: true,
+        loading: false,
+        initialLoad: false,
+        lastVisible: action.payload.lastVisible,
+        list: action.payload.list,
+        aggregatedList: [...state.aggregatedList, ...action.payload.list],
       };
+
+    case ShopActionTypes.CLEAR_AGGREGATE:
+      return {
+        ...state,
+        aggregatedList: [],
+      };
+
     case ShopActionTypes.FETCH_BICYCLES_FAILURE:
       return {
         ...state,
@@ -73,6 +88,13 @@ const shopReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         activeLink: action.payload,
+      };
+
+    case ShopActionTypes.GET_LOADED_IMAGES:
+      return {
+        ...state,
+        imageLoading: false,
+        loadedUrls: [...state.loadedUrls, ...action.urls],
       };
 
     default:

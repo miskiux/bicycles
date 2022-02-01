@@ -1,13 +1,27 @@
-import ShopActionTypes from "./shop.types";
+import ShopActionTypes from "./Shop.types";
 
 //fetch actions
-export const fetchBicyclesStart = () => ({
-  type: ShopActionTypes.FETCH_BICYCLES_START,
+export const getList = (payload) => ({
+  type: ShopActionTypes.GET_LIST,
+  payload,
+});
+
+export const nextPage = () => ({
+  type: ShopActionTypes.NEXT_PAGE,
 });
 
 export const fetchBicyclesSuccess = (bicycleMap) => ({
   type: ShopActionTypes.FETCH_BICYCLES_SUCCESS,
   payload: bicycleMap,
+});
+
+export const getLoadedImages = (urls) => ({
+  type: ShopActionTypes.GET_LOADED_IMAGES,
+  urls,
+});
+
+export const clearAggregatedList = () => ({
+  type: ShopActionTypes.CLEAR_AGGREGATE,
 });
 
 export const fetchBicyclesFailure = (errorMessage) => ({
